@@ -49,6 +49,7 @@ RUN (production)
 """
 
 import os
+import json
 import logging
 
 import stripe
@@ -148,7 +149,7 @@ def stripe_webhook():
         return jsonify({"error": "server misconfigured"}), 500
 
     try:
-        event = stripe.Webhook.construct_event(payload, sig_header, STRIPE_WEBHOOK_SECRET)
+        stripe.Webhook.construct_event(payload, sig_header, STRIPE_WEBHOOK_SECRET)
     except ValueError:
         logger.warning("Invalid payload received on /webhook/stripe.")
         return jsonify({"error": "invalid payload"}), 400
@@ -156,8 +157,9 @@ def stripe_webhook():
         logger.warning("Invalid Stripe signature on /webhook/stripe.")
         return jsonify({"error": "invalid signature"}), 400
 
+    event = json.loads(payload)
     event_type = event["type"]
-    data_object = dict(event["data"]["object"])
+    data_object = event["data"]["object"]
 
     if event_type == "checkout.session.completed":
         handle_checkout_completed(data_object)
