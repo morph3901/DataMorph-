@@ -157,7 +157,7 @@ def stripe_webhook():
         return jsonify({"error": "invalid signature"}), 400
 
     event_type = event["type"]
-    data_object = event["data"]["object"]
+    data_object = dict(event["data"]["object"])
 
     if event_type == "checkout.session.completed":
         handle_checkout_completed(data_object)
