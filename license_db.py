@@ -77,11 +77,17 @@ def generate_license_key() -> str:
     return f"MORPH-{part()}-{part()}"
 
 
-def create_license_key(email: str, stripe_customer_id: str, stripe_subscription_id: str) -> str:
+def create_license_key(
+    email: str,
+    stripe_customer_id: str,
+    stripe_subscription_id: str = "",
+    key_type: str = "subscription",
+) -> str:
     """
     Generate a fresh key and store it in Supabase, tied to the Stripe
-    customer and subscription that paid for it. Returns the new key.
+    customer and subscription/payment that paid for it. Returns the new key.
 
+    key_type: 'one_time' for single-use, 'subscription' for monthly access.
     Retries once on the (rare) chance of a primary-key collision.
     """
     for _ in range(2):
@@ -94,13 +100,13 @@ def create_license_key(email: str, stripe_customer_id: str, stripe_subscription_
                     "stripe_customer_id": stripe_customer_id,
                     "stripe_subscription_id": stripe_subscription_id,
                     "status": "active",
+                    "type": key_type,
+                    "usage_count": 0,
                     "created_at": datetime.now(timezone.utc).isoformat(),
                 }
             ).execute()
             return key
         except Exception as e:
-            # Most likely a duplicate primary key (astronomically unlikely
-            # with 8 random base-36 chars, but retry once just in case).
             if _ == 0:
                 continue
             raise RuntimeError(f"Failed to create license key in Supabase: {e}") from e
@@ -108,7 +114,7 @@ def create_license_key(email: str, stripe_customer_id: str, stripe_subscription_
 
 
 def is_key_valid(license_key: str) -> bool:
-    """Check whether a submitted key exists and is currently active."""
+    """Check whether a submitted key exists, is active, and has uses remaining."""
     if not license_key:
         return False
 
@@ -116,17 +122,67 @@ def is_key_valid(license_key: str) -> bool:
         response = (
             _client()
             .table("license_keys")
-            .select("status")
+            .select("status,type,usage_count")
             .eq("license_key", license_key.strip())
             .limit(1)
             .execute()
         )
     except Exception:
-        # Fail closed: if Supabase is unreachable, don't unlock downloads.
         return False
 
     rows = response.data or []
-    return bool(rows) and rows[0]["status"] == "active"
+    if not rows or rows[0]["status"] != "active":
+        return False
+
+    key_type = rows[0].get("type", "subscription")
+    usage = rows[0].get("usage_count", 0)
+
+    if key_type == "one_time" and usage >= 1:
+        return False
+
+    return True
+
+
+def get_key_info(license_key: str) -> dict | None:
+    """Return full info about a key, or None if invalid."""
+    if not license_key:
+        return None
+
+    try:
+        response = (
+            _client()
+            .table("license_keys")
+            .select("status,type,usage_count")
+            .eq("license_key", license_key.strip())
+            .limit(1)
+            .execute()
+        )
+    except Exception:
+        return None
+
+    rows = response.data or []
+    return rows[0] if rows else None
+
+
+def mark_key_used(license_key: str):
+    """Increment usage_count for a key (used after one-time download)."""
+    if not license_key:
+        return
+    try:
+        row = (
+            _client()
+            .table("license_keys")
+            .select("usage_count")
+            .eq("license_key", license_key.strip())
+            .limit(1)
+            .execute()
+        )
+        current = (row.data or [{}])[0].get("usage_count", 0)
+        _client().table("license_keys").update(
+            {"usage_count": current + 1}
+        ).eq("license_key", license_key.strip()).execute()
+    except Exception:
+        pass
 
 
 def revoke_keys_for_subscription(stripe_subscription_id: str):

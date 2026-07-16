@@ -61,6 +61,11 @@ from license_db import (
     reactivate_keys_for_subscription,
 )
 
+PAYMENT_LINKS = {
+    "https://buy.stripe.com/test_00wcN7a355YY6Y7026cQU00": "one_time",
+    "https://buy.stripe.com/test_6oU3cxa359ba5U3eX0cQU01": "subscription",
+}
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("webhook_server")
 
@@ -71,7 +76,7 @@ STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 RESEND_FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "onboarding@resend.dev")
-APP_URL = "https://your-streamlit-app-url.com"  # TODO: replace with your real Streamlit app URL
+APP_URL = "https://datamorph-.streamlit.app"  # updated after Streamlit Cloud deploy
 
 if RESEND_API_KEY:
     resend.api_key = RESEND_API_KEY
@@ -79,39 +84,46 @@ else:
     logger.warning("RESEND_API_KEY is not set -- license key emails will not be sent.")
 
 
-def send_key_email(to_email: str, license_key: str):
+def send_key_email(to_email: str, license_key: str, key_type: str = "subscription"):
     """
-    Email the license key to the customer via Resend
-    (https://resend.com). Free tier covers 3,000 emails/month, which is
-    plenty for a $29/mo micro-SaaS until you're doing real volume.
-
-    This is deliberately wrapped in a broad try/except: a failed email
-    must never take down the webhook. Stripe expects a 200 response
-    regardless, and the key is already safely stored in Supabase by the
-    time this runs -- so a failed send just means the customer needs to
-    be followed up with manually (check the logs / Supabase table for
-    their key), not that the sale was lost.
+    Email the license key to the customer via Resend.
+    Customizes the message based on whether it's a one-time or subscription key.
     """
     if not RESEND_API_KEY:
         logger.info(f"[send_key_email] Skipped -- RESEND_API_KEY not set. "
                     f"Key {license_key} for {to_email} was NOT emailed.")
         return
 
-    subject = "Your Data Funnel Engine License Key"
-    body = (
-        "Hi there,\n\n"
-        "Thanks for subscribing to Data Funnel Engine! Your subscription is "
-        "now active.\n\n"
-        f"Your license key: {license_key}\n\n"
-        f"Head to the app and paste this key into the \"Enter your license "
-        f"key\" box to unlock your downloads:\n{APP_URL}\n\n"
-        "Keep this key handy -- you'll need it every time you want to "
-        "download a processed file.\n\n"
-        "If you have any questions or run into trouble, just reply to this "
-        "email.\n\n"
-        "Thanks again,\n"
-        "The Data Funnel Engine Team"
-    )
+    if key_type == "one_time":
+        subject = "Your Data Funnel Engine Access Key"
+        body = (
+            "Hi there,\n\n"
+            "Thanks for purchasing Data Funnel Engine! Your one-time access "
+            "is now active.\n\n"
+            f"Your access key: {license_key}\n\n"
+            f"Head to the app and paste this key into the \"Enter your license "
+            f"key\" box to process your file:\n{APP_URL}\n\n"
+            "This key is valid for one use. Need more? Check out our monthly "
+            "subscription for unlimited access.\n\n"
+            "If you have any questions, just reply to this email.\n\n"
+            "Thanks,\n"
+            "The Data Funnel Engine Team"
+        )
+    else:
+        subject = "Your Data Funnel Engine Subscription Key"
+        body = (
+            "Hi there,\n\n"
+            "Thanks for subscribing to Data Funnel Engine! Your subscription "
+            "is now active.\n\n"
+            f"Your license key: {license_key}\n\n"
+            f"Head to the app and paste this key into the \"Enter your license "
+            f"key\" box to unlock your downloads:\n{APP_URL}\n\n"
+            "Keep this key handy -- you'll need it every time you want to "
+            "download a processed file.\n\n"
+            "If you have any questions, just reply to this email.\n\n"
+            "Thanks again,\n"
+            "The Data Funnel Engine Team"
+        )
 
     try:
         resend.Emails.send({
@@ -162,8 +174,8 @@ def stripe_webhook():
 
 def handle_checkout_completed(session: dict):
     """
-    Fires when a customer successfully completes Stripe Checkout for
-    the subscription. We mint them a fresh license key.
+    Fires when a customer successfully completes Stripe Checkout.
+    We mint them a fresh license key (one_time or subscription).
     """
     customer_email = (session.get("customer_details") or {}).get("email")
     customer_id = session.get("customer")
@@ -173,16 +185,23 @@ def handle_checkout_completed(session: dict):
         logger.warning("checkout.session.completed with no customer email -- skipping.")
         return
 
+    payment_link = (session.get("metadata") or {}).get("payment_link", "")
+    key_type = PAYMENT_LINKS.get(payment_link, "subscription")
+
+    if subscription_id:
+        key_type = "subscription"
+
     license_key = create_license_key(
         email=customer_email,
         stripe_customer_id=customer_id,
-        stripe_subscription_id=subscription_id,
+        stripe_subscription_id=subscription_id or "",
+        key_type=key_type,
     )
 
-    logger.info(f"Issued license key {license_key} to {customer_email} "
+    logger.info(f"Issued {key_type} license key {license_key} to {customer_email} "
                 f"(customer={customer_id}, subscription={subscription_id})")
 
-    send_key_email(customer_email, license_key)
+    send_key_email(customer_email, license_key, key_type)
 
 
 def handle_subscription_ended(subscription: dict):

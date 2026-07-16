@@ -40,7 +40,7 @@ import streamlit as st
 import pdfplumber
 from openai import OpenAI
 
-from license_db import is_key_valid  # shared store, also written to by webhook_server.py
+from license_db import is_key_valid, get_key_info, mark_key_used
 
 # --------------------------------------------------------------------------
 # Logging setup - useful for debugging API/parsing failures without
@@ -102,24 +102,27 @@ def render_paywall_section(df: pd.DataFrame, unlock_key: str, filename: str):
     """
     Renders the shared preview / paywall / download UI block for a given
     processed DataFrame.
-
-    Args:
-        df: The processed DataFrame to preview/download.
-        unlock_key: The session_state key that tracks whether this
-                    particular tool's download has been "unlocked".
-        filename: The filename to use for the downloaded CSV.
     """
     st.subheader("Preview Processed Data")
     st.dataframe(df.head(5), use_container_width=True)
 
     st.warning(
-        "🔒 Your file is ready! To download the full dataset, activate your subscription."
+        "Your file is ready! Choose a plan to download the full dataset."
     )
 
-    st.markdown(
-        "[👉 Click Here to Subscribe for $29/mo](https://buy.stripe.com/your_test_link)",
-        unsafe_allow_html=True,
-    )
+    col1, col2 = st.columns(2)
+    with col1:
+        st.info("**One-Time Access — $5**\n\nPay once, process one file.")
+        st.markdown(
+            "[Pay $5 (One-Time)](https://buy.stripe.com/test_00wcN7a355YY6Y7026cQU00)",
+            unsafe_allow_html=True,
+        )
+    with col2:
+        st.info("**Monthly Subscription — $29/mo**\n\nUnlimited processing, cancel anytime.")
+        st.markdown(
+            "[Subscribe $29/mo](https://buy.stripe.com/test_6oU3cxa359ba5U3eX0cQU01)",
+            unsafe_allow_html=True,
+        )
 
     user_key = st.text_input(
         "Enter your license key to unlock download:",
@@ -130,16 +133,21 @@ def render_paywall_section(df: pd.DataFrame, unlock_key: str, filename: str):
     if user_key and is_key_valid(user_key):
         st.session_state[unlock_key] = True
         csv_bytes = df.to_csv(index=False).encode("utf-8")
-        st.download_button(
-            label="⬇️ Download Full CSV",
+        download = st.download_button(
+            label="Download Full CSV",
             data=csv_bytes,
             file_name=filename,
             mime="text/csv",
             key=f"{unlock_key}_download",
         )
+        if download:
+            key_info = get_key_info(user_key)
+            if key_info and key_info.get("type") == "one_time":
+                mark_key_used(user_key)
+                st.info("This was a one-time key. It has been used and is no longer valid.")
     elif user_key != "":
         st.session_state[unlock_key] = False
-        st.error("Invalid or inactive license key. Please subscribe to get access.")
+        st.error("Invalid or inactive license key. Please purchase or subscribe to get access.")
 
 
 # ==========================================================================
