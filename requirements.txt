@@ -1,0 +1,11 @@
+# --- Streamlit app (app.py) ---
+streamlit
+pandas
+openai
+pdfplumber
+supabase
+
+# --- Webhook server (webhook_server.py) ---
+flask
+stripe
+resend
