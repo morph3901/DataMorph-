@@ -64,15 +64,13 @@ st.set_page_config(
 # --------------------------------------------------------------------------
 # OpenAI client initialization
 # --------------------------------------------------------------------------
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+OPENAI_API_KEY = os.environ.get("GROQ_API_KEY")
 
 client = None
 if OPENAI_API_KEY:
-    client = OpenAI(api_key=OPENAI_API_KEY)
+    client = OpenAI(api_key=OPENAI_API_KEY, base_url="https://api.groq.com/openai/v1")
 else:
-    # We don't crash the app - the Resume Parser tool will simply show
-    # a clear warning if the user tries to use it without a key set.
-    logger.warning("OPENAI_API_KEY environment variable is not set.")
+    logger.warning("GROQ_API_KEY environment variable is not set.")
 
 
 # ==========================================================================
@@ -183,7 +181,7 @@ def call_openai_for_resume(resume_text: str) -> dict | None:
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": RESUME_SYSTEM_PROMPT},
                 {"role": "user", "content": resume_text[:12000]},  # guard against huge inputs
@@ -220,7 +218,7 @@ def render_resume_parser_tool():
 
     if client is None:
         st.error(
-            "⚠️ OPENAI_API_KEY environment variable is not set. "
+            "⚠️ GROQ_API_KEY environment variable is not set. "
             "Please configure it before using this tool."
         )
 
@@ -425,9 +423,9 @@ def main():
 
     st.sidebar.divider()
     if client is None:
-        st.sidebar.error("OPENAI_API_KEY not set — Resume Parser is disabled.")
+        st.sidebar.error("GROQ_API_KEY not set — Resume Parser is disabled.")
     else:
-        st.sidebar.success("OpenAI connection configured ✅")
+        st.sidebar.success("Groq AI connection configured ✅")
 
     st.title("Data Funnel Engine")
 
