@@ -62,11 +62,6 @@ from license_db import (
     reactivate_keys_for_subscription,
 )
 
-PAYMENT_LINKS = {
-    "https://buy.stripe.com/test_00wcN7a355YY6Y7026cQU00": "one_time",
-    "https://buy.stripe.com/test_6oU3cxa359ba5U3eX0cQU01": "subscription",
-}
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("webhook_server")
 
@@ -187,11 +182,13 @@ def handle_checkout_completed(session: dict):
         logger.warning("checkout.session.completed with no customer email -- skipping.")
         return
 
-    payment_link = (session.get("metadata") or {}).get("payment_link", "")
-    key_type = PAYMENT_LINKS.get(payment_link, "subscription")
+    payment_link_id = session.get("payment_link", "")
+    mode = session.get("mode", "")
 
-    if subscription_id:
+    if mode == "subscription" or subscription_id:
         key_type = "subscription"
+    else:
+        key_type = "one_time"
 
     license_key = create_license_key(
         email=customer_email,
