@@ -112,13 +112,13 @@ def render_paywall_section(df: pd.DataFrame, unlock_key: str, filename: str):
     with col1:
         st.info("**One-Time Access — $5**\n\nPay once, process one file.")
         st.markdown(
-            "[Pay $5 (One-Time)](https://buy.stripe.com/test_00wcN7a355YY6Y7026cQU00)",
+            "[Pay $5 (One-Time)](https://buy.stripe.com/eVqeV7bT1fLY0UC9i63sI00)",
             unsafe_allow_html=True,
         )
     with col2:
         st.info("**Monthly Subscription — $29/mo**\n\nUnlimited processing, cancel anytime.")
         st.markdown(
-            "[Subscribe $29/mo](https://buy.stripe.com/test_6oU3cxa359ba5U3eX0cQU01)",
+            "[Subscribe $29/mo](https://buy.stripe.com/cNi14he196bofPw0LA3sI01)",
             unsafe_allow_html=True,
         )
 
