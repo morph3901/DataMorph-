@@ -1,27 +1,18 @@
 """
-Data Funnel Engine
-==================
-A dual-purpose Micro-SaaS Streamlit app:
-  1. Bulk Resume Parser (for Recruiters) - extracts structured candidate
-     data from PDF resumes using OpenAI.
-  2. E-Commerce CSV Mapper (for Store Owners) - maps a messy supplier CSV
-     to a Shopify-ready product import file, with markup pricing.
+DataMorph
+=========
+A Micro-SaaS Streamlit app with 3 e-commerce tools:
+  1. Product Description Generator - generates SEO-optimized descriptions
+     from product data using AI.
+  2. SEO Title Optimizer - transforms basic product titles into
+     keyword-rich optimized titles.
+  3. E-Commerce CSV Mapper - maps a messy supplier CSV to a Shopify-ready
+     product import file, with markup pricing.
 
 ------------------------------------------------------------------------
 INSTALLATION
 ------------------------------------------------------------------------
     pip install streamlit pandas openai pdfplumber
-
-------------------------------------------------------------------------
-SETUP
-------------------------------------------------------------------------
-Set your OpenAI API key as an environment variable before running:
-
-    # macOS / Linux
-    export OPENAI_API_KEY="sk-..."
-
-    # Windows (PowerShell)
-    $env:OPENAI_API_KEY="sk-..."
 
 ------------------------------------------------------------------------
 RUN
@@ -80,9 +71,11 @@ else:
 # (e.g. when the user toggles a checkbox or clicks a different button).
 def init_session_state():
     defaults = {
-        "resume_df": None,
+        "description_df": None,
+        "seo_df": None,
         "shopify_df": None,
-        "resume_paid_unlock": False,
+        "description_paid_unlock": False,
+        "seo_paid_unlock": False,
         "shopify_paid_unlock": False,
     }
     for key, value in defaults.items():
@@ -170,128 +163,183 @@ def extract_text_from_pdf(uploaded_file) -> str:
     return "\n".join(text_chunks)
 
 
-def call_openai_for_resume(resume_text: str) -> dict | None:
-    """
-    Sends resume text to OpenAI and attempts to parse the structured
-    JSON response. Returns None (and logs a warning) on any failure so
-    that a single bad resume doesn't crash the whole batch.
-    """
+def call_description_generator(product_info: str) -> dict | None:
     if client is None:
         return None
-
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
-                {"role": "system", "content": RESUME_SYSTEM_PROMPT},
-                {"role": "user", "content": resume_text[:12000]},  # guard against huge inputs
+                {"role": "system", "content": DESCRIPTION_SYSTEM_PROMPT},
+                {"role": "user", "content": product_info[:4000]},
             ],
-            temperature=0,
-            response_format={"type": "json_object"},
+            temperature=0.7,
         )
-        raw_content = response.choices[0].message.content
-        parsed = json.loads(raw_content)
-
-        # Normalize expected keys so downstream DataFrame columns are consistent
-        return {
-            "name": parsed.get("name", ""),
-            "email": parsed.get("email", ""),
-            "phone": parsed.get("phone", ""),
-            "skills": parsed.get("skills", ""),
-        }
-
-    except json.JSONDecodeError as e:
-        logger.error(f"Failed to parse JSON from OpenAI response: {e}")
-        return None
+        raw_content = response.choices[0].message.content.strip()
+        if raw_content.startswith("```"):
+            raw_content = raw_content.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+        return json.loads(raw_content)
     except Exception as e:
-        # Catches API errors, rate limits, network issues, etc.
-        logger.error(f"OpenAI API call failed: {e}")
+        logger.error(f"Description generation failed: {e}")
         return None
 
 
-def render_resume_parser_tool():
-    st.header("Bulk Resume Parser")
-    st.caption(
-        "Upload up to 20 PDF resumes. We extract Name, Email, Phone, and "
-        "Skills into a clean spreadsheet."
-    )
-
+def call_seo_title_optimizer(title: str) -> dict | None:
     if client is None:
-        st.error(
-            "⚠️ GROQ_API_KEY environment variable is not set. "
-            "Please configure it before using this tool."
+        return None
+    try:
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": SEO_TITLE_SYSTEM_PROMPT},
+                {"role": "user", "content": f"Product title: {title}"},
+            ],
+            temperature=0.7,
         )
-
-    uploaded_files = st.file_uploader(
-        "Upload resumes (PDF)",
-        type=["pdf"],
-        accept_multiple_files=True,
-        help="Select up to 20 PDF files.",
-    )
-
-    if uploaded_files and len(uploaded_files) > 20:
-        st.error("Please upload no more than 20 resumes at a time.")
-        uploaded_files = uploaded_files[:20]
-
-    process_clicked = st.button("Process Resumes", type="primary", disabled=(client is None))
-
-    if process_clicked:
-        if not uploaded_files:
-            st.error("Please upload at least one PDF resume first.")
-        else:
-            results = []
-            errors = []
-            progress_bar = st.progress(0.0, text="Starting...")
-            total = len(uploaded_files)
-
-            for idx, pdf_file in enumerate(uploaded_files, start=1):
-                progress_bar.progress(
-                    idx / total, text=f"Processing {pdf_file.name} ({idx}/{total})..."
-                )
-                try:
-                    raw_text = extract_text_from_pdf(pdf_file)
-                    if not raw_text.strip():
-                        errors.append(f"{pdf_file.name}: no extractable text (possibly scanned/image PDF).")
-                        continue
-
-                    extracted = call_openai_for_resume(raw_text)
-                    if extracted is None:
-                        errors.append(f"{pdf_file.name}: failed to extract structured data.")
-                        continue
-
-                    extracted["source_file"] = pdf_file.name
-                    results.append(extracted)
-
-                except Exception as e:
-                    logger.error(f"Unexpected error processing {pdf_file.name}: {e}")
-                    errors.append(f"{pdf_file.name}: unexpected error ({e}).")
-
-            progress_bar.empty()
-
-            if results:
-                df = pd.DataFrame(results, columns=["name", "email", "phone", "skills", "source_file"])
-                st.session_state["resume_df"] = df
-                st.success(f"Processed {len(results)} resumes successfully.")
-            else:
-                st.session_state["resume_df"] = None
-                st.error("No resumes could be processed successfully.")
-
-            if errors:
-                with st.expander(f"⚠️ {len(errors)} file(s) had issues"):
-                    for err in errors:
-                        st.write(f"- {err}")
-
-    # Paywall / download section
-    if st.session_state["resume_df"] is not None:
-        render_paywall_section(
-            st.session_state["resume_df"],
-            unlock_key="resume_paid_unlock",
-            filename="parsed_resumes.csv",
-        )
+        raw_content = response.choices[0].message.content.strip()
+        if raw_content.startswith("```"):
+            raw_content = raw_content.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+        return json.loads(raw_content)
+    except Exception as e:
+        logger.error(f"SEO title optimization failed: {e}")
+        return None
 
 
 # ==========================================================================
-# TOOL 2: E-COMMERCE CSV MAPPER
+# TOOL 1: PRODUCT DESCRIPTION GENERATOR
+# ==========================================================================
+DESCRIPTION_SYSTEM_PROMPT = (
+    "You are an expert e-commerce copywriter. Read the product information below. "
+    "Generate a unique, SEO-optimized product description (150-300 words) that: "
+    "- Highlights key features and benefits "
+    "- Uses relevant keywords naturally "
+    "- Has a compelling, conversion-focused tone "
+    "- Is structured with short paragraphs for readability "
+    "Respond ONLY with valid JSON: "
+    '{"description": "..."}'
+)
+
+
+def render_description_generator_tool():
+    st.header("Product Description Generator")
+    st.caption(
+        "Upload a CSV with product names and features. Our AI generates "
+        "unique, SEO-optimized descriptions for each product."
+    )
+
+    if client is None:
+        st.error("⚠️ GROQ_API_KEY not set. Please configure it before using this tool.")
+
+    uploaded_file = st.file_uploader("Upload product data (CSV)", type=["csv"])
+
+    if uploaded_file:
+        try:
+            product_df = pd.read_csv(uploaded_file)
+            st.dataframe(product_df.head(10), use_container_width=True)
+            st.info(f"Loaded {len(product_df)} products.")
+            name_col = st.selectbox("Select product name column:", product_df.columns, key="desc_name")
+            feature_col = st.selectbox("Select features column:", product_df.columns, key="desc_features")
+
+            process_clicked = st.button("Generate Descriptions", type="primary", disabled=(client is None))
+            if process_clicked:
+                results, errors = [], []
+                progress_bar = st.progress(0.0, text="Starting...")
+                total = len(product_df)
+                for idx, row in product_df.iterrows():
+                    progress_bar.progress((idx + 1) / total, text=f"Processing {idx + 1}/{total}...")
+                    product_info = f"Product: {row[name_col]}\nFeatures: {row[feature_col]}"
+                    parsed = call_description_generator(product_info)
+                    if parsed:
+                        results.append({"product_name": row[name_col], "features": row[feature_col], "generated_description": parsed.get("description", "")})
+                    else:
+                        errors.append(f"Product {idx + 1}: generation failed")
+                progress_bar.empty()
+                if results:
+                    desc_df = pd.DataFrame(results)
+                    st.session_state["description_df"] = desc_df
+                    st.success(f"Generated descriptions for {len(results)} products.")
+                    st.dataframe(desc_df, use_container_width=True)
+                else:
+                    st.session_state["description_df"] = None
+                    st.error("No descriptions could be generated.")
+                if errors:
+                    with st.expander(f"⚠️ {len(errors)} product(s) had issues"):
+                        for err in errors:
+                            st.write(f"- {err}")
+        except Exception as e:
+            st.error(f"Error reading CSV: {e}")
+
+    if st.session_state.get("description_df") is not None:
+        render_paywall_section(st.session_state["description_df"], unlock_key="description_paid_unlock", filename="product_descriptions.csv")
+
+
+# ==========================================================================
+# TOOL 2: SEO TITLE OPTIMIZER
+# ==========================================================================
+SEO_TITLE_SYSTEM_PROMPT = (
+    "You are an SEO expert for e-commerce. Read the product title below. "
+    "Generate 3 optimized title variations that: "
+    "- Include high-ranking keywords "
+    "- Stay under 70 characters (for Google) "
+    "- Are compelling and click-worthy "
+    "Respond ONLY with valid JSON: "
+    '{"title_1": "...", "title_2": "...", "title_3": "..."}'
+)
+
+
+def render_seo_title_tool():
+    st.header("SEO Title Optimizer")
+    st.caption(
+        "Upload a CSV with product titles. Our AI generates optimized, "
+        "keyword-rich title variations for better search rankings."
+    )
+
+    if client is None:
+        st.error("⚠️ GROQ_API_KEY not set. Please configure it before using this tool.")
+
+    uploaded_file = st.file_uploader("Upload product titles (CSV)", type=["csv"])
+
+    if uploaded_file:
+        try:
+            title_df = pd.read_csv(uploaded_file)
+            st.dataframe(title_df.head(10), use_container_width=True)
+            st.info(f"Loaded {len(title_df)} products.")
+            title_col = st.selectbox("Select title column:", title_df.columns, key="seo_title")
+
+            process_clicked = st.button("Optimize Titles", type="primary", disabled=(client is None))
+            if process_clicked:
+                results, errors = [], []
+                progress_bar = st.progress(0.0, text="Starting...")
+                total = len(title_df)
+                for idx, row in title_df.iterrows():
+                    progress_bar.progress((idx + 1) / total, text=f"Optimizing {idx + 1}/{total}...")
+                    parsed = call_seo_title_optimizer(str(row[title_col]))
+                    if parsed:
+                        results.append({"original_title": row[title_col], "optimized_title_1": parsed.get("title_1", ""), "optimized_title_2": parsed.get("title_2", ""), "optimized_title_3": parsed.get("title_3", "")})
+                    else:
+                        errors.append(f"Title {idx + 1}: optimization failed")
+                progress_bar.empty()
+                if results:
+                    seo_df = pd.DataFrame(results)
+                    st.session_state["seo_df"] = seo_df
+                    st.success(f"Optimized {len(results)} titles.")
+                    st.dataframe(seo_df, use_container_width=True)
+                else:
+                    st.session_state["seo_df"] = None
+                    st.error("No titles could be optimized.")
+                if errors:
+                    with st.expander(f"⚠️ {len(errors)} title(s) had issues"):
+                        for err in errors:
+                            st.write(f"- {err}")
+        except Exception as e:
+            st.error(f"Error reading CSV: {e}")
+
+    if st.session_state.get("seo_df") is not None:
+        render_paywall_section(st.session_state["seo_df"], unlock_key="seo_paid_unlock", filename="optimized_titles.csv")
+
+
+# ==========================================================================
+# TOOL 3: E-COMMERCE CSV MAPPER
 # ==========================================================================
 SHOPIFY_FIELD_LABELS = {
     "title": "Map to 'Title':",
@@ -413,24 +461,26 @@ def render_ecommerce_mapper_tool():
 # SIDEBAR / TOOL SELECTOR
 # ==========================================================================
 def main():
-    st.sidebar.title("🧭 Data Funnel Engine")
-    st.sidebar.caption("One engine. Two funnels.")
+    st.sidebar.title("🧭 DataMorph")
+    st.sidebar.caption("3 AI tools for e-commerce store owners.")
 
     tool_choice = st.sidebar.radio(
         "Select Tool:",
-        ["Resume Parser", "E-Commerce CSV Mapper"],
+        ["Product Description Generator", "SEO Title Optimizer", "E-Commerce CSV Mapper"],
     )
 
     st.sidebar.divider()
     if client is None:
-        st.sidebar.error("GROQ_API_KEY not set — Resume Parser is disabled.")
+        st.sidebar.error("GROQ_API_KEY not set — AI tools are disabled.")
     else:
         st.sidebar.success("Groq AI connection configured ✅")
 
-    st.title("Data Funnel Engine")
+    st.title("DataMorph")
 
-    if tool_choice == "Resume Parser":
-        render_resume_parser_tool()
+    if tool_choice == "Product Description Generator":
+        render_description_generator_tool()
+    elif tool_choice == "SEO Title Optimizer":
+        render_seo_title_tool()
     else:
         render_ecommerce_mapper_tool()
 
