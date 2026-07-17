@@ -28,14 +28,34 @@
         .nav-links { display: flex; align-items: center; gap: 2rem; }
         .nav-links a { color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
         .nav-links a:hover { color: #fff; }
-        .lang-switch { display: flex; gap: 0.15rem; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.15rem; }
-        .lang-switch a { padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; color: #666; text-decoration: none; transition: all 0.3s; }
-        .lang-switch a.active { background: #6366f1; color: #fff; }
-        .lang-switch a:hover:not(.active) { color: #aaa; }
+        .lang-dropdown { position: relative; }
+        .lang-dropdown button {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #ccc; font-size: 0.8rem; font-weight: 600; padding: 0.4rem 0.9rem;
+            border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: all 0.3s; display: flex; align-items: center; gap: 0.4rem;
+        }
+        .lang-dropdown button:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .lang-dropdown button .arrow { font-size: 0.6rem; transition: transform 0.3s; }
+        .lang-dropdown.open button .arrow { transform: rotate(180deg); }
+        .lang-dropdown-menu {
+            display: none; position: absolute; top: calc(100% + 6px); right: 0;
+            background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; padding: 0.4rem; min-width: 140px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 200;
+        }
+        .lang-dropdown.open .lang-dropdown-menu { display: block; }
+        .lang-dropdown-menu a {
+            display: block; padding: 0.45rem 0.8rem; border-radius: 6px;
+            font-size: 0.8rem; font-weight: 500; color: #888; text-decoration: none;
+            transition: all 0.2s;
+        }
+        .lang-dropdown-menu a.active { background: #6366f1; color: #fff; }
+        .lang-dropdown-menu a:hover:not(.active) { background: rgba(255,255,255,0.05); color: #ccc; }
 
         .hero {
             min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 8rem 2rem 5rem; position: relative;
+            text-align: center; padding: 6rem 2rem 3rem; position: relative;
         }
         .hero::before {
             content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
@@ -69,11 +89,11 @@
         .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
         .btn-large { padding: 1.2rem 3rem; font-size: 1.1rem; }
 
-        section h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 1rem; text-align: center; }
-        section .section-sub { font-size: 1.1rem; color: #888; text-align: center; max-width: 600px; margin: 0 auto 3rem; }
+        section h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.5rem; text-align: center; }
+        section .section-sub { font-size: 1.1rem; color: #888; text-align: center; max-width: 600px; margin: 0 auto 1.5rem; }
 
-        .how-it-works { padding: 6rem 4rem; max-width: 1100px; margin: 0 auto; }
-        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        .how-it-works { padding: 3.5rem 4rem; max-width: 1100px; margin: 0 auto; }
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 1.5rem; }
         .step { text-align: center; padding: 2rem; position: relative; }
         .step-number {
             width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center;
@@ -84,8 +104,8 @@
         .step h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; }
         .step p { color: #888; font-size: 0.95rem; line-height: 1.6; }
 
-        .tools { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
-        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+        .tools { padding: 3.5rem 4rem; max-width: 1200px; margin: 0 auto; }
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
         .tool-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
             border-radius: 20px; padding: 3rem; transition: all 0.3s; position: relative; overflow: hidden;
@@ -102,8 +122,8 @@
         .tool-card li { padding: 0.4rem 0; color: #aaa; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 0.75rem; }
         .tool-card li::before { content: '\2713'; color: #6366f1; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
 
-        .features-section { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
-        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        .features-section { padding: 3.5rem 4rem; max-width: 1200px; margin: 0 auto; }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 1.5rem; }
         .fcard {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
             border-radius: 16px; padding: 2rem; transition: all 0.3s;
@@ -113,7 +133,7 @@
         .fcard h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
         .fcard p { color: #888; font-size: 0.9rem; line-height: 1.6; }
 
-        .pricing-section { padding: 6rem 4rem; text-align: center; }
+        .pricing-section { padding: 3.5rem 4rem; text-align: center; }
         .pricing-cards { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
         .pricing-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
@@ -135,7 +155,7 @@
             margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        .faq-section { padding: 6rem 4rem; max-width: 800px; margin: 0 auto; }
+        .faq-section { padding: 3.5rem 4rem; max-width: 800px; margin: 0 auto; }
         .faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
         .faq-question {
             width: 100%; background: none; border: none; color: #fff; font-size: 1.05rem;
@@ -147,7 +167,7 @@
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
         .faq-answer p { padding-bottom: 1.5rem; color: #888; line-height: 1.7; font-size: 0.95rem; }
 
-        .cta-section { padding: 6rem 4rem; text-align: center; background: linear-gradient(180deg, transparent, rgba(99,102,241,0.05)); }
+        .cta-section { padding: 3.5rem 4rem; text-align: center; background: linear-gradient(180deg, transparent, rgba(99,102,241,0.05)); }
         .cta-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
         .cta-section p { color: #888; margin-bottom: 2rem; font-size: 1.1rem; }
 
@@ -161,7 +181,7 @@
             .tools-grid { grid-template-columns: 1fr; }
             .features-grid { grid-template-columns: 1fr; }
             .steps { grid-template-columns: 1fr; }
-            .how-it-works, .tools, .features-section, .pricing-section, .faq-section, .cta-section { padding: 4rem 1.5rem; }
+            .how-it-works, .tools, .features-section, .pricing-section, .faq-section, .cta-section { padding: 2.5rem 1.5rem; }
         }
     </style>
 </head>
@@ -174,14 +194,17 @@
             <a href="#tools">Herramientas</a>
             <a href="#pricing">Precios</a>
             <a href="#faq">FAQ</a>
-            <div class="lang-switch">
-                <a href="../index.html">EN</a>
-                <a href="../fr/index.html">FR</a>
-                <a href="index.html" class="active">ES</a>
-                <a href="../ar/index.html">AR</a>
-                <a href="../zh/index.html">ZH</a>
-                <a href="../de/index.html">DE</a>
-                <a href="../pt/index.html">PT</a>
+            <div class="lang-dropdown" onclick="this.classList.toggle('open')">
+                <button>🌐 ES <span class="arrow">&#9662;</span></button>
+                <div class="lang-dropdown-menu">
+                    <a href="../index.html">EN English</a>
+                    <a href="../fr/index.html">FR Français</a>
+                    <a href="index.html" class="active">ES Español</a>
+                    <a href="../ar/index.html">AR العربية</a>
+                    <a href="../zh/index.html">ZH 中文</a>
+                    <a href="../de/index.html">DE Deutsch</a>
+                    <a href="../pt/index.html">PT Português</a>
+                </div>
             </div>
             <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem;">Iniciar App</a>
         </div>
@@ -389,6 +412,11 @@
             answer.style.maxHeight = answer.scrollHeight + 'px';
         }
     }
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.lang-dropdown')) {
+            document.querySelectorAll('.lang-dropdown').forEach(d => d.classList.remove('open'));
+        }
+    });
     </script>
 
 </body>
