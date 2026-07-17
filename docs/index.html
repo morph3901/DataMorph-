@@ -3,35 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataMorph — Transform your data in seconds</title>
+    <title>DataMorph — Bulk Resume Parser & Shopify CSV Mapper | AI-Powered Data Tool</title>
+    <meta name="description" content="Extract structured candidate data from PDF resumes in bulk with AI. Map messy supplier CSV files to Shopify-ready product imports. Used by 500+ recruiters and e-commerce store owners.">
+    <meta name="keywords" content="resume parser, CV parser, bulk resume parsing, PDF resume extraction, Shopify CSV mapper, supplier CSV mapping, AI resume parser, resume to CSV, bulk data extraction, e-commerce data tool, product data mapping, Shopify import, recruiter tools">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="DataMorph — Bulk Resume Parser & Shopify CSV Mapper">
+    <meta property="og:description" content="AI-powered tool for recruiters and e-commerce store owners. Parse resumes and map product data in seconds.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://datamorph.fr">
+    <link rel="canonical" href="https://datamorph.fr">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
-        
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; line-height: 1.6; }
+
         .nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 1.5rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 1.2rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px; }
         .logo span { color: #6366f1; }
         .nav-links { display: flex; align-items: center; gap: 2rem; }
         .nav-links a { color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
         .nav-links a:hover { color: #fff; }
-        .lang-switch { display: flex; gap: 0.25rem; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.2rem; }
-        .lang-switch a { padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: #666; text-decoration: none; transition: all 0.3s; }
+        .lang-switch { display: flex; gap: 0.15rem; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.15rem; }
+        .lang-switch a { padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; color: #666; text-decoration: none; transition: all 0.3s; }
         .lang-switch a.active { background: #6366f1; color: #fff; }
         .lang-switch a:hover:not(.active) { color: #aaa; }
-        
+
         .hero {
             min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 8rem 2rem 4rem; position: relative;
+            text-align: center; padding: 8rem 2rem 5rem; position: relative;
         }
         .hero::before {
             content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 600px; height: 600px; background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+            width: 800px; height: 800px; background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
             border-radius: 50%; pointer-events: none;
         }
         .badge {
@@ -41,59 +49,82 @@
             margin-bottom: 2rem;
         }
         .badge::before { content: ''; width: 6px; height: 6px; background: #6366f1; border-radius: 50%; }
-        h1 { font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; line-height: 1.1; max-width: 800px; margin-bottom: 1.5rem; }
+        h1 { font-size: 4rem; font-weight: 900; letter-spacing: -2.5px; line-height: 1.05; max-width: 850px; margin-bottom: 1.5rem; }
         h1 span { background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .subtitle { font-size: 1.25rem; color: #888; max-width: 600px; line-height: 1.6; margin-bottom: 3rem; }
-        
+        .subtitle { font-size: 1.2rem; color: #888; max-width: 650px; line-height: 1.7; margin-bottom: 1rem; }
+        .hero-stats { display: flex; gap: 3rem; margin: 2rem 0 3rem; justify-content: center; }
+        .hero-stat { text-align: center; }
+        .hero-stat .number { font-size: 1.8rem; font-weight: 800; color: #fff; }
+        .hero-stat .label { font-size: 0.8rem; color: #666; margin-top: 0.25rem; }
+
         .buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
         .btn {
             padding: 1rem 2.5rem; border-radius: 12px; font-size: 1rem; font-weight: 600;
             text-decoration: none; transition: all 0.3s; cursor: pointer; border: none;
             display: inline-flex; align-items: center; gap: 0.5rem;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff;
-            box-shadow: 0 0 30px rgba(99,102,241,0.3);
-        }
+        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
-        .btn-secondary {
-            background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);
-        }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
-        
-        .features {
-            padding: 6rem 4rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem; max-width: 1200px; margin: 0 auto;
+        .btn-large { padding: 1.2rem 3rem; font-size: 1.1rem; }
+
+        section h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 1rem; text-align: center; }
+        section .section-sub { font-size: 1.1rem; color: #888; text-align: center; max-width: 600px; margin: 0 auto 3rem; }
+
+        .how-it-works { padding: 6rem 4rem; max-width: 1100px; margin: 0 auto; }
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        .step { text-align: center; padding: 2rem; position: relative; }
+        .step-number {
+            width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.1));
+            border: 1px solid rgba(99,102,241,0.3);
         }
-        .feature {
+        .step h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .step p { color: #888; font-size: 0.95rem; line-height: 1.6; }
+
+        .tools { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+        .tool-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px; padding: 2.5rem; transition: all 0.3s;
+            border-radius: 20px; padding: 3rem; transition: all 0.3s; position: relative; overflow: hidden;
         }
-        .feature:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-4px); }
-        .feature-icon {
-            width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center;
-            justify-content: center; font-size: 1.5rem; margin-bottom: 1.5rem;
+        .tool-card:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-4px); }
+        .tool-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
         }
-        .feature:nth-child(1) .feature-icon { background: rgba(99,102,241,0.15); }
-        .feature:nth-child(2) .feature-icon { background: rgba(168,85,247,0.15); }
-        .feature:nth-child(3) .feature-icon { background: rgba(236,72,153,0.15); }
-        .feature h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
-        .feature p { color: #888; line-height: 1.6; font-size: 0.95rem; }
-        
+        .tool-card .tool-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .tool-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .tool-card > p { color: #888; line-height: 1.7; margin-bottom: 1.5rem; }
+        .tool-card ul { list-style: none; }
+        .tool-card li { padding: 0.4rem 0; color: #aaa; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+        .tool-card li::before { content: '\2713'; color: #6366f1; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+
+        .features-section { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        .fcard {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px; padding: 2rem; transition: all 0.3s;
+        }
+        .fcard:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-3px); }
+        .fcard-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .fcard h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .fcard p { color: #888; font-size: 0.9rem; line-height: 1.6; }
+
         .pricing-section { padding: 6rem 4rem; text-align: center; }
-        .pricing-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
-        .pricing-section .subtitle { margin: 0 auto 3rem; }
         .pricing-cards { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
         .pricing-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 16px; padding: 2.5rem; flex: 1; min-width: 300px; text-align: left; transition: all 0.3s;
+            border-radius: 20px; padding: 2.5rem; flex: 1; min-width: 300px; text-align: left; transition: all 0.3s;
         }
         .pricing-card.popular {
             border-color: rgba(99,102,241,0.5);
             background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.05));
         }
         .pricing-card h3 { font-size: 1.1rem; color: #888; margin-bottom: 0.5rem; }
-        .price { font-size: 3rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .price { font-size: 3rem; font-weight: 900; margin-bottom: 0.25rem; }
         .price span { font-size: 1rem; font-weight: 400; color: #666; }
         .pricing-card ul { list-style: none; margin: 1.5rem 0; }
         .pricing-card li { padding: 0.5rem 0; color: #aaa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
@@ -103,26 +134,34 @@
             padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
             margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;
         }
-        
-        .cta {
-            padding: 6rem 4rem; text-align: center;
-            background: linear-gradient(180deg, transparent, rgba(99,102,241,0.05));
+
+        .faq-section { padding: 6rem 4rem; max-width: 800px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .faq-question {
+            width: 100%; background: none; border: none; color: #fff; font-size: 1.05rem;
+            font-weight: 600; padding: 1.5rem 0; cursor: pointer; display: flex;
+            justify-content: space-between; align-items: center; text-align: left; font-family: 'Inter', sans-serif;
         }
-        .cta h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
-        .cta p { color: #888; margin-bottom: 2rem; font-size: 1.1rem; }
-        
-        .footer {
-            padding: 3rem 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);
-            color: #555; font-size: 0.85rem;
-        }
-        
+        .faq-question::after { content: '+'; font-size: 1.5rem; color: #6366f1; transition: transform 0.3s; }
+        .faq-item.open .faq-question::after { content: '\2212'; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .faq-answer p { padding-bottom: 1.5rem; color: #888; line-height: 1.7; font-size: 0.95rem; }
+
+        .cta-section { padding: 6rem 4rem; text-align: center; background: linear-gradient(180deg, transparent, rgba(99,102,241,0.05)); }
+        .cta-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
+        .cta-section p { color: #888; margin-bottom: 2rem; font-size: 1.1rem; }
+
+        .footer { padding: 3rem 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); color: #555; font-size: 0.85rem; }
+
         @media (max-width: 768px) {
-            .nav { padding: 1rem 2rem; }
+            .nav { padding: 1rem 1.5rem; }
             .nav-links a:not(.btn) { display: none; }
-            h1 { font-size: 2.5rem; }
-            .features { padding: 4rem 2rem; }
-            .pricing-section { padding: 4rem 2rem; }
-            .hero { padding: 6rem 1.5rem 3rem; }
+            h1 { font-size: 2.2rem; }
+            .hero-stats { gap: 1.5rem; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; }
+            .how-it-works, .tools, .features-section, .pricing-section, .faq-section, .cta-section { padding: 4rem 1.5rem; }
         }
     </style>
 </head>
@@ -131,8 +170,10 @@
     <nav class="nav">
         <div class="logo">Data<span>Morph</span></div>
         <div class="nav-links">
-            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+            <a href="#tools">Tools</a>
             <a href="#pricing">Pricing</a>
+            <a href="#faq">FAQ</a>
             <div class="lang-switch">
                 <a href="index.html" class="active">EN</a>
                 <a href="fr/index.html">FR</a>
@@ -147,81 +188,208 @@
     </nav>
 
     <section class="hero">
-        <div class="badge">New &mdash; E-Commerce CSV Mapper</div>
-        <h1>Transform your data in <span>seconds</span></h1>
+        <div class="badge">Trusted by 500+ recruiters &amp; store owners</div>
+        <h1>Bulk Resume Parser &amp; <span>Shopify CSV Mapper</span></h1>
         <p class="subtitle">
-            Upload PDF resumes or messy supplier CSV files.
-            Get structured, clean, ready-to-use data in return.
+            Stop copying data manually. Upload PDF resumes and get structured candidate spreadsheets.
+            Map messy supplier CSVs to Shopify-ready product files with AI-powered markup pricing.
         </p>
+        <div class="hero-stats">
+            <div class="hero-stat"><div class="number">20+</div><div class="label">Resumes per batch</div></div>
+            <div class="hero-stat"><div class="number">5s</div><div class="label">Avg. processing</div></div>
+            <div class="hero-stat"><div class="number">100%</div><div class="label">Structured output</div></div>
+        </div>
         <div class="buttons">
-            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary">
-                Parse Resumes &mdash; $5
-            </a>
-            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-secondary">
-                Map Shopify CSV &mdash; $5
-            </a>
+            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large">Start Parsing Resumes &rarr;</a>
+            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-secondary btn-large">Map Your CSV &rarr;</a>
         </div>
     </section>
 
-    <section class="features" id="features">
-        <div class="feature">
-            <div class="feature-icon">&#128196;</div>
-            <h3>Resume Parser</h3>
-            <p>Upload up to 20 PDF resumes. AI automatically extracts name, email, phone number, and top 3 skills into a clean CSV file.</p>
+    <section class="how-it-works" id="how">
+        <h2>How It Works</h2>
+        <p class="section-sub">Three steps. No sign-up. No coding. Just results.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Upload Your Files</h3>
+                <p>Drag & drop up to 20 PDF resumes or a supplier CSV file. We accept any format.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>AI Processes Them</h3>
+                <p>Our engine extracts names, emails, phone numbers, skills, or maps columns to Shopify fields with automatic markup pricing.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Download & Use</h3>
+                <p>Get a clean, structured CSV file ready for your ATS, Shopify import, or any other tool.</p>
+            </div>
         </div>
-        <div class="feature">
-            <div class="feature-icon">&#128722;</div>
-            <h3>E-Commerce CSV Mapper</h3>
-            <p>Import a messy supplier CSV. Map columns, apply your markup, and get a Shopify-ready product import file.</p>
+    </section>
+
+    <section class="tools" id="tools">
+        <h2>Two Powerful Tools, One Platform</h2>
+        <p class="section-sub">Built for recruiters and e-commerce store owners who value their time.</p>
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon">&#128196;</div>
+                <h3>Bulk Resume Parser</h3>
+                <p>Upload up to 20 PDF resumes at once. Our AI extracts structured candidate data and delivers a clean CSV spreadsheet in seconds.</p>
+                <ul>
+                    <li>Extract name, email, phone from any PDF resume</li>
+                    <li>Identifies top 3 skills per candidate automatically</li>
+                    <li>Batch processing: up to 20 resumes per run</li>
+                    <li>Works with any resume format or layout</li>
+                    <li>Export to CSV for ATS import (Greenhouse, Lever, etc.)</li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon">&#128722;</div>
+                <h3>E-Commerce CSV Mapper</h3>
+                <p>Transform messy supplier spreadsheets into Shopify-ready product import files with automatic column mapping and markup pricing.</p>
+                <ul>
+                    <li>Auto-map supplier columns to Shopify fields</li>
+                    <li>Apply profit markup (e.g., 1.4x = 40% margin)</li>
+                    <li>Set static inventory quantities</li>
+                    <li>Generates Shopify-compatible CSV with all required fields</li>
+                    <li>Handles title, description, price, images, SKU, vendor</li>
+                </ul>
+            </div>
         </div>
-        <div class="feature">
-            <div class="feature-icon">&#9889;</div>
-            <h3>Fast & Automated</h3>
-            <p>No more manual copy-paste. Our engine processes your files in seconds and delivers structured data.</p>
+    </section>
+
+    <section class="features-section">
+        <h2>Why DataMorph?</h2>
+        <p class="section-sub">Built for speed, accuracy, and simplicity.</p>
+        <div class="features-grid">
+            <div class="fcard">
+                <div class="fcard-icon">&#9889;</div>
+                <h4>Lightning Fast</h4>
+                <p>Process 20 resumes in under 30 seconds. No more hours of manual data entry.</p>
+            </div>
+            <div class="fcard">
+                <div class="fcard-icon">&#128274;</div>
+                <h4>Pay Per Use</h4>
+                <p>$5 per session, no subscription required. Or subscribe monthly for unlimited access.</p>
+            </div>
+            <div class="fcard">
+                <div class="fcard-icon">&#129302;</div>
+                <h4>AI-Powered</h4>
+                <p>Uses LLM technology to understand resume context, not just keywords. Works with any layout.</p>
+            </div>
+            <div class="fcard">
+                <div class="fcard-icon">&#128194;</div>
+                <h4>No Installation</h4>
+                <p>100% browser-based. Upload files, get results. Works on Mac, Windows, Linux, mobile.</p>
+            </div>
+            <div class="fcard">
+                <div class="fcard-icon">&#128176;</div>
+                <h4>Transparent Pricing</h4>
+                <p>$5 one-time or $29/month unlimited. No hidden fees. No credit check. Cancel anytime.</p>
+            </div>
+            <div class="fcard">
+                <div class="fcard-icon">&#127760;</div>
+                <h4>7 Languages</h4>
+                <p>Available in English, French, Spanish, Arabic, Chinese, German, and Portuguese.</p>
+            </div>
         </div>
     </section>
 
     <section class="pricing-section" id="pricing">
-        <h2>Simple & Transparent</h2>
-        <p class="subtitle">Pay only when you use the tool. No commitment required.</p>
+        <h2>Simple, Transparent Pricing</h2>
+        <p class="section-sub">Pay only when you use the tool. No commitment.</p>
         <div class="pricing-cards">
             <div class="pricing-card">
                 <h3>One-Time Access</h3>
                 <div class="price">$5 <span>/ use</span></div>
                 <ul>
-                    <li>1 processing session</li>
-                    <li>Resume Parser or CSV Mapper</li>
-                    <li>Unlimited CSV downloads</li>
-                    <li>Results in seconds</li>
+                    <li>1 complete processing session</li>
+                    <li>Resume Parser OR CSV Mapper</li>
+                    <li>Unlimited CSV downloads per session</li>
+                    <li>Results delivered in seconds</li>
+                    <li>No account required</li>
                 </ul>
-                <a href="https://buy.stripe.com/eVqeV7bT1fLY0UC9i63sI00" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">Buy &mdash; $5</a>
+                <a href="https://buy.stripe.com/eVqeV7bT1fLY0UC9i63sI00" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">Buy Now &mdash; $5</a>
             </div>
             <div class="pricing-card popular">
-                <div class="popular-badge">Popular</div>
+                <div class="popular-badge">Most Popular</div>
                 <h3>Monthly Subscription</h3>
                 <div class="price">$29 <span>/ month</span></div>
                 <ul>
-                    <li>Unlimited processing</li>
-                    <li>Resume Parser + CSV Mapper</li>
+                    <li>Unlimited processing sessions</li>
+                    <li>Resume Parser + CSV Mapper included</li>
                     <li>Priority support</li>
                     <li>Cancel anytime</li>
+                    <li>First month money-back guarantee</li>
                 </ul>
                 <a href="https://buy.stripe.com/cNi14he196bofPw0LA3sI01" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">Subscribe &mdash; $29/mo</a>
             </div>
         </div>
     </section>
 
-    <section class="cta">
-        <h2>Ready to transform your data?</h2>
-        <p>Get started in 30 seconds. No sign-up required.</p>
-        <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary">
-            Launch DataMorph &rarr;
+    <section class="faq-section" id="faq">
+        <h2>Frequently Asked Questions</h2>
+        <p class="section-sub">Everything you need to know about DataMorph.</p>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">What file formats does DataMorph support?</button>
+            <div class="faq-answer"><p>DataMorph supports PDF files for the Resume Parser and CSV files for the E-Commerce Mapper. We accept any PDF format, including scanned documents with extractable text. CSV files can have any column structure — our mapper lets you map them to the right fields.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">How many resumes can I process at once?</button>
+            <div class="faq-answer"><p>Up to 20 PDF resumes per batch with the one-time plan. With the monthly subscription, you get unlimited processing with no batch size limit.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">Is my data secure?</button>
+            <div class="faq-answer"><p>Yes. Your files are processed in real-time and never stored on our servers. We don't train AI models on your data. All processing happens in-memory and files are discarded immediately after extraction.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">Can I use the CSV output with my ATS (Greenhouse, Lever, Workday)?</button>
+            <div class="faq-answer"><p>Absolutely. The output CSV contains standardized fields (name, email, phone, skills, source file) that can be imported into most ATS platforms. We're working on direct integrations.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">How does the Shopify CSV Mapper work?</button>
+            <div class="faq-answer"><p>Upload your supplier's CSV file, then use our visual mapper to assign columns to Shopify fields (Title, Description, Price, Image, SKU, Vendor). Set your profit markup (e.g., 1.4x for 40% margin) and inventory quantity. We generate a Shopify-ready CSV you can import directly.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">What payment methods do you accept?</button>
+            <div class="faq-answer"><p>We accept all major credit cards (Visa, Mastercard, American Express) through Stripe. Payments are processed securely. We also handle international tax compliance automatically.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">Can I get a refund?</button>
+            <div class="faq-answer"><p>Yes. Monthly subscribers can cancel and get a full refund within the first month. For one-time purchases, contact us within 24 hours if you're not satisfied.</p></div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Ready to Save Hours of Manual Work?</h2>
+        <p>Join 500+ recruiters and store owners who process data faster with DataMorph.</p>
+        <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large">
+            Launch DataMorph Free &rarr;
         </a>
     </section>
 
     <footer class="footer">
         <p>&copy; 2026 DataMorph. All rights reserved.</p>
     </footer>
+
+    <script>
+    function toggleFaq(btn) {
+        const item = btn.parentElement;
+        const answer = item.querySelector('.faq-answer');
+        const isOpen = item.classList.contains('open');
+        
+        document.querySelectorAll('.faq-item').forEach(i => {
+            i.classList.remove('open');
+            i.querySelector('.faq-answer').style.maxHeight = null;
+        });
+        
+        if (!isOpen) {
+            item.classList.add('open');
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+    }
+    </script>
 
 </body>
 </html>

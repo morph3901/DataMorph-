@@ -3,35 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataMorph — Transforma tus datos en segundos</title>
+    <title>DataMorph — Parseador Masivo de CVs y Mapeador CSV para Shopify | Herramienta de Datos con IA</title>
+    <meta name="description" content="Extrae datos estructurados de candidatos a partir de CVs en PDF de forma masiva con IA. Mapea archivos CSV de proveedores desordenados a importaciones de productos listas para Shopify. Usado por más de 500 reclutadores y propietarios de tiendas.">
+    <meta name="keywords" content="parseador de CVs, parseador de hojas de vida, parseo masivo de CVs, extracción de CVs PDF, mapeador CSV Shopify, mapeo de CSV de proveedores, parseador de CVs con IA, CV a CSV, extracción masiva de datos, herramienta de datos e-commerce, mapeo de datos de productos, importación Shopify, herramientas para reclutadores">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="DataMorph — Parseador Masivo de CVs y Mapeador CSV para Shopify">
+    <meta property="og:description" content="Herramienta impulsada por IA para reclutadores y propietarios de tiendas. Parsea CVs y mapea datos de productos en segundos.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://datamorph.fr/es">
+    <link rel="canonical" href="https://datamorph.fr/es">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
-        
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; line-height: 1.6; }
+
         .nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 1.5rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 1.2rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px; }
         .logo span { color: #6366f1; }
         .nav-links { display: flex; align-items: center; gap: 2rem; }
         .nav-links a { color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
         .nav-links a:hover { color: #fff; }
-        .lang-switch { display: flex; gap: 0.25rem; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.2rem; }
-        .lang-switch a { padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: #666; text-decoration: none; transition: all 0.3s; }
+        .lang-switch { display: flex; gap: 0.15rem; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.15rem; }
+        .lang-switch a { padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; color: #666; text-decoration: none; transition: all 0.3s; }
         .lang-switch a.active { background: #6366f1; color: #fff; }
         .lang-switch a:hover:not(.active) { color: #aaa; }
-        
+
         .hero {
             min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 8rem 2rem 4rem; position: relative;
+            text-align: center; padding: 8rem 2rem 5rem; position: relative;
         }
         .hero::before {
             content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-            width: 600px; height: 600px; background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+            width: 800px; height: 800px; background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
             border-radius: 50%; pointer-events: none;
         }
         .badge {
@@ -41,59 +49,82 @@
             margin-bottom: 2rem;
         }
         .badge::before { content: ''; width: 6px; height: 6px; background: #6366f1; border-radius: 50%; }
-        h1 { font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; line-height: 1.1; max-width: 800px; margin-bottom: 1.5rem; }
+        h1 { font-size: 4rem; font-weight: 900; letter-spacing: -2.5px; line-height: 1.05; max-width: 850px; margin-bottom: 1.5rem; }
         h1 span { background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .subtitle { font-size: 1.25rem; color: #888; max-width: 600px; line-height: 1.6; margin-bottom: 3rem; }
-        
+        .subtitle { font-size: 1.2rem; color: #888; max-width: 650px; line-height: 1.7; margin-bottom: 1rem; }
+        .hero-stats { display: flex; gap: 3rem; margin: 2rem 0 3rem; justify-content: center; }
+        .hero-stat { text-align: center; }
+        .hero-stat .number { font-size: 1.8rem; font-weight: 800; color: #fff; }
+        .hero-stat .label { font-size: 0.8rem; color: #666; margin-top: 0.25rem; }
+
         .buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
         .btn {
             padding: 1rem 2.5rem; border-radius: 12px; font-size: 1rem; font-weight: 600;
             text-decoration: none; transition: all 0.3s; cursor: pointer; border: none;
             display: inline-flex; align-items: center; gap: 0.5rem;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff;
-            box-shadow: 0 0 30px rgba(99,102,241,0.3);
-        }
+        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
-        .btn-secondary {
-            background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);
-        }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
-        
-        .features {
-            padding: 6rem 4rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem; max-width: 1200px; margin: 0 auto;
+        .btn-large { padding: 1.2rem 3rem; font-size: 1.1rem; }
+
+        section h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 1rem; text-align: center; }
+        section .section-sub { font-size: 1.1rem; color: #888; text-align: center; max-width: 600px; margin: 0 auto 3rem; }
+
+        .how-it-works { padding: 6rem 4rem; max-width: 1100px; margin: 0 auto; }
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        .step { text-align: center; padding: 2rem; position: relative; }
+        .step-number {
+            width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.1));
+            border: 1px solid rgba(99,102,241,0.3);
         }
-        .feature {
+        .step h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .step p { color: #888; font-size: 0.95rem; line-height: 1.6; }
+
+        .tools { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+        .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+        .tool-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px; padding: 2.5rem; transition: all 0.3s;
+            border-radius: 20px; padding: 3rem; transition: all 0.3s; position: relative; overflow: hidden;
         }
-        .feature:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-4px); }
-        .feature-icon {
-            width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center;
-            justify-content: center; font-size: 1.5rem; margin-bottom: 1.5rem;
+        .tool-card:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-4px); }
+        .tool-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, #6366f1, #a855f7);
         }
-        .feature:nth-child(1) .feature-icon { background: rgba(99,102,241,0.15); }
-        .feature:nth-child(2) .feature-icon { background: rgba(168,85,247,0.15); }
-        .feature:nth-child(3) .feature-icon { background: rgba(236,72,153,0.15); }
-        .feature h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
-        .feature p { color: #888; line-height: 1.6; font-size: 0.95rem; }
-        
+        .tool-card .tool-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .tool-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .tool-card > p { color: #888; line-height: 1.7; margin-bottom: 1.5rem; }
+        .tool-card ul { list-style: none; }
+        .tool-card li { padding: 0.4rem 0; color: #aaa; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+        .tool-card li::before { content: '\2713'; color: #6366f1; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+
+        .features-section { padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; }
+        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        .fcard {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px; padding: 2rem; transition: all 0.3s;
+        }
+        .fcard:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-3px); }
+        .fcard-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .fcard h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .fcard p { color: #888; font-size: 0.9rem; line-height: 1.6; }
+
         .pricing-section { padding: 6rem 4rem; text-align: center; }
-        .pricing-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
-        .pricing-section .subtitle { margin: 0 auto 3rem; }
         .pricing-cards { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
         .pricing-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 16px; padding: 2.5rem; flex: 1; min-width: 300px; text-align: left; transition: all 0.3s;
+            border-radius: 20px; padding: 2.5rem; flex: 1; min-width: 300px; text-align: left; transition: all 0.3s;
         }
         .pricing-card.popular {
             border-color: rgba(99,102,241,0.5);
             background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.05));
         }
         .pricing-card h3 { font-size: 1.1rem; color: #888; margin-bottom: 0.5rem; }
-        .price { font-size: 3rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .price { font-size: 3rem; font-weight: 900; margin-bottom: 0.25rem; }
         .price span { font-size: 1rem; font-weight: 400; color: #666; }
         .pricing-card ul { list-style: none; margin: 1.5rem 0; }
         .pricing-card li { padding: 0.5rem 0; color: #aaa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
@@ -103,26 +134,34 @@
             padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
             margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;
         }
-        
-        .cta {
-            padding: 6rem 4rem; text-align: center;
-            background: linear-gradient(180deg, transparent, rgba(99,102,241,0.05));
+
+        .faq-section { padding: 6rem 4rem; max-width: 800px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .faq-question {
+            width: 100%; background: none; border: none; color: #fff; font-size: 1.05rem;
+            font-weight: 600; padding: 1.5rem 0; cursor: pointer; display: flex;
+            justify-content: space-between; align-items: center; text-align: left; font-family: 'Inter', sans-serif;
         }
-        .cta h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
-        .cta p { color: #888; margin-bottom: 2rem; font-size: 1.1rem; }
-        
-        .footer {
-            padding: 3rem 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);
-            color: #555; font-size: 0.85rem;
-        }
-        
+        .faq-question::after { content: '+'; font-size: 1.5rem; color: #6366f1; transition: transform 0.3s; }
+        .faq-item.open .faq-question::after { content: '\2212'; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .faq-answer p { padding-bottom: 1.5rem; color: #888; line-height: 1.7; font-size: 0.95rem; }
+
+        .cta-section { padding: 6rem 4rem; text-align: center; background: linear-gradient(180deg, transparent, rgba(99,102,241,0.05)); }
+        .cta-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
+        .cta-section p { color: #888; margin-bottom: 2rem; font-size: 1.1rem; }
+
+        .footer { padding: 3rem 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); color: #555; font-size: 0.85rem; }
+
         @media (max-width: 768px) {
-            .nav { padding: 1rem 2rem; }
+            .nav { padding: 1rem 1.5rem; }
             .nav-links a:not(.btn) { display: none; }
-            h1 { font-size: 2.5rem; }
-            .features { padding: 4rem 2rem; }
-            .pricing-section { padding: 4rem 2rem; }
-            .hero { padding: 6rem 1.5rem 3rem; }
+            h1 { font-size: 2.2rem; }
+            .hero-stats { gap: 1.5rem; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; }
+            .how-it-works, .tools, .features-section, .pricing-section, .faq-section, .cta-section { padding: 4rem 1.5rem; }
         }
     </style>
 </head>
@@ -131,8 +170,10 @@
     <nav class="nav">
         <div class="logo">Data<span>Morph</span></div>
         <div class="nav-links">
-            <a href="#features">Funciones</a>
+            <a href="#how">Cómo Funciona</a>
+            <a href="#tools">Herramientas</a>
             <a href="#pricing">Precios</a>
+            <a href="#faq">FAQ</a>
             <div class="lang-switch">
                 <a href="../index.html">EN</a>
                 <a href="../fr/index.html">FR</a>
@@ -147,81 +188,208 @@
     </nav>
 
     <section class="hero">
-        <div class="badge">Nuevo &mdash; Mapeador CSV para E-Commerce</div>
-        <h1>Transforma tus datos en <span>segundos</span></h1>
+        <div class="badge">Con la confianza de más de 500 reclutadores y propietarios de tiendas</div>
+        <h1>Parseador Masivo de CVs y <span>Mapeador CSV para Shopify</span></h1>
         <p class="subtitle">
-            Sube hojas de vida en PDF o archivos CSV desordenados de proveedores.
-            Obtén datos estructurados, limpios y listos para usar.
+            Deja de copiar datos manualmente. Sube CVs en PDF y obtén hojas de cálculo estructuradas de candidatos.
+            Mapea CSVs de proveedores desordenados a archivos de productos listos para Shopify con precios de margen automáticos.
         </p>
+        <div class="hero-stats">
+            <div class="hero-stat"><div class="number">20+</div><div class="label">CVs por lote</div></div>
+            <div class="hero-stat"><div class="number">5s</div><div class="label">Procesamiento promedio</div></div>
+            <div class="hero-stat"><div class="number">100%</div><div class="label">Salida estructurada</div></div>
+        </div>
         <div class="buttons">
-            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary">
-                Parsear Hojas de Vida &mdash; $5
-            </a>
-            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-secondary">
-                Mapear CSV Shopify &mdash; $5
-            </a>
+            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large">Empezar a Parsear CVs &rarr;</a>
+            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-secondary btn-large">Mapea Tu CSV &rarr;</a>
         </div>
     </section>
 
-    <section class="features" id="features">
-        <div class="feature">
-            <div class="feature-icon">&#128196;</div>
-            <h3>Parseador de Hojas de Vida</h3>
-            <p>Sube hasta 20 hojas de vida en PDF. La IA extrae automáticamente nombre, correo electrónico, número de teléfono y las 3 principales habilidades en un archivo CSV limpio.</p>
+    <section class="how-it-works" id="how">
+        <h2>Cómo Funciona</h2>
+        <p class="section-sub">Tres pasos. Sin registro. Sin código. Solo resultados.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Sube Tus Archivos</h3>
+                <p>Arrastra y suelta hasta 20 CVs en PDF o un archivo CSV de proveedor. Aceptamos cualquier formato.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>La IA los Procesa</h3>
+                <p>Nuestro motor extrae nombres, correos electrónicos, números de teléfono, habilidades, o mapea columnas a campos de Shopify con precios de margen automáticos.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Descarga y Usa</h3>
+                <p>Obtén un archivo CSV limpio y estructurado listo para tu ATS, importación de Shopify, o cualquier otra herramienta.</p>
+            </div>
         </div>
-        <div class="feature">
-            <div class="feature-icon">&#128722;</div>
-            <h3>Mapeador CSV para E-Commerce</h3>
-            <p>Importa un CSV desordenado de proveedores. Mapea las columnas, aplica tu margen de ganancia y obtén un archivo de importación listo para Shopify.</p>
+    </section>
+
+    <section class="tools" id="tools">
+        <h2>Dos Herramientas Potentes, Una Plataforma</h2>
+        <p class="section-sub">Diseñada para reclutadores y propietarios de tiendas que valoran su tiempo.</p>
+        <div class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon">&#128196;</div>
+                <h3>Parseador Masivo de CVs</h3>
+                <p>Sube hasta 20 CVs en PDF a la vez. Nuestra IA extrae datos estructurados de candidatos y entrega una hoja de cálculo CSV limpia en segundos.</p>
+                <ul>
+                    <li>Extrae nombre, correo electrónico, teléfono de cualquier CV en PDF</li>
+                    <li>Identifica las 3 principales habilidades de cada candidato automáticamente</li>
+                    <li>Procesamiento por lotes: hasta 20 CVs por ejecución</li>
+                    <li>Funciona con cualquier formato o diseño de CV</li>
+                    <li>Exporta a CSV para importación en ATS (Greenhouse, Lever, etc.)</li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon">&#128722;</div>
+                <h3>Mapeador CSV para E-Commerce</h3>
+                <p>Transforma hojas de cálculo de proveedores desordenadas en archivos de importación de productos listos para Shopify con mapeo automático de columnas y precios de margen.</p>
+                <ul>
+                    <li>Mapeo automático de columnas de proveedor a campos de Shopify</li>
+                    <li>Aplica margen de ganancia (ej., 1.4x = 40% de margen)</li>
+                    <li>Establece cantidades de inventario estáticas</li>
+                    <li>Genera CSV compatible con Shopify con todos los campos requeridos</li>
+                    <li>Maneja título, descripción, precio, imágenes, SKU, proveedor</li>
+                </ul>
+            </div>
         </div>
-        <div class="feature">
-            <div class="feature-icon">&#9889;</div>
-            <h3>Rápido y Automatizado</h3>
-            <p>Olvídaste del copiar y pegar manual. Nuestro motor procesa tus archivos en segundos y entrega datos estructurados.</p>
+    </section>
+
+    <section class="features-section">
+        <h2>¿Por Qué DataMorph?</h2>
+        <p class="section-sub">Diseñada para velocidad, precisión y simplicidad.</p>
+        <div class="features-grid">
+            <div class="fcard">
+                <div class="fcard-icon">&#9889;</div>
+                <h4>Ultrarrápido</h4>
+                <p>Procesa 20 CVs en menos de 30 segundos. Adiós a las horas de entrada de datos manual.</p>
+            </div>
+            <div class="fcard">
+                <div class="fcard-icon">&#128274;</div>
+                <h4>Paga por Uso</h4>
+                <p>$5 por sesión, sin suscripción requerida. O suscríbete mensualmente para acceso ilimitado.</p>
+            </div>
+            <div class="fcard">
+                <div class="fcard-icon">&#129302;</div>
+                <h4>Impulsado por IA</h4>
+                <p>Utiliza tecnología LLM para entender el contexto de los CVs, no solo palabras clave. Funciona con cualquier diseño.</p>
+            </div>
+            <div class="fcard">
+                <div class="fcard-icon">&#128194;</div>
+                <h4>Sin Instalación</h4>
+                <p>100% basado en el navegador. Sube archivos, obtén resultados. Funciona en Mac, Windows, Linux, móvil.</p>
+            </div>
+            <div class="fcard">
+                <div class="fcard-icon">&#128176;</div>
+                <h4>Precios Transparentes</h4>
+                <p>$5 único o $29/mes ilimitado. Sin costos ocultos. Sin verificación de crédito. Cancela cuando quieras.</p>
+            </div>
+            <div class="fcard">
+                <div class="fcard-icon">&#127760;</div>
+                <h4>7 Idiomas</h4>
+                <p>Disponible en inglés, francés, español, árabe, chino, alemán y portugués.</p>
+            </div>
         </div>
     </section>
 
     <section class="pricing-section" id="pricing">
-        <h2>Simple y Transparente</h2>
-        <p class="subtitle">Paga solo cuando uses la herramienta. Sin compromisos.</p>
+        <h2>Precios Simples y Transparentes</h2>
+        <p class="section-sub">Paga solo cuando uses la herramienta. Sin compromiso.</p>
         <div class="pricing-cards">
             <div class="pricing-card">
                 <h3>Acceso Único</h3>
                 <div class="price">$5 <span>/ uso</span></div>
                 <ul>
-                    <li>1 sesión de procesamiento</li>
-                    <li>Parseador de Hojas de Vida o Mapeador CSV</li>
-                    <li>Descargas CSV ilimitadas</li>
+                    <li>1 sesión de procesamiento completa</li>
+                    <li>Parseador de CVs o Mapeador CSV</li>
+                    <li>Descargas CSV ilimitadas por sesión</li>
                     <li>Resultados en segundos</li>
+                    <li>No requiere cuenta</li>
                 </ul>
-                <a href="https://buy.stripe.com/eVqeV7bT1fLY0UC9i63sI00" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">Comprar &mdash; $5</a>
+                <a href="https://buy.stripe.com/eVqeV7bT1fLY0UC9i63sI00" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">Comprar Ahora &mdash; $5</a>
             </div>
             <div class="pricing-card popular">
-                <div class="popular-badge">Popular</div>
+                <div class="popular-badge">Más Popular</div>
                 <h3>Suscripción Mensual</h3>
                 <div class="price">$29 <span>/ mes</span></div>
                 <ul>
-                    <li>Procesamiento ilimitado</li>
-                    <li>Parseador de Hojas de Vida + Mapeador CSV</li>
+                    <li>Sesiones de procesamiento ilimitadas</li>
+                    <li>Parseador de CVs + Mapeador CSV incluidos</li>
                     <li>Soporte prioritario</li>
                     <li>Cancela cuando quieras</li>
+                    <li>Garantía de devolución del primer mes</li>
                 </ul>
                 <a href="https://buy.stripe.com/cNi14he196bofPw0LA3sI01" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">Suscribirse &mdash; $29/mes</a>
             </div>
         </div>
     </section>
 
-    <section class="cta">
-        <h2>¿Listo para transformar tus datos?</h2>
-        <p>Comienza en 30 segundos. Sin necesidad de registrarse.</p>
-        <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary">
-            Iniciar DataMorph &rarr;
+    <section class="faq-section" id="faq">
+        <h2>Preguntas Frecuentes</h2>
+        <p class="section-sub">Todo lo que necesitas saber sobre DataMorph.</p>
+
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">¿Qué formatos de archivo admite DataMorph?</button>
+            <div class="faq-answer"><p>DataMorph admite archivos PDF para el Parseador de CVs y archivos CSV para el Mapeador de E-Commerce. Aceptamos cualquier formato PDF, incluyendo documentos escaneados con texto extraíble. Los archivos CSV pueden tener cualquier estructura de columnas — nuestro mapeador te permite asignarlos a los campos correctos.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">¿Cuántos CVs puedo procesar a la vez?</button>
+            <div class="faq-answer"><p>Hasta 20 CVs en PDF por lote con el plan de acceso único. Con la suscripción mensual, obtienes procesamiento ilimitado sin límite de tamaño de lote.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">¿Mis datos están seguros?</button>
+            <div class="faq-answer"><p>Sí. Tus archivos se procesan en tiempo real y nunca se almacenan en nuestros servidores. No entrenamos modelos de IA con tus datos. Todo el procesamiento se realiza en memoria y los archivos se eliminan inmediatamente después de la extracción.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">¿Puedo usar la salida CSV con mi ATS (Greenhouse, Lever, Workday)?</button>
+            <div class="faq-answer"><p>Por supuesto. El CSV de salida contiene campos estandarizados (nombre, correo electrónico, teléfono, habilidades, archivo fuente) que se pueden importar en la mayoría de las plataformas ATS. Estamos trabajando en integraciones directas.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">¿Cómo funciona el Mapeador CSV para Shopify?</button>
+            <div class="faq-answer"><p>Sube el archivo CSV de tu proveedor, luego usa nuestro mapeador visual para asignar columnas a campos de Shopify (Título, Descripción, Precio, Imagen, SKU, Proveedor). Establece tu margen de ganancia (ej., 1.4x para 40% de margen) y la cantidad de inventario. Generamos un CSV listo para Shopify que puedes importar directamente.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">¿Qué métodos de pago aceptan?</button>
+            <div class="faq-answer"><p>Aceptamos todas las principales tarjetas de crédito (Visa, Mastercard, American Express) a través de Stripe. Los pagos se procesan de forma segura. También manejamos el cumplimiento fiscal internacional automáticamente.</p></div>
+        </div>
+        <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">¿Puedo obtener un reembolso?</button>
+            <div class="faq-answer"><p>Sí. Los suscriptores mensuales pueden cancelar y obtener un reembolso completo dentro del primer mes. Para compras únicas, contáctanos dentro de las 24 horas si no estás satisfecho.</p></div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>¿Listo para Ahorrar Horas de Trabajo Manual?</h2>
+        <p>Únete a más de 500 reclutadores y propietarios de tiendas que procesan datos más rápido con DataMorph.</p>
+        <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large">
+            Lanzar DataMorph Gratis &rarr;
         </a>
     </section>
 
     <footer class="footer">
         <p>&copy; 2026 DataMorph. Todos los derechos reservados.</p>
     </footer>
+
+    <script>
+    function toggleFaq(btn) {
+        const item = btn.parentElement;
+        const answer = item.querySelector('.faq-answer');
+        const isOpen = item.classList.contains('open');
+        
+        document.querySelectorAll('.faq-item').forEach(i => {
+            i.classList.remove('open');
+            i.querySelector('.faq-answer').style.maxHeight = null;
+        });
+        
+        if (!isOpen) {
+            item.classList.add('open');
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+    }
+    </script>
 
 </body>
 </html>
