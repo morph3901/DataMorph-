@@ -28,7 +28,6 @@ import logging
 
 import pandas as pd
 import streamlit as st
-import pdfplumber
 from openai import OpenAI
 
 from license_db import is_key_valid, get_key_info, mark_key_used
@@ -150,17 +149,6 @@ RESUME_SYSTEM_PROMPT = (
     "Respond ONLY with valid JSON in this format: "
     '{"name": "", "email": "", "phone": "", "skills": ""}'
 )
-
-
-def extract_text_from_pdf(uploaded_file) -> str:
-    """Extract raw text from an uploaded PDF file using pdfplumber."""
-    text_chunks = []
-    with pdfplumber.open(uploaded_file) as pdf:
-        for page in pdf.pages:
-            page_text = page.extract_text()
-            if page_text:
-                text_chunks.append(page_text)
-    return "\n".join(text_chunks)
 
 
 def call_description_generator(product_info: str) -> dict | None:
