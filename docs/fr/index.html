@@ -3,59 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataMorph — Analyseur de CV en masse et Mappeur CSV Shopify | Outil de données par IA</title>
-    <meta name="description" content="Extrayez des données structurées de candidats depuis des CV PDF en masse avec l'IA. Mappez des fichiers CSV fournisseurs en imports Shopify prêts à l'emploi. Utilisé par 500+ recruteurs et propriétaires de boutiques en ligne.">
-    <meta name="keywords" content="analyseur de CV, parseur de CV, analyse de CV en masse, extraction de CV PDF, mappeur CSV Shopify, mapping CSV fournisseur, analyseur CV par IA, CV en CSV, extraction de données en masse, outil de données e-commerce, mapping de données produits, import Shopify, outils recrutement">
+    <title>DataMorph — Mappeur CSV Shopify & Extracteur de CV | Outil de Données IA</title>
+    <meta name="description" content="Mappez des fichiers CSV fournisseurs en imports Shopify prêts à l'emploi avec calcul automatique des marges par IA. Téléversez des CV PDF et obtenez des tableaux de candidats structurés en quelques secondes.">
+    <meta name="keywords" content="mappeur CSV Shopify, mapping CSV fournisseur, analyseur de CV, extraction de CV PDF, analyseur de CV en masse, analyseur CV par IA, CV en CSV, extraction de données en masse, outil de données e-commerce, mapping de données produits, import Shopify, outils recrutement">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="DataMorph — Analyseur de CV en masse et Mappeur CSV Shopify">
-    <meta property="og:description" content="Outil alimenté par l'IA pour les recruteurs et propriétaires de boutiques en ligne. Analysez des CV et mappez des données produits en quelques secondes.">
+    <meta property="og:title" content="DataMorph — Mappeur CSV Shopify & Extracteur de CV">
+    <meta property="og:description" content="Outil alimenté par l'IA pour les recruteurs et propriétaires de boutiques en ligne. Mappez des données produits et analysez des CV en quelques secondes.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://datamorph.fr/fr">
     <link rel="canonical" href="https://datamorph.fr/fr">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        :root {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --border: #334155;
+            --accent: #6366f1;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; line-height: 1.6; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
 
         .nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 1.2rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 1rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
         }
-        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px; }
-        .logo span { color: #6366f1; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px; color: var(--text); }
+        .logo span { color: var(--accent); }
         .nav-links { display: flex; align-items: center; gap: 2rem; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
-        .nav-links a:hover { color: #fff; }
+        .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--text); }
         .lang-dropdown { position: relative; }
         .lang-dropdown button {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: #ccc; font-size: 0.8rem; font-weight: 600; padding: 0.4rem 0.9rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--text-muted); font-size: 0.8rem; font-weight: 600; padding: 0.4rem 0.9rem;
             border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif;
             transition: all 0.3s; display: flex; align-items: center; gap: 0.4rem;
         }
-        .lang-dropdown button:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .lang-dropdown button:hover { background: var(--border); color: var(--text); }
         .lang-dropdown button .arrow { font-size: 0.6rem; transition: transform 0.3s; }
         .lang-dropdown.open button .arrow { transform: rotate(180deg); }
         .lang-dropdown-menu {
             display: none; position: absolute; top: calc(100% + 6px); right: 0;
-            background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1);
+            background: var(--bg-card); border: 1px solid var(--border);
             border-radius: 10px; padding: 0.4rem; min-width: 140px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 200;
         }
         .lang-dropdown.open .lang-dropdown-menu { display: block; }
         .lang-dropdown-menu a {
             display: block; padding: 0.45rem 0.8rem; border-radius: 6px;
-            font-size: 0.8rem; font-weight: 500; color: #888; text-decoration: none;
+            font-size: 0.8rem; font-weight: 500; color: var(--text-dim); text-decoration: none;
             transition: all 0.2s;
         }
-        .lang-dropdown-menu a.active { background: #6366f1; color: #fff; }
-        .lang-dropdown-menu a:hover:not(.active) { background: rgba(255,255,255,0.05); color: #ccc; }
+        .lang-dropdown-menu a.active { background: var(--accent); color: #fff; }
+        .lang-dropdown-menu a:hover:not(.active) { background: rgba(255,255,255,0.05); color: var(--text-muted); }
 
         .hero {
             min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 6rem 2rem 3rem; position: relative;
+            text-align: center; padding: 6rem 2rem 3.5rem; position: relative;
         }
         .hero::before {
             content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
@@ -68,14 +79,14 @@
             padding: 0.4rem 1rem; border-radius: 9999px; font-size: 0.8rem; color: #818cf8;
             margin-bottom: 2rem;
         }
-        .badge::before { content: ''; width: 6px; height: 6px; background: #6366f1; border-radius: 50%; }
-        h1 { font-size: 4rem; font-weight: 900; letter-spacing: -2.5px; line-height: 1.05; max-width: 850px; margin-bottom: 1.5rem; }
-        h1 span { background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .subtitle { font-size: 1.2rem; color: #888; max-width: 650px; line-height: 1.7; margin-bottom: 1rem; }
+        .badge::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+        h1 { font-size: 4rem; font-weight: 900; letter-spacing: -2.5px; line-height: 1.05; max-width: 850px; margin-bottom: 1.5rem; color: var(--text); }
+        h1 span { background: linear-gradient(135deg, var(--accent), #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { font-size: 1.2rem; color: var(--text-muted); max-width: 650px; line-height: 1.7; margin-bottom: 1rem; }
         .hero-stats { display: flex; gap: 3rem; margin: 2rem 0 3rem; justify-content: center; }
         .hero-stat { text-align: center; }
-        .hero-stat .number { font-size: 1.8rem; font-weight: 800; color: #fff; }
-        .hero-stat .label { font-size: 0.8rem; color: #666; margin-top: 0.25rem; }
+        .hero-stat .number { font-size: 1.8rem; font-weight: 800; color: var(--text); }
+        .hero-stat .label { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; }
 
         .buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
         .btn {
@@ -83,105 +94,116 @@
             text-decoration: none; transition: all 0.3s; cursor: pointer; border: none;
             display: inline-flex; align-items: center; gap: 0.5rem;
         }
-        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
+        .btn-primary { background: linear-gradient(135deg, var(--accent), #8b5cf6); color: #fff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
-        .btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+        .btn-secondary { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--border); transform: translateY(-2px); }
         .btn-large { padding: 1.2rem 3rem; font-size: 1.1rem; }
 
-        section h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.5rem; text-align: center; }
-        section .section-sub { font-size: 1.1rem; color: #888; text-align: center; max-width: 600px; margin: 0 auto 1.5rem; }
+        section h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.5rem; text-align: center; color: var(--text); }
+        section .section-sub { font-size: 1.1rem; color: var(--text-muted); text-align: center; max-width: 600px; margin: 0 auto 1.5rem; }
 
         .how-it-works { padding: 3.5rem 4rem; max-width: 1100px; margin: 0 auto; }
-        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 1.5rem; }
+        .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 1.5rem; }
         .step { text-align: center; padding: 2rem; position: relative; }
-        .step-number {
+        .step-icon {
             width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center;
-            justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.1));
-            border: 1px solid rgba(99,102,241,0.3);
+            justify-content: center; margin: 0 auto 1.5rem;
+            background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3);
+            color: var(--accent);
         }
-        .step h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; }
-        .step p { color: #888; font-size: 0.95rem; line-height: 1.6; }
+        .step h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text); }
+        .step p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
 
         .tools { padding: 3.5rem 4rem; max-width: 1200px; margin: 0 auto; }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
         .tool-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+            background: var(--bg-card); border: 1px solid var(--border);
             border-radius: 20px; padding: 3rem; transition: all 0.3s; position: relative; overflow: hidden;
         }
         .tool-card:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-4px); }
         .tool-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, #6366f1, #a855f7);
+            background: linear-gradient(90deg, var(--accent), #a855f7);
         }
-        .tool-card .tool-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
-        .tool-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
-        .tool-card > p { color: #888; line-height: 1.7; margin-bottom: 1.5rem; }
+        .tool-card .tool-icon { color: var(--accent); margin-bottom: 1.5rem; }
+        .tool-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--text); }
+        .tool-card > p { color: var(--text-muted); line-height: 1.7; margin-bottom: 1.5rem; }
         .tool-card ul { list-style: none; }
-        .tool-card li { padding: 0.4rem 0; color: #aaa; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 0.75rem; }
-        .tool-card li::before { content: '\2713'; color: #6366f1; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+        .tool-card li { padding: 0.4rem 0; color: var(--text-dim); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+        .tool-card li i { color: var(--accent); flex-shrink: 0; margin-top: 3px; }
 
         .features-section { padding: 3.5rem 4rem; max-width: 1200px; margin: 0 auto; }
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 1.5rem; }
         .fcard {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+            background: var(--bg-card); border: 1px solid var(--border);
             border-radius: 16px; padding: 2rem; transition: all 0.3s;
         }
         .fcard:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-3px); }
-        .fcard-icon { font-size: 2rem; margin-bottom: 1rem; }
-        .fcard h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .fcard p { color: #888; font-size: 0.9rem; line-height: 1.6; }
+        .fcard-icon { color: var(--accent); margin-bottom: 1rem; }
+        .fcard h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+        .fcard p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
 
         .pricing-section { padding: 3.5rem 4rem; text-align: center; }
         .pricing-cards { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
         .pricing-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            background: var(--bg-card); border: 1px solid var(--border);
             border-radius: 20px; padding: 2.5rem; flex: 1; min-width: 300px; text-align: left; transition: all 0.3s;
         }
         .pricing-card.popular {
             border-color: rgba(99,102,241,0.5);
             background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.05));
         }
-        .pricing-card h3 { font-size: 1.1rem; color: #888; margin-bottom: 0.5rem; }
-        .price { font-size: 3rem; font-weight: 900; margin-bottom: 0.25rem; }
-        .price span { font-size: 1rem; font-weight: 400; color: #666; }
+        .pricing-card h3 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .price { font-size: 3rem; font-weight: 900; margin-bottom: 0.25rem; color: var(--text); }
+        .price span { font-size: 1rem; font-weight: 400; color: var(--text-dim); }
         .pricing-card ul { list-style: none; margin: 1.5rem 0; }
-        .pricing-card li { padding: 0.5rem 0; color: #aaa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
-        .pricing-card li::before { content: '\2713'; color: #6366f1; font-weight: 700; }
+        .pricing-card li { padding: 0.5rem 0; color: var(--text-dim); font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
+        .pricing-card li i { color: var(--accent); flex-shrink: 0; }
         .popular-badge {
-            display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: inline-block; background: linear-gradient(135deg, var(--accent), #8b5cf6);
             padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
             margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
         .faq-section { padding: 3.5rem 4rem; max-width: 800px; margin: 0 auto; }
-        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .faq-item { border-bottom: 1px solid var(--border); }
         .faq-question {
-            width: 100%; background: none; border: none; color: #fff; font-size: 1.05rem;
+            width: 100%; background: none; border: none; color: var(--text); font-size: 1.05rem;
             font-weight: 600; padding: 1.5rem 0; cursor: pointer; display: flex;
             justify-content: space-between; align-items: center; text-align: left; font-family: 'Inter', sans-serif;
         }
-        .faq-question::after { content: '+'; font-size: 1.5rem; color: #6366f1; transition: transform 0.3s; }
+        .faq-question::after { content: '+'; font-size: 1.5rem; color: var(--accent); transition: transform 0.3s; }
         .faq-item.open .faq-question::after { content: '\2212'; }
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-        .faq-answer p { padding-bottom: 1.5rem; color: #888; line-height: 1.7; font-size: 0.95rem; }
+        .faq-answer p { padding-bottom: 1.5rem; color: var(--text-muted); line-height: 1.7; font-size: 0.95rem; }
 
         .cta-section { padding: 3.5rem 4rem; text-align: center; background: linear-gradient(180deg, transparent, rgba(99,102,241,0.05)); }
         .cta-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
-        .cta-section p { color: #888; margin-bottom: 2rem; font-size: 1.1rem; }
+        .cta-section p { color: var(--text-muted); margin-bottom: 2rem; font-size: 1.1rem; }
 
-        .footer { padding: 3rem 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); color: #555; font-size: 0.85rem; }
+        .footer { padding: 3rem 4rem; text-align: center; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 0.85rem; }
 
         @media (max-width: 768px) {
             .nav { padding: 1rem 1.5rem; }
-            .nav-links a:not(.btn) { display: none; }
+            .nav-links a:not(.btn):not(.lang-dropdown) { display: none; }
             h1 { font-size: 2.2rem; }
+            .subtitle { font-size: 1rem; }
             .hero-stats { gap: 1.5rem; }
+            .hero-stat .number { font-size: 1.4rem; }
             .tools-grid { grid-template-columns: 1fr; }
             .features-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr 1fr; }
+            .how-it-works, .tools, .features-section, .pricing-section, .faq-section, .cta-section { padding: 3.5rem 1.5rem; }
+            .pricing-card { min-width: 260px; }
+            .btn-large { padding: 1rem 2rem; font-size: 1rem; }
+        }
+
+        @media (max-width: 480px) {
             .steps { grid-template-columns: 1fr; }
-            .how-it-works, .tools, .features-section, .pricing-section, .faq-section, .cta-section { padding: 2.5rem 1.5rem; }
+            .hero-stats { flex-direction: column; gap: 1rem; }
+            h1 { font-size: 1.8rem; }
+            section h2 { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -194,7 +216,7 @@
             <a href="#tools">Outils</a>
             <a href="#pricing">Tarifs</a>
             <a href="#faq">FAQ</a>
-            <div class="lang-dropdown" onclick="this.classList.toggle('open')">
+            <div class="lang-dropdown" id="langDropdown">
                 <button>🌐 FR <span class="arrow">&#9662;</span></button>
                 <div class="lang-dropdown-menu">
                     <a href="../index.html">EN English</a>
@@ -212,10 +234,9 @@
 
     <section class="hero">
         <div class="badge">Approuvé par 500+ recruteurs &amp; propriétaires de boutiques</div>
-        <h1>Analyseur de CV en masse &amp; <span>Mappeur CSV Shopify</span></h1>
+        <h1>Mappeur CSV Shopify &amp; <span>Extracteur de CV en Masse</span></h1>
         <p class="subtitle">
-            Arrêtez de copier les données manuellement. Téléchargez des CV PDF et obtenez des feuilles de calcul de candidats structurées.
-            Mappez des CSV fournisseurs désordonnés en fichiers produits prêts pour Shopify avec calcul automatique des marges par IA.
+            Convertissez les fichiers CSV fournisseurs en fichiers produits prêts pour Shopify avec un marquage IA. Téléversez des CV PDF et obtenez des tableaux de candidats structurés en quelques secondes.
         </p>
         <div class="hero-stats">
             <div class="hero-stat"><div class="number">20+</div><div class="label">CV par traitement</div></div>
@@ -223,29 +244,34 @@
             <div class="hero-stat"><div class="number">100%</div><div class="label">Résultats structurés</div></div>
         </div>
         <div class="buttons">
-            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large">Commencer l'analyse des CV &rarr;</a>
-            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-secondary btn-large">Mapper votre CSV &rarr;</a>
+            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large"><i data-lucide="upload-cloud" style="width:20px;height:20px;"></i> Lancer l'app</a>
+            <a href="#tools" class="btn btn-secondary btn-large"><i data-lucide="sparkles" style="width:20px;height:20px;"></i> Découvrir les outils</a>
         </div>
     </section>
 
     <section class="how-it-works" id="how">
         <h2>Comment ça marche</h2>
-        <p class="section-sub">Trois étapes. Pas d'inscription. Pas de code. Juste des résultats.</p>
+        <p class="section-sub">Quatre étapes simples. Pas d'inscription. Pas de code. Juste des résultats.</p>
         <div class="steps">
             <div class="step">
-                <div class="step-number">1</div>
-                <h3>Téléchargez vos fichiers</h3>
+                <div class="step-icon"><i data-lucide="upload-cloud" style="width:28px;height:28px;"></i></div>
+                <h3>1. Téléverser</h3>
                 <p>Glissez-déposez jusqu'à 20 CV en PDF ou un fichier CSV fournisseur. Nous acceptons tout format.</p>
             </div>
             <div class="step">
-                <div class="step-number">2</div>
-                <h3>L'IA les traite</h3>
-                <p>Notre moteur extrait noms, e-mails, numéros de téléphone, compétences, ou mappe les colonnes aux champs Shopify avec calcul automatique des marges.</p>
+                <div class="step-icon"><i data-lucide="sparkles" style="width:28px;height:28px;"></i></div>
+                <h3>2. L'IA traite</h3>
+                <p>Notre moteur extrait noms, e-mails, compétences, ou mappe les colonnes aux champs Shopify avec calcul automatique des marges.</p>
             </div>
             <div class="step">
-                <div class="step-number">3</div>
-                <h3>Téléchargez et utilisez</h3>
-                <p>Obtenez un fichier CSV propre et structuré, prêt pour votre ATS, import Shopify ou tout autre outil.</p>
+                <div class="step-icon"><i data-lucide="credit-card" style="width:28px;height:28px;"></i></div>
+                <h3>3. Payer &amp; débloquer</h3>
+                <p>Pendez une session unique à 5 $ ou un abonnement mensuel à 29 $ pour un accès illimité.</p>
+            </div>
+            <div class="step">
+                <div class="step-icon"><i data-lucide="mail" style="width:28px;height:28px;"></i></div>
+                <h3>4. Clé par email</h3>
+                <p>Recevez votre clé de licence par email instantanément. Entrez-la pour déverrouiller votre téléchargement.</p>
             </div>
         </div>
     </section>
@@ -255,27 +281,27 @@
         <p class="section-sub">Conçu pour les recruteurs et propriétaires de boutiques en ligne qui valorisent leur temps.</p>
         <div class="tools-grid">
             <div class="tool-card">
-                <div class="tool-icon">&#128196;</div>
-                <h3>Analyseur de CV en masse</h3>
-                <p>Téléchargez jusqu'à 20 CV en PDF à la fois. Notre IA extrait les données structurées des candidats et fournit un CSV propre en quelques secondes.</p>
-                <ul>
-                    <li>Extraction du nom, e-mail et téléphone depuis tout CV PDF</li>
-                    <li>Identifie automatiquement les 3 meilleures compétences par candidat</li>
-                    <li>Traitement par lot : jusqu'à 20 CV par traitement</li>
-                    <li>Fonctionne avec tout format ou mise en page de CV</li>
-                    <li>Export CSV pour import ATS (Greenhouse, Lever, etc.)</li>
-                </ul>
-            </div>
-            <div class="tool-card">
-                <div class="tool-icon">&#128722;</div>
+                <div class="tool-icon"><i data-lucide="shopping-cart" style="width:40px;height:40px;"></i></div>
                 <h3>Mappeur CSV E-Commerce</h3>
                 <p>Transformez des tableaux fournisseurs désordonnés en fichiers d'import Shopify prêts à l'emploi avec mapping automatique des colonnes et calcul des marges.</p>
                 <ul>
-                    <li>Mapping automatique des colonnes fournisseur aux champs Shopify</li>
-                    <li>Application de marge bénéficiaire (ex : 1,4x = 40% de marge)</li>
-                    <li>Définition de quantités d'inventaire statiques</li>
-                    <li>Génération de CSV compatible Shopify avec tous les champs requis</li>
-                    <li>Gère titre, description, prix, images, SKU, vendeur</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Mapping automatique des colonnes fournisseur aux champs Shopify</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Application de marge bénéficiaire (ex : 1,4x = 40% de marge)</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Définition de quantités d'inventaire statiques</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Génération de CSV compatible Shopify avec tous les champs requis</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Gère titre, description, prix, images, SKU, vendeur</li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i data-lucide="file-text" style="width:40px;height:40px;"></i></div>
+                <h3>Analyseur de CV en Masse</h3>
+                <p>Téléversez jusqu'à 20 CV en PDF à la fois. Notre IA extrait les données structurées des candidats et fournit un CSV propre en quelques secondes.</p>
+                <ul>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Extraction du nom, e-mail et téléphone depuis tout CV PDF</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Identifie automatiquement les 3 meilleures compétences par candidat</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Traitement par lot : jusqu'à 20 CV par traitement</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Fonctionne avec tout format ou mise en page de CV</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Export CSV pour import ATS (Greenhouse, Lever, etc.)</li>
                 </ul>
             </div>
         </div>
@@ -286,32 +312,32 @@
         <p class="section-sub">Conçu pour la rapidité, la précision et la simplicité.</p>
         <div class="features-grid">
             <div class="fcard">
-                <div class="fcard-icon">&#9889;</div>
+                <div class="fcard-icon"><i data-lucide="zap" style="width:28px;height:28px;"></i></div>
                 <h4>Ultra rapide</h4>
                 <p>Traitez 20 CV en moins de 30 secondes. Fini les heures de saisie manuelle.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon">&#128274;</div>
+                <div class="fcard-icon"><i data-lucide="lock" style="width:28px;height:28px;"></i></div>
                 <h4>Paiement à l'utilisation</h4>
                 <p>5 $ par session, sans abonnement. Ou abonnez-vous mensuellement pour un accès illimité.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon">&#129302;</div>
+                <div class="fcard-icon"><i data-lucide="bot" style="width:28px;height:28px;"></i></div>
                 <h4>Alimenté par l'IA</h4>
                 <p>Utilise la technologie LLM pour comprendre le contexte des CV, pas seulement les mots-clés. Fonctionne avec tout format.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon">&#128194;</div>
+                <div class="fcard-icon"><i data-lucide="monitor" style="width:28px;height:28px;"></i></div>
                 <h4>Aucune installation</h4>
-                <p>100% dans votre navigateur. Téléchargez des fichiers, obtenez des résultats. Compatible Mac, Windows, Linux, mobile.</p>
+                <p>100% dans votre navigateur. Téléversez des fichiers, obtenez des résultats. Compatible Mac, Windows, Linux, mobile.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon">&#128176;</div>
+                <div class="fcard-icon"><i data-lucide="dollar-sign" style="width:28px;height:28px;"></i></div>
                 <h4>Prix transparent</h4>
                 <p>5 $ ponctuel ou 29 $/mois illimité. Pas de frais cachés. Pas de vérification de crédit. Annulation à tout moment.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon">&#127760;</div>
+                <div class="fcard-icon"><i data-lucide="globe" style="width:28px;height:28px;"></i></div>
                 <h4>7 langues</h4>
                 <p>Disponible en anglais, français, espagnol, arabe, chinois, allemand et portugais.</p>
             </div>
@@ -326,11 +352,11 @@
                 <h3>Accès unique</h3>
                 <div class="price">$5 <span>/ utilisation</span></div>
                 <ul>
-                    <li>1 session de traitement complète</li>
-                    <li>Analyseur de CV OU Mappeur CSV</li>
-                    <li>Téléchargements CSV illimités par session</li>
-                    <li>Résultats livrés en quelques secondes</li>
-                    <li>Aucun compte requis</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> 1 session de traitement complète</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Mappeur CSV OU Analyseur de CV</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Téléchargements CSV illimités par session</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Résultats livrés en quelques secondes</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Aucun compte requis</li>
                 </ul>
                 <a href="https://buy.stripe.com/eVqeV7bT1fLY0UC9i63sI00" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">Acheter &mdash; $5</a>
             </div>
@@ -339,11 +365,11 @@
                 <h3>Abonnement mensuel</h3>
                 <div class="price">$29 <span>/ mois</span></div>
                 <ul>
-                    <li>Sessions de traitement illimitées</li>
-                    <li>Analyseur de CV + Mappeur CSV inclus</li>
-                    <li>Support prioritaire</li>
-                    <li>Annulation à tout moment</li>
-                    <li>Garantie de remboursement le premier mois</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Sessions de traitement illimitées</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Mappeur CSV + Analyseur de CV inclus</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Support prioritaire</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Annulation à tout moment</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px;"></i> Garantie de remboursement le premier mois</li>
                 </ul>
                 <a href="https://buy.stripe.com/cNi14he196bofPw0LA3sI01" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">S'abonner &mdash; $29/mois</a>
             </div>
@@ -372,7 +398,7 @@
         </div>
         <div class="faq-item">
             <button class="faq-question" onclick="toggleFaq(this)">Comment fonctionne le mappeur CSV Shopify ?</button>
-            <div class="faq-answer"><p>Téléchargez le CSV de votre fournisseur, puis utilisez notre mappeur visuel pour assigner les colonnes aux champs Shopify (Titre, Description, Prix, Image, SKU, Vendeur). Définissez votre marge bénéficiaire (ex : 1,4x pour 40% de marge) et la quantité d'inventaire. Nous générons un CSV prêt pour Shopify que vous pouvez importer directement.</p></div>
+            <div class="faq-answer"><p>Téléversez le CSV de votre fournisseur, puis utilisez notre mappeur visuel pour assigner les colonnes aux champs Shopify (Titre, Description, Prix, Image, SKU, Vendeur). Définissez votre marge bénéficiaire (ex : 1,4x pour 40% de marge) et la quantité d'inventaire. Nous générons un CSV prêt pour Shopify que vous pouvez importer directement.</p></div>
         </div>
         <div class="faq-item">
             <button class="faq-question" onclick="toggleFaq(this)">Quels modes de paiement acceptez-vous ?</button>
@@ -380,7 +406,7 @@
         </div>
         <div class="faq-item">
             <button class="faq-question" onclick="toggleFaq(this)">Puis-je obtenir un remboursement ?</button>
-            <div class="faq-answer"><p>Oui. Les abonnés mensuels peuvent annuler et obtenir un remboursement intégral durante le premier mois. Pour les achats ponctuels, contactez-nous dans les 24 heures si vous n'êtes pas satisfait.</p></div>
+            <div class="faq-answer"><p>Oui. Les abonnés mensuels peuvent annuler et obtenir un remboursement intégral pendant le premier mois. Pour les achats ponctuels, contactez-nous dans les 24 heures si vous n'êtes pas satisfait.</p></div>
         </div>
     </section>
 
@@ -388,7 +414,7 @@
         <h2>Prêt à gagner des heures de travail manuel ?</h2>
         <p>Rejoignez les 500+ recruteurs et propriétaires de boutiques qui traitent leurs données plus rapidement avec DataMorph.</p>
         <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large">
-            Lancer DataMorph gratuitement &rarr;
+            <i data-lucide="rocket" style="width:20px;height:20px;"></i> Lancer DataMorph gratuitement
         </a>
     </section>
 
@@ -397,24 +423,34 @@
     </footer>
 
     <script>
+    lucide.createIcons();
+
     function toggleFaq(btn) {
         const item = btn.parentElement;
         const answer = item.querySelector('.faq-answer');
         const isOpen = item.classList.contains('open');
-        
+
         document.querySelectorAll('.faq-item').forEach(i => {
             i.classList.remove('open');
             i.querySelector('.faq-answer').style.maxHeight = null;
         });
-        
+
         if (!isOpen) {
             item.classList.add('open');
             answer.style.maxHeight = answer.scrollHeight + 'px';
         }
     }
+
+    document.getElementById('langDropdown').querySelector('button').addEventListener('click', function(e) {
+        e.stopPropagation();
+        document.getElementById('langDropdown').classList.toggle('open');
+    });
+
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.lang-dropdown')) {
-            document.querySelectorAll('.lang-dropdown').forEach(d => d.classList.remove('open'));
+            document.querySelectorAll('.lang-dropdown').forEach(function(d) {
+                d.classList.remove('open');
+            });
         }
     });
     </script>

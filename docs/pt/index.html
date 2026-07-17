@@ -1,57 +1,67 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataMorph — Parser de Currículos em Lote e Mapeador de CSV para Shopify | Ferramenta de Dados com IA</title>
-    <meta name="description" content="Extraia dados estruturados de candidatos a partir de currículos PDF em lote com IA. Mapeie arquivos CSV desordenados de fornecedores para importação de produtos no Shopify. Usado por 500+ recrutadores e proprietários de lojas.">
-    <meta name="keywords" content="parser de currículos, parser de CV, processamento de currículos em lote, extração de currículos PDF, mapeador de CSV para Shopify, mapeamento de CSV de fornecedor, parser de currículos com IA, currículo para CSV, extração de dados em lote, ferramenta de dados para e-commerce, mapeamento de dados de produto, importação Shopify, ferramentas para recrutadores">
+    <title>DataMorph — Mapeador CSV Shopify & Parser de Currículos | Ferramenta de Dados IA</title>
+    <meta name="description" content="Converta arquivos CSV de fornecedores em arquivos de produtos prontos para Shopify com precificação de markup por IA. Faça upload de currículos PDF e obtenha planilhas de candidatos estruturadas em segundos.">
+    <meta name="keywords" content="mapeador CSV Shopify, parser de currículos em lote, extração de currículos PDF, processamento de CSV com IA, mapeamento de dados de produto, importação Shopify, ferramenta de dados IA, parser de CV, mapeador de CSV de fornecedor">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="DataMorph — Parser de Currículos em Lote e Mapeador de CSV para Shopify">
-    <meta property="og:description" content="Ferramenta com IA para recrutadores e proprietários de lojas. Processe currículos e mapeie dados de produtos em segundos.">
+    <meta property="og:title" content="DataMorph — Mapeador CSV Shopify & Parser de Currículos | Ferramenta de Dados IA">
+    <meta property="og:description" content="Converta CSVs de fornecedores em importações Shopify. Processe currículos PDF em lote com IA.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://datamorph.fr">
-    <link rel="canonical" href="https://datamorph.fr">
+    <meta property="og:url" content="https://datamorph.fr/pt/index.html">
+    <link rel="canonical" href="https://datamorph.fr/pt/index.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        :root {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --border: #334155;
+            --accent: #6366f1;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; line-height: 1.6; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
 
         .nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 1.2rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(10,10,10,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
         }
         .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px; }
-        .logo span { color: #6366f1; }
+        .logo span { color: var(--accent); }
         .nav-links { display: flex; align-items: center; gap: 2rem; }
-        .nav-links a { color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
-        .nav-links a:hover { color: #fff; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--text); }
         .lang-dropdown { position: relative; }
         .lang-dropdown button {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: #ccc; font-size: 0.8rem; font-weight: 600; padding: 0.4rem 0.9rem;
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--text-muted); font-size: 0.8rem; font-weight: 600; padding: 0.4rem 0.9rem;
             border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif;
             transition: all 0.3s; display: flex; align-items: center; gap: 0.4rem;
         }
-        .lang-dropdown button:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .lang-dropdown button:hover { background: rgba(99,102,241,0.1); color: var(--text); border-color: var(--accent); }
         .lang-dropdown button .arrow { font-size: 0.6rem; transition: transform 0.3s; }
         .lang-dropdown.open button .arrow { transform: rotate(180deg); }
         .lang-dropdown-menu {
             display: none; position: absolute; top: calc(100% + 6px); right: 0;
-            background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1);
+            background: var(--bg-card); border: 1px solid var(--border);
             border-radius: 10px; padding: 0.4rem; min-width: 140px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 200;
         }
         .lang-dropdown.open .lang-dropdown-menu { display: block; }
         .lang-dropdown-menu a {
             display: block; padding: 0.45rem 0.8rem; border-radius: 6px;
-            font-size: 0.8rem; font-weight: 500; color: #888; text-decoration: none;
+            font-size: 0.8rem; font-weight: 500; color: var(--text-muted); text-decoration: none;
             transition: all 0.2s;
         }
-        .lang-dropdown-menu a.active { background: #6366f1; color: #fff; }
-        .lang-dropdown-menu a:hover:not(.active) { background: rgba(255,255,255,0.05); color: #ccc; }
+        .lang-dropdown-menu a.active { background: var(--accent); color: #fff; }
+        .lang-dropdown-menu a:hover:not(.active) { background: rgba(99,102,241,0.1); color: var(--text); }
 
         .hero {
             min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -68,14 +78,14 @@
             padding: 0.4rem 1rem; border-radius: 9999px; font-size: 0.8rem; color: #818cf8;
             margin-bottom: 2rem;
         }
-        .badge::before { content: ''; width: 6px; height: 6px; background: #6366f1; border-radius: 50%; }
+        .badge::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
         h1 { font-size: 4rem; font-weight: 900; letter-spacing: -2.5px; line-height: 1.05; max-width: 850px; margin-bottom: 1.5rem; }
         h1 span { background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .subtitle { font-size: 1.2rem; color: #888; max-width: 650px; line-height: 1.7; margin-bottom: 1rem; }
+        .subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 700px; line-height: 1.7; margin-bottom: 1rem; }
         .hero-stats { display: flex; gap: 3rem; margin: 2rem 0 3rem; justify-content: center; }
         .hero-stat { text-align: center; }
-        .hero-stat .number { font-size: 1.8rem; font-weight: 800; color: #fff; }
-        .hero-stat .label { font-size: 0.8rem; color: #666; margin-top: 0.25rem; }
+        .hero-stat .number { font-size: 1.8rem; font-weight: 800; color: var(--text); }
+        .hero-stat .label { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; }
 
         .buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
         .btn {
@@ -85,70 +95,71 @@
         }
         .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
-        .btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+        .btn-secondary { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: rgba(99,102,241,0.1); border-color: var(--accent); transform: translateY(-2px); }
         .btn-large { padding: 1.2rem 3rem; font-size: 1.1rem; }
 
         section h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.5rem; text-align: center; }
-        section .section-sub { font-size: 1.1rem; color: #888; text-align: center; max-width: 600px; margin: 0 auto 1.5rem; }
+        section .section-sub { font-size: 1.1rem; color: var(--text-muted); text-align: center; max-width: 600px; margin: 0 auto 1.5rem; }
 
         .how-it-works { padding: 3.5rem 4rem; max-width: 1100px; margin: 0 auto; }
-        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 1.5rem; }
+        .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 1.5rem; }
         .step { text-align: center; padding: 2rem; position: relative; }
-        .step-number {
+        .step-icon {
             width: 60px; height: 60px; border-radius: 16px; display: flex; align-items: center;
-            justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.1));
-            border: 1px solid rgba(99,102,241,0.3);
+            justify-content: center; margin: 0 auto 1.5rem;
+            background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3);
+            color: var(--accent);
         }
-        .step h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; }
-        .step p { color: #888; font-size: 0.95rem; line-height: 1.6; }
+        .step-number { font-size: 0.7rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .step h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .step p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
 
         .tools { padding: 3.5rem 4rem; max-width: 1200px; margin: 0 auto; }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
         .tool-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+            background: var(--bg-card); border: 1px solid var(--border);
             border-radius: 20px; padding: 3rem; transition: all 0.3s; position: relative; overflow: hidden;
         }
-        .tool-card:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-4px); }
+        .tool-card:hover { border-color: var(--accent); transform: translateY(-4px); }
         .tool-card::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, #6366f1, #a855f7);
         }
-        .tool-card .tool-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .tool-card .tool-icon { margin-bottom: 1.5rem; color: var(--accent); }
         .tool-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
-        .tool-card > p { color: #888; line-height: 1.7; margin-bottom: 1.5rem; }
+        .tool-card > p { color: var(--text-muted); line-height: 1.7; margin-bottom: 1.5rem; }
         .tool-card ul { list-style: none; }
-        .tool-card li { padding: 0.4rem 0; color: #aaa; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 0.75rem; }
-        .tool-card li::before { content: '\2713'; color: #6366f1; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+        .tool-card li { padding: 0.4rem 0; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+        .tool-card li::before { content: '\2713'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 2px; }
 
         .features-section { padding: 3.5rem 4rem; max-width: 1200px; margin: 0 auto; }
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 1.5rem; }
         .fcard {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+            background: var(--bg-card); border: 1px solid var(--border);
             border-radius: 16px; padding: 2rem; transition: all 0.3s;
         }
-        .fcard:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-3px); }
-        .fcard-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .fcard:hover { border-color: var(--accent); transform: translateY(-3px); }
+        .fcard-icon { margin-bottom: 1rem; color: var(--accent); }
         .fcard h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .fcard p { color: #888; font-size: 0.9rem; line-height: 1.6; }
+        .fcard p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
 
         .pricing-section { padding: 3.5rem 4rem; text-align: center; }
         .pricing-cards { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
         .pricing-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            background: var(--bg-card); border: 1px solid var(--border);
             border-radius: 20px; padding: 2.5rem; flex: 1; min-width: 300px; text-align: left; transition: all 0.3s;
         }
         .pricing-card.popular {
-            border-color: rgba(99,102,241,0.5);
+            border-color: var(--accent);
             background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.05));
         }
-        .pricing-card h3 { font-size: 1.1rem; color: #888; margin-bottom: 0.5rem; }
+        .pricing-card h3 { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 0.5rem; }
         .price { font-size: 3rem; font-weight: 900; margin-bottom: 0.25rem; }
-        .price span { font-size: 1rem; font-weight: 400; color: #666; }
+        .price span { font-size: 1rem; font-weight: 400; color: var(--text-dim); }
         .pricing-card ul { list-style: none; margin: 1.5rem 0; }
-        .pricing-card li { padding: 0.5rem 0; color: #aaa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
-        .pricing-card li::before { content: '\2713'; color: #6366f1; font-weight: 700; }
+        .pricing-card li { padding: 0.5rem 0; color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
+        .pricing-card li::before { content: '\2713'; color: var(--accent); font-weight: 700; }
         .popular-badge {
             display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6);
             padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
@@ -156,32 +167,44 @@
         }
 
         .faq-section { padding: 3.5rem 4rem; max-width: 800px; margin: 0 auto; }
-        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .faq-item { border-bottom: 1px solid var(--border); }
         .faq-question {
-            width: 100%; background: none; border: none; color: #fff; font-size: 1.05rem;
+            width: 100%; background: none; border: none; color: var(--text); font-size: 1.05rem;
             font-weight: 600; padding: 1.5rem 0; cursor: pointer; display: flex;
             justify-content: space-between; align-items: center; text-align: left; font-family: 'Inter', sans-serif;
         }
-        .faq-question::after { content: '+'; font-size: 1.5rem; color: #6366f1; transition: transform 0.3s; }
+        .faq-question::after { content: '+'; font-size: 1.5rem; color: var(--accent); transition: transform 0.3s; }
         .faq-item.open .faq-question::after { content: '\2212'; }
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-        .faq-answer p { padding-bottom: 1.5rem; color: #888; line-height: 1.7; font-size: 0.95rem; }
+        .faq-answer p { padding-bottom: 1.5rem; color: var(--text-muted); line-height: 1.7; font-size: 0.95rem; }
 
         .cta-section { padding: 3.5rem 4rem; text-align: center; background: linear-gradient(180deg, transparent, rgba(99,102,241,0.05)); }
         .cta-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
-        .cta-section p { color: #888; margin-bottom: 2rem; font-size: 1.1rem; }
+        .cta-section p { color: var(--text-muted); margin-bottom: 2rem; font-size: 1.1rem; }
 
-        .footer { padding: 3rem 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); color: #555; font-size: 0.85rem; }
+        .footer { padding: 3rem 4rem; text-align: center; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 0.85rem; }
 
         @media (max-width: 768px) {
             .nav { padding: 1rem 1.5rem; }
-            .nav-links a:not(.btn) { display: none; }
-            h1 { font-size: 2.2rem; }
-            .hero-stats { gap: 1.5rem; }
+            .nav-links a:not(.btn):not(.lang-dropdown button) { display: none; }
+            h1 { font-size: 2.2rem; letter-spacing: -1px; }
+            .subtitle { font-size: 1rem; }
+            .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+            .hero-stat .number { font-size: 1.4rem; }
+            .steps { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
             .tools-grid { grid-template-columns: 1fr; }
             .features-grid { grid-template-columns: 1fr; }
+            .pricing-cards { flex-direction: column; align-items: center; }
+            .pricing-card { min-width: 280px; width: 100%; }
+            .how-it-works, .tools, .features-section, .pricing-section, .faq-section, .cta-section { padding: 3.5rem 1.5rem; }
+            section h2 { font-size: 1.8rem; }
+            .cta-section h2 { font-size: 1.8rem; }
+        }
+        @media (max-width: 480px) {
             .steps { grid-template-columns: 1fr; }
-            .how-it-works, .tools, .features-section, .pricing-section, .faq-section, .cta-section { padding: 2.5rem 1.5rem; }
+            .hero { padding: 5rem 1.25rem 2rem; }
+            h1 { font-size: 1.8rem; }
+            .hero-stats { gap: 1rem; }
         }
     </style>
 </head>
@@ -194,8 +217,8 @@
             <a href="#tools">Ferramentas</a>
             <a href="#pricing">Preços</a>
             <a href="#faq">FAQ</a>
-            <div class="lang-dropdown" onclick="this.classList.toggle('open')">
-                <button>🌐 PT <span class="arrow">&#9662;</span></button>
+            <div class="lang-dropdown" id="langDropdown">
+                <button>PT <span class="arrow">&#9662;</span></button>
                 <div class="lang-dropdown-menu">
                     <a href="../index.html">EN English</a>
                     <a href="../fr/index.html">FR Français</a>
@@ -212,40 +235,50 @@
 
     <section class="hero">
         <div class="badge">Confiável por 500+ recrutadores e donos de lojas</div>
-        <h1>Parser de Currículos em Lote &amp; <span>Mapeador de CSV para Shopify</span></h1>
-        <p class="subtitle">
-            Pare de copiar dados manualmente. Envie currículos em PDF e receba planilhas de candidatos estruturadas.
-            Mapeie CSVs desordenados de fornecedores para arquivos de importação prontos para o Shopify com precificação de markup por IA.
-        </p>
+        <h1>Mapeador CSV Shopify &amp; <span>Parser de Currículos em Lote</span></h1>
+        <p class="subtitle">Converta arquivos CSV de fornecedores em arquivos de produtos prontos para Shopify com precificação de markup por IA. Faça upload de currículos PDF e obtenha planilhas de candidatos estruturadas em segundos.</p>
         <div class="hero-stats">
             <div class="hero-stat"><div class="number">20+</div><div class="label">Currículos por lote</div></div>
-            <div class="hero-stat"><div class="number">5s</div><div class="label">Tempo médio de processamento</div></div>
+            <div class="hero-stat"><div class="number">5s</div><div class="label">Processamento médio</div></div>
             <div class="hero-stat"><div class="number">100%</div><div class="label">Saída estruturada</div></div>
         </div>
         <div class="buttons">
-            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large">Começar a Processar Currículos &rarr;</a>
-            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-secondary btn-large">Mapear seu CSV &rarr;</a>
+            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large">
+                <i data-lucide="file-spreadsheet" style="width:20px;height:20px;"></i> Mapear CSV
+            </a>
+            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-secondary btn-large">
+                <i data-lucide="file-text" style="width:20px;height:20px;"></i> Processar Currículos
+            </a>
         </div>
     </section>
 
     <section class="how-it-works" id="how">
         <h2>Como Funciona</h2>
-        <p class="section-sub">Três etapas. Sem cadastro. Sem programação. Apenas resultados.</p>
+        <p class="section-sub">Quatro etapas simples. Sem cadastro. Sem programação.</p>
         <div class="steps">
             <div class="step">
-                <div class="step-number">1</div>
-                <h3>Envie seus Arquivos</h3>
-                <p>Arraste e solte até 20 currículos em PDF ou um arquivo CSV de fornecedor. Aceitamos qualquer formato.</p>
+                <div class="step-icon"><i data-lucide="upload-cloud" style="width:28px;height:28px;"></i></div>
+                <div class="step-number">Passo 1</div>
+                <h3>Enviar</h3>
+                <p>Arraste e solte seus arquivos PDF ou CSV. Aceitamos qualquer formato.</p>
             </div>
             <div class="step">
-                <div class="step-number">2</div>
-                <h3>A IA Processa</h3>
-                <p>Nosso motor extrai nomes, e-mails, telefone, habilidades ou mapeia colunas para campos do Shopify com precificação de markup automática.</p>
+                <div class="step-icon"><i data-lucide="sparkles" style="width:28px;height:28px;"></i></div>
+                <div class="step-number">Passo 2</div>
+                <h3>IA Processa</h3>
+                <p>Nossa inteligência artificial extrai e mapeia seus dados automaticamente.</p>
             </div>
             <div class="step">
-                <div class="step-number">3</div>
-                <h3>Baixe e Use</h3>
-                <p>Receba um arquivo CSV limpo e estruturado pronto para seu ATS, importação no Shopify ou qualquer outra ferramenta.</p>
+                <div class="step-icon"><i data-lucide="credit-card" style="width:28px;height:28px;"></i></div>
+                <div class="step-number">Passo 3</div>
+                <h3>Pagar e Desbloquear</h3>
+                <p>$5 por uso ou $29/mês ilimitado. Pague com cartão de crédito com segurança.</p>
+            </div>
+            <div class="step">
+                <div class="step-icon"><i data-lucide="mail" style="width:28px;height:28px;"></i></div>
+                <div class="step-number">Passo 4</div>
+                <h3>Chave por Email</h3>
+                <p>Receba sua chave de acesso por email e comece a baixar seus resultados.</p>
             </div>
         </div>
     </section>
@@ -255,7 +288,19 @@
         <p class="section-sub">Criada para recrutadores e donos de lojas que valorizam seu tempo.</p>
         <div class="tools-grid">
             <div class="tool-card">
-                <div class="tool-icon">&#128196;</div>
+                <div class="tool-icon"><i data-lucide="file-spreadsheet" style="width:40px;height:40px;"></i></div>
+                <h3>Mapeador CSV para Shopify</h3>
+                <p>Transforme planilhas desordenadas de fornecedores em arquivos de importação prontos para o Shopify com mapeamento automático de colunas e precificação de markup.</p>
+                <ul>
+                    <li>Mapeie automaticamente colunas do fornecedor para campos do Shopify</li>
+                    <li>Aplique markup de lucro (ex: 1.4x = 40% de margem)</li>
+                    <li>Defina quantidades de estoque fixas</li>
+                    <li>Gera CSV compatível com Shopify com todos os campos necessários</li>
+                    <li>Trata título, descrição, preço, imagens, SKU e fornecedor</li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i data-lucide="file-text" style="width:40px;height:40px;"></i></div>
                 <h3>Parser de Currículos em Lote</h3>
                 <p>Envie até 20 currículos em PDF de uma vez. Nossa IA extrai dados estruturados dos candidatos e entrega uma planilha CSV limpa em segundos.</p>
                 <ul>
@@ -266,18 +311,6 @@
                     <li>Exporte para CSV para importação em ATS (Greenhouse, Lever, etc.)</li>
                 </ul>
             </div>
-            <div class="tool-card">
-                <div class="tool-icon">&#128722;</div>
-                <h3>Mapeador de CSV para E-Commerce</h3>
-                <p>Transforme planilhas desordenadas de fornecedores em arquivos de importação prontos para o Shopify com mapeamento automático de colunas e precificação de markup.</p>
-                <ul>
-                    <li>Mapeie automaticamente colunas do fornecedor para campos do Shopify</li>
-                    <li>Aplique markup de lucro (ex: 1.4x = 40% de margem)</li>
-                    <li>Defina quantidades de estoque fixas</li>
-                    <li>Gera CSV compatível com Shopify com todos os campos necessários</li>
-                    <li>Trata título, descrição, preço, imagens, SKU e fornecedor</li>
-                </ul>
-            </div>
         </div>
     </section>
 
@@ -286,32 +319,32 @@
         <p class="section-sub">Criado para velocidade, precisão e simplicidade.</p>
         <div class="features-grid">
             <div class="fcard">
-                <div class="fcard-icon">&#9889;</div>
+                <div class="fcard-icon"><i data-lucide="zap" style="width:32px;height:32px;"></i></div>
                 <h4>Rápido como um Raio</h4>
                 <p>Processe 20 currículos em menos de 30 segundos. Chega de horas de digitação manual.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon">&#128274;</div>
+                <div class="fcard-icon"><i data-lucide="lock" style="width:32px;height:32px;"></i></div>
                 <h4>Pague por Uso</h4>
                 <p>$5 por sessão, sem necessidade de assinatura. Ou assine mensalmente para acesso ilimitado.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon">&#129302;</div>
+                <div class="fcard-icon"><i data-lucide="bot" style="width:32px;height:32px;"></i></div>
                 <h4>Powered by IA</h4>
-                <p>Utiliza tecnologia LLM para entender o contexto do currículo, não apenas palavras-chave. Funciona com qualquer layout.</p>
+                <p>Utiliza tecnologia LLM para entender o contexto, não apenas palavras-chave. Funciona com qualquer layout.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon">&#128194;</div>
+                <div class="fcard-icon"><i data-lucide="folder-open" style="width:32px;height:32px;"></i></div>
                 <h4>Zero Instalação</h4>
                 <p>100% no navegador. Envie arquivos, receba resultados. Funciona no Mac, Windows, Linux e celular.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon">&#128176;</div>
+                <div class="fcard-icon"><i data-lucide="banknote" style="width:32px;height:32px;"></i></div>
                 <h4>Preços Transparentes</h4>
                 <p>$5 único ou $29/mês ilimitado. Sem taxas escondidas. Sem consulta de crédito. Cancele quando quiser.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon">&#127760;</div>
+                <div class="fcard-icon"><i data-lucide="globe" style="width:32px;height:32px;"></i></div>
                 <h4>7 Idiomas</h4>
                 <p>Disponível em inglês, francês, espanhol, árabe, chinês, alemão e português.</p>
             </div>
@@ -388,7 +421,7 @@
         <h2>Pronto para Economizar Horas de Trabalho Manual?</h2>
         <p>Junte-se a 500+ recrutadores e donos de lojas que processam dados mais rápido com o DataMorph.</p>
         <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large">
-            Abrir o DataMorph Grátis &rarr;
+            <i data-lucide="arrow-right" style="width:20px;height:20px;"></i> Abrir o DataMorph Grátis
         </a>
     </section>
 
@@ -397,6 +430,8 @@
     </footer>
 
     <script>
+    lucide.createIcons();
+
     function toggleFaq(btn) {
         const item = btn.parentElement;
         const answer = item.querySelector('.faq-answer');
@@ -412,6 +447,11 @@
             answer.style.maxHeight = answer.scrollHeight + 'px';
         }
     }
+
+    document.getElementById('langDropdown').addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('open');
+    });
 
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.lang-dropdown')) {
