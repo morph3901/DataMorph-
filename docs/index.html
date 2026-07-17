@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataMorph — Shopify CSV Mapper & Bulk Resume Parser | AI-Powered Data Tool</title>
-    <meta name="description" content="Map messy supplier CSV files to Shopify-ready product imports with AI markup pricing. Extract structured candidate data from PDF resumes in bulk. Used by 500+ recruiters and e-commerce store owners.">
-    <meta name="keywords" content="Shopify CSV mapper, supplier CSV mapping, resume parser, CV parser, bulk resume parsing, PDF resume extraction, AI resume parser, resume to CSV, bulk data extraction, e-commerce data tool, product data mapping, Shopify import, recruiter tools">
+    <title>DataMorph — Shopify CSV Mapper & Product Description Generator | AI-Powered E-Commerce Tool</title>
+    <meta name="description" content="Map messy supplier CSV files to Shopify-ready product imports with AI markup pricing. Generate SEO-optimized product descriptions and titles in bulk. Used by 500+ e-commerce store owners.">
+    <meta name="keywords" content="Shopify CSV mapper, supplier CSV mapping, product description generator, AI product descriptions, SEO title optimizer, e-commerce data tool, product data mapping, Shopify import, bulk product descriptions, AI copywriting">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" content="DataMorph — Shopify CSV Mapper & Bulk Resume Parser">
-    <meta property="og:description" content="AI-powered tool for recruiters and e-commerce store owners. Map product data and parse resumes in seconds.">
+    <meta property="og:title" content="DataMorph — Shopify CSV Mapper & Product Description Generator">
+    <meta property="og:description" content="AI-powered tool for e-commerce store owners. Map product data, generate descriptions, and optimize titles in seconds.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://datamorph.fr">
     <link rel="canonical" href="https://datamorph.fr">
@@ -194,7 +194,7 @@
             .nav-links a:not(.btn) { display: none; }
             h1 { font-size: 2.1rem; }
             .hero-stats { gap: 1.5rem; }
-            .tools-grid { grid-template-columns: 1fr; }
+            .tools-grid { grid-template-columns: 1fr !important; }
             .features-grid { grid-template-columns: 1fr; }
             .steps { grid-template-columns: 1fr 1fr; }
             .how-it-works, .tools, .features-section, .pricing-section, .faq-section, .cta-section { padding: 2.5rem 1.5rem; }
@@ -230,16 +230,16 @@
     </nav>
 
     <section class="hero">
-        <div class="badge">Trusted by 500+ recruiters &amp; store owners</div>
-        <h1>Shopify CSV Mapper &amp; <span>Bulk Resume Parser</span></h1>
+        <div class="badge">Trusted by 500+ e-commerce store owners</div>
+        <h1>Shopify CSV Mapper &amp; <span>Product Description Generator</span></h1>
         <p class="subtitle">
             Map messy supplier CSVs to Shopify-ready product files with AI-powered markup pricing.
-            Upload PDF resumes and get structured candidate spreadsheets in seconds.
+            Generate SEO-optimized descriptions and titles for hundreds of products in seconds.
         </p>
         <div class="hero-stats">
-            <div class="hero-stat"><div class="number">20+</div><div class="label">Resumes per batch</div></div>
+            <div class="hero-stat"><div class="number">100+</div><div class="label">Products per batch</div></div>
             <div class="hero-stat"><div class="number">5s</div><div class="label">Avg. processing</div></div>
-            <div class="hero-stat"><div class="number">100%</div><div class="label">Structured output</div></div>
+            <div class="hero-stat"><div class="number">SEO</div><div class="label">Optimized output</div></div>
         </div>
         <div class="buttons">
             <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large"><i data-lucide="upload" style="width:18px;height:18px"></i> Launch DataMorph &rarr;</a>
@@ -254,12 +254,12 @@
             <div class="step">
                 <div class="step-icon"><i data-lucide="upload-cloud" style="width:24px;height:24px"></i></div>
                 <h3>1. Upload</h3>
-                <p>Drag &amp; drop up to 20 PDF resumes or a supplier CSV file. Any format accepted.</p>
+                <p>Drag &amp; drop a supplier CSV file or a list of product names + features. Any format accepted.</p>
             </div>
             <div class="step">
                 <div class="step-icon"><i data-lucide="sparkles" style="width:24px;height:24px"></i></div>
                 <h3>2. AI Processes</h3>
-                <p>Our engine extracts data or maps columns to Shopify fields with automatic markup pricing.</p>
+                <p>Our engine maps columns to Shopify fields, generates SEO descriptions, or optimizes your titles.</p>
             </div>
             <div class="step">
                 <div class="step-icon"><i data-lucide="credit-card" style="width:24px;height:24px"></i></div>
@@ -275,9 +275,9 @@
     </section>
 
     <section class="tools" id="tools">
-        <h2>Two Powerful Tools, One Platform</h2>
-        <p class="section-sub">Built for recruiters and e-commerce store owners who value their time.</p>
-        <div class="tools-grid">
+        <h2>Three Powerful Tools, One Platform</h2>
+        <p class="section-sub">Built for e-commerce store owners who value their time.</p>
+        <div class="tools-grid" style="grid-template-columns: 1fr 1fr 1fr;">
             <div class="tool-card">
                 <div class="tool-icon"><i data-lucide="shopping-cart" style="width:22px;height:22px"></i></div>
                 <h3>Shopify CSV Mapper</h3>
@@ -286,20 +286,32 @@
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> Auto-map supplier columns to Shopify fields</li>
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> Apply profit markup (e.g., 1.4x = 40% margin)</li>
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> Set static inventory quantities</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Generates Shopify-compatible CSV with all required fields</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Handles title, description, price, images, SKU, vendor</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Generates Shopify-compatible CSV</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Handles title, price, images, SKU, vendor</li>
                 </ul>
             </div>
             <div class="tool-card">
                 <div class="tool-icon"><i data-lucide="file-text" style="width:22px;height:22px"></i></div>
-                <h3>Bulk Resume Parser</h3>
-                <p>Upload up to 20 PDF resumes at once. Our AI extracts structured candidate data and delivers a clean CSV spreadsheet in seconds.</p>
+                <h3>Product Description Generator</h3>
+                <p>Upload a CSV with product names and features. Our AI generates unique, SEO-optimized descriptions for each product in seconds.</p>
                 <ul>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Extract name, email, phone from any PDF resume</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Identifies top 3 skills per candidate automatically</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Batch processing: up to 20 resumes per run</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Works with any resume format or layout</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Export to CSV for ATS import (Greenhouse, Lever, etc.)</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Generates unique descriptions per product</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> SEO-optimized with relevant keywords</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Batch mode: 100+ products at once</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Adapts to your brand tone and style</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Export to CSV for direct Shopify import</li>
+                </ul>
+            </div>
+            <div class="tool-card">
+                <div class="tool-icon"><i data-lucide="type" style="width:22px;height:22px"></i></div>
+                <h3>SEO Title Optimizer</h3>
+                <p>Transform basic product titles into optimized, keyword-rich titles that rank higher on Google and convert better on marketplaces.</p>
+                <ul>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Adds high-ranking keywords automatically</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Optimized for Google Shopping &amp; Amazon</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Respects character limits per platform</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> A/B test variations generated</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Bulk process hundreds of titles at once</li>
                 </ul>
             </div>
         </div>
@@ -312,7 +324,7 @@
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="zap" style="width:20px;height:20px"></i></div>
                 <h4>Lightning Fast</h4>
-                <p>Process 20 resumes in under 30 seconds. No more hours of manual data entry.</p>
+                <p>Generate 100+ product descriptions in under 30 seconds. No more hours of manual copywriting.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="lock" style="width:20px;height:20px"></i></div>
@@ -322,7 +334,7 @@
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="bot" style="width:20px;height:20px"></i></div>
                 <h4>AI-Powered</h4>
-                <p>Uses LLM technology to understand resume context, not just keywords. Works with any layout.</p>
+                <p>Uses LLM technology to write natural, compelling product descriptions that convert visitors into buyers.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="monitor" style="width:20px;height:20px"></i></div>
@@ -335,9 +347,9 @@
                 <p>$5 one-time or $29/month unlimited. No hidden fees. No credit check. Cancel anytime.</p>
             </div>
             <div class="fcard">
-                <div class="fcard-icon"><i data-lucide="globe" style="width:20px;height:20px"></i></div>
-                <h4>7 Languages</h4>
-                <p>Available in English, French, Spanish, Arabic, Chinese, German, and Portuguese.</p>
+                <div class="fcard-icon"><i data-lucide="search" style="width:20px;height:20px"></i></div>
+                <h4>SEO Optimized</h4>
+                <p>Every description and title is optimized for Google, Shopify, and marketplace search algorithms.</p>
             </div>
         </div>
     </section>
@@ -351,7 +363,7 @@
                 <div class="price">$5 <span>/ use</span></div>
                 <ul>
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> 1 complete processing session</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Resume Parser OR CSV Mapper</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> CSV Mapper + Description Generator + Title Optimizer</li>
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> Unlimited CSV downloads per session</li>
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> Results delivered in seconds</li>
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> No account required</li>
@@ -364,7 +376,7 @@
                 <div class="price">$29 <span>/ month</span></div>
                 <ul>
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> Unlimited processing sessions</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Resume Parser + CSV Mapper included</li>
+                    <li><i data-lucide="check" style="width:16px;height:16px"></i> All 3 tools included</li>
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> Priority support</li>
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> Cancel anytime</li>
                     <li><i data-lucide="check" style="width:16px;height:16px"></i> First month money-back guarantee</li>
@@ -380,23 +392,23 @@
 
         <div class="faq-item">
             <button class="faq-question" onclick="toggleFaq(this)">What file formats does DataMorph support?</button>
-            <div class="faq-answer"><p>DataMorph supports PDF files for the Resume Parser and CSV files for the E-Commerce Mapper. We accept any PDF format, including scanned documents with extractable text. CSV files can have any column structure &mdash; our mapper lets you map them to the right fields.</p></div>
+            <div class="faq-answer"><p>DataMorph works with CSV files for all tools. Upload any CSV with product data — our mapper, description generator, and title optimizer will process it. We accept any column structure and let you map fields visually.</p></div>
         </div>
         <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">How many resumes can I process at once?</button>
-            <div class="faq-answer"><p>Up to 20 PDF resumes per batch with the one-time plan. With the monthly subscription, you get unlimited processing with no batch size limit.</p></div>
+            <button class="faq-question" onclick="toggleFaq(this)">How many products can I process at once?</button>
+            <div class="faq-answer"><p>Up to 100 products per batch with the one-time plan. With the monthly subscription, you get unlimited processing with no batch size limit.</p></div>
         </div>
         <div class="faq-item">
             <button class="faq-question" onclick="toggleFaq(this)">Is my data secure?</button>
             <div class="faq-answer"><p>Yes. Your files are processed in real-time and never stored on our servers. We don't train AI models on your data. All processing happens in-memory and files are discarded immediately after extraction.</p></div>
         </div>
         <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">Can I use the CSV output with my ATS (Greenhouse, Lever, Workday)?</button>
-            <div class="faq-answer"><p>Absolutely. The output CSV contains standardized fields (name, email, phone, skills, source file) that can be imported into most ATS platforms. We're working on direct integrations.</p></div>
+            <button class="faq-question" onclick="toggleFaq(this)">Can I use the CSV output directly with Shopify?</button>
+            <div class="faq-answer"><p>Absolutely. The output CSV is fully compatible with Shopify's product import format. It includes all required fields: title, description, price, images, SKU, vendor, and more. Just upload it to your Shopify admin.</p></div>
         </div>
         <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">How does the Shopify CSV Mapper work?</button>
-            <div class="faq-answer"><p>Upload your supplier's CSV file, then use our visual mapper to assign columns to Shopify fields (Title, Description, Price, Image, SKU, Vendor). Set your profit markup (e.g., 1.4x for 40% margin) and inventory quantity. We generate a Shopify-ready CSV you can import directly.</p></div>
+            <button class="faq-question" onclick="toggleFaq(this)">How does the Product Description Generator work?</button>
+            <div class="faq-answer"><p>Upload a CSV with product names and key features. Our AI generates unique, SEO-optimized descriptions tailored to your brand tone. Each description includes relevant keywords for better search rankings. Export to CSV for direct Shopify import.</p></div>
         </div>
         <div class="faq-item">
             <button class="faq-question" onclick="toggleFaq(this)">What payment methods do you accept?</button>
@@ -409,8 +421,8 @@
     </section>
 
     <section class="cta-section">
-        <h2>Ready to Save Hours of Manual Work?</h2>
-        <p>Join 500+ recruiters and store owners who process data faster with DataMorph.</p>
+        <h2>Ready to Automate Your Product Listings?</h2>
+        <p>Join 500+ store owners who save hours every week with DataMorph.</p>
         <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary btn-large">
             <i data-lucide="rocket" style="width:18px;height:18px"></i> Launch DataMorph Free &rarr;
         </a>
