@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataMorph — Transformez vos données en secondes</title>
+    <title>DataMorph — Transforme seus dados em segundos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
-        
+
         .nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 1.5rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100;
@@ -24,7 +24,7 @@
         .lang-switch a { padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: #666; text-decoration: none; transition: all 0.3s; }
         .lang-switch a.active { background: #6366f1; color: #fff; }
         .lang-switch a:hover:not(.active) { color: #aaa; }
-        
+
         .hero {
             min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
             text-align: center; padding: 8rem 2rem 4rem; position: relative;
@@ -44,7 +44,7 @@
         h1 { font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; line-height: 1.1; max-width: 800px; margin-bottom: 1.5rem; }
         h1 span { background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .subtitle { font-size: 1.25rem; color: #888; max-width: 600px; line-height: 1.6; margin-bottom: 3rem; }
-        
+
         .buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
         .btn {
             padding: 1rem 2.5rem; border-radius: 12px; font-size: 1rem; font-weight: 600;
@@ -60,7 +60,7 @@
             background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);
         }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
-        
+
         .features {
             padding: 6rem 4rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem; max-width: 1200px; margin: 0 auto;
@@ -79,7 +79,7 @@
         .feature:nth-child(3) .feature-icon { background: rgba(236,72,153,0.15); }
         .feature h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
         .feature p { color: #888; line-height: 1.6; font-size: 0.95rem; }
-        
+
         .pricing-section { padding: 6rem 4rem; text-align: center; }
         .pricing-section h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
         .pricing-section .subtitle { margin: 0 auto 3rem; }
@@ -103,19 +103,19 @@
             padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
             margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;
         }
-        
+
         .cta {
             padding: 6rem 4rem; text-align: center;
             background: linear-gradient(180deg, transparent, rgba(99,102,241,0.05));
         }
         .cta h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -1px; }
         .cta p { color: #888; margin-bottom: 2rem; font-size: 1.1rem; }
-        
+
         .footer {
             padding: 3rem 4rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);
             color: #555; font-size: 0.85rem;
         }
-        
+
         @media (max-width: 768px) {
             .nav { padding: 1rem 2rem; }
             .nav-links a:not(.btn) { display: none; }
@@ -131,34 +131,34 @@
     <nav class="nav">
         <div class="logo">Data<span>Morph</span></div>
         <div class="nav-links">
-            <a href="#features">Fonctionnalites</a>
-            <a href="#pricing">Tarifs</a>
+            <a href="#features">Funcionalidades</a>
+            <a href="#pricing">Preços</a>
             <div class="lang-switch">
                 <a href="../index.html">EN</a>
-                <a href="index.html" class="active">FR</a>
+                <a href="../fr/index.html">FR</a>
                 <a href="../es/index.html">ES</a>
                 <a href="../ar/index.html">AR</a>
                 <a href="../zh/index.html">ZH</a>
                 <a href="../de/index.html">DE</a>
-                <a href="../pt/index.html">PT</a>
+                <a href="index.html" class="active">PT</a>
             </div>
-            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem;">Lancer l'app</a>
+            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem;">Abrir App</a>
         </div>
     </nav>
 
     <section class="hero">
-        <div class="badge">Nouveau &mdash; E-Commerce CSV Mapper</div>
-        <h1>Transformez vos donnees en <span>quelques secondes</span></h1>
+        <div class="badge">Novo &mdash; Mapeador de CSV para E-Commerce</div>
+        <h1>Transforme seus dados em <span>segundos</span></h1>
         <p class="subtitle">
-            Uploadez des CV en PDF ou des fichiers CSV fourmillistes.
-            Recevez des donnees structurees, propres et pretes a l'emploi.
+            Envie currículos em PDF ou arquivos CSV desordenados de fornecedores.
+            Receba dados estruturados, limpos e prontos para uso.
         </p>
         <div class="buttons">
             <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary">
-                Parser des CV &mdash; 5$
+                Processar Currículos &mdash; $5
             </a>
             <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-secondary">
-                Mapper CSV Shopify &mdash; 5$
+                Mapear CSV Shopify &mdash; $5
             </a>
         </div>
     </section>
@@ -166,61 +166,61 @@
     <section class="features" id="features">
         <div class="feature">
             <div class="feature-icon">&#128196;</div>
-            <h3>Resume Parser</h3>
-            <p>Uploadez jusqu'a 20 CV en PDF. L'IA extrait automatiquement le nom, email, telephone et les 3 meilleures competences dans un fichier CSV propre.</p>
+            <h3>Processador de Currículos</h3>
+            <p>Envie até 20 currículos em PDF. A IA extrai automaticamente nome, e-mail, telefone e as 3 principais habilidades em um arquivo CSV organizado.</p>
         </div>
         <div class="feature">
             <div class="feature-icon">&#128722;</div>
-            <h3>E-Commerce CSV Mapper</h3>
-            <p>Importez un CSV fourmilliste desordonne. Mappez les colonnes, appliquez votre marge, et recevez un fichier pret pour l'import Shopify.</p>
+            <h3>Mapeador de CSV para E-Commerce</h3>
+            <p>Importe um CSV desordenado de fornecedor. Mapeie as colunas, aplique sua margem de lucvo e obtenha um arquivo de importação pronto para o Shopify.</p>
         </div>
         <div class="feature">
             <div class="feature-icon">&#9889;</div>
-            <h3>Rapide & Automatise</h3>
-            <p>Plus besoin de copier-coller manuellement. Notre engine traite vos fichiers en quelques secondes et vous livrez des donnees structurees.</p>
+            <h3>Rápido e Automatizado</h3>
+            <p>Acabe com a cópia e cola manual. Nosso processador analisa seus arquivos em segundos e entrega dados estruturados.</p>
         </div>
     </section>
 
     <section class="pricing-section" id="pricing">
-        <h2>Simple et transparent</h2>
-        <p class="subtitle">Payez uniquement quand vous utilisez l'outil. Sans engagement.</p>
+        <h2>Simples e Transparente</h2>
+        <p class="subtitle">Pague apenas quando usar a ferramenta. Sem compromisso necessário.</p>
         <div class="pricing-cards">
             <div class="pricing-card">
-                <h3>Acces Unique</h3>
-                <div class="price">$5 <span>/ utilisation</span></div>
+                <h3>Acesso Único</h3>
+                <div class="price">$5 <span>/ uso</span></div>
                 <ul>
-                    <li>1 session de traitement</li>
-                    <li>Resume Parser ou CSV Mapper</li>
-                    <li>Download CSV illimite</li>
-                    <li>Resultats en quelques secondes</li>
+                    <li>1 sessão de processamento</li>
+                    <li>Processador de Currículos ou Mapeador de CSV</li>
+                    <li>Downloads de CSV ilimitados</li>
+                    <li>Resultados em segundos</li>
                 </ul>
-                <a href="https://buy.stripe.com/eVqeV7bT1fLY0UC9i63sI00" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">Acheter &mdash; $5</a>
+                <a href="https://buy.stripe.com/eVqeV7bT1fLY0UC9i63sI00" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">Comprar &mdash; $5</a>
             </div>
             <div class="pricing-card popular">
-                <div class="popular-badge">Populaire</div>
-                <h3>Abonnement Mensuel</h3>
-                <div class="price">$29 <span>/ mois</span></div>
+                <div class="popular-badge">Popular</div>
+                <h3>Assinatura Mensal</h3>
+                <div class="price">$29 <span>/ mês</span></div>
                 <ul>
-                    <li>Traitements illimites</li>
-                    <li>Resume Parser + CSV Mapper</li>
-                    <li>Support prioritaire</li>
-                    <li>Annulation a tout moment</li>
+                    <li>Processamento ilimitado</li>
+                    <li>Processador de Currículos + Mapeador de CSV</li>
+                    <li>Suporte prioritário</li>
+                    <li>Cancele quando quiser</li>
                 </ul>
-                <a href="https://buy.stripe.com/cNi14he196bofPw0LA3sI01" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">S'abonner &mdash; $29/mois</a>
+                <a href="https://buy.stripe.com/cNi14he196bofPw0LA3sI01" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">Assinar &mdash; $29/mês</a>
             </div>
         </div>
     </section>
 
     <section class="cta">
-        <h2>Pret a transformer vos donnees?</h2>
-        <p>Commencez en 30 secondes. Aucune inscription requise.</p>
+        <h2>Pronto para transformar seus dados?</h2>
+        <p>Comece em 30 segundos. Sem necessidade de cadastro.</p>
         <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary">
-            Lancer DataMorph &rarr;
+            Abrir DataMorph &rarr;
         </a>
     </section>
 
     <footer class="footer">
-        <p>&copy; 2026 DataMorph. Tous droits reserves.</p>
+        <p>&copy; 2026 DataMorph. Todos os direitos reservados.</p>
     </footer>
 
 </body>

@@ -1,23 +1,24 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataMorph — Transformez vos données en secondes</title>
+    <title>DataMorph — حوّل بياناتك في ثوانٍ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+        body { font-family: 'Noto Sans Arabic', 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; direction: rtl; text-align: right; }
         
         .nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 1.5rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100;
             background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05);
+            flex-direction: row-reverse;
         }
         .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
         .logo span { color: #6366f1; }
-        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-links { display: flex; align-items: center; gap: 2rem; flex-direction: row-reverse; }
         .nav-links a { color: #888; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
         .nav-links a:hover { color: #fff; }
         .lang-switch { display: flex; gap: 0.25rem; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 0.2rem; }
@@ -86,7 +87,7 @@
         .pricing-cards { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
         .pricing-card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 16px; padding: 2.5rem; flex: 1; min-width: 300px; text-align: left; transition: all 0.3s;
+            border-radius: 16px; padding: 2.5rem; flex: 1; min-width: 300px; text-align: right; transition: all 0.3s;
         }
         .pricing-card.popular {
             border-color: rgba(99,102,241,0.5);
@@ -96,7 +97,7 @@
         .price { font-size: 3rem; font-weight: 800; margin-bottom: 0.25rem; }
         .price span { font-size: 1rem; font-weight: 400; color: #666; }
         .pricing-card ul { list-style: none; margin: 1.5rem 0; }
-        .pricing-card li { padding: 0.5rem 0; color: #aaa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
+        .pricing-card li { padding: 0.5rem 0; color: #aaa; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; flex-direction: row-reverse; }
         .pricing-card li::before { content: '\2713'; color: #6366f1; font-weight: 700; }
         .popular-badge {
             display: inline-block; background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -131,34 +132,34 @@
     <nav class="nav">
         <div class="logo">Data<span>Morph</span></div>
         <div class="nav-links">
-            <a href="#features">Fonctionnalites</a>
-            <a href="#pricing">Tarifs</a>
+            <a href="#features">المميزات</a>
+            <a href="#pricing">الأسعار</a>
             <div class="lang-switch">
                 <a href="../index.html">EN</a>
-                <a href="index.html" class="active">FR</a>
+                <a href="../fr/index.html">FR</a>
                 <a href="../es/index.html">ES</a>
-                <a href="../ar/index.html">AR</a>
+                <a href="index.html" class="active">AR</a>
                 <a href="../zh/index.html">ZH</a>
                 <a href="../de/index.html">DE</a>
                 <a href="../pt/index.html">PT</a>
             </div>
-            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem;">Lancer l'app</a>
+            <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem;">إطلاق التطبيق</a>
         </div>
     </nav>
 
     <section class="hero">
-        <div class="badge">Nouveau &mdash; E-Commerce CSV Mapper</div>
-        <h1>Transformez vos donnees en <span>quelques secondes</span></h1>
+        <div class="badge">جديد &mdash; مُطةوِّل ملفات CSV للتجارة الإلكترونية</div>
+        <h1>حوّل بياناتك في <span>ثوانٍ</span></h1>
         <p class="subtitle">
-            Uploadez des CV en PDF ou des fichiers CSV fourmillistes.
-            Recevez des donnees structurees, propres et pretes a l'emploi.
+            ارفع ملفات سيرة ذاتية بصيغة PDF أو ملفات CSV للموردين الفوضوية.
+            احصل على بيانات منظمة ونظيفة وجاهزة للاستخدام.
         </p>
         <div class="buttons">
             <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary">
-                Parser des CV &mdash; 5$
+                استخراج السير الذاتية &mdash; 5$
             </a>
             <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-secondary">
-                Mapper CSV Shopify &mdash; 5$
+                توطين ملف CSV لـ Shopify &mdash; 5$
             </a>
         </div>
     </section>
@@ -166,61 +167,61 @@
     <section class="features" id="features">
         <div class="feature">
             <div class="feature-icon">&#128196;</div>
-            <h3>Resume Parser</h3>
-            <p>Uploadez jusqu'a 20 CV en PDF. L'IA extrait automatiquement le nom, email, telephone et les 3 meilleures competences dans un fichier CSV propre.</p>
+            <h3>مستخرج السير الذاتية</h3>
+            <p>ارفع ما يصل إلى 20 ملف PDF للسير الذاتية. يستخرج الذكاء الاصطناعي تلقائيًا الاسم والبريد الإلكتروني ورقم الهاتف وأبرز 3 مهارات في ملف CSV نظيف.</p>
         </div>
         <div class="feature">
             <div class="feature-icon">&#128722;</div>
-            <h3>E-Commerce CSV Mapper</h3>
-            <p>Importez un CSV fourmilliste desordonne. Mappez les colonnes, appliquez votre marge, et recevez un fichier pret pour l'import Shopify.</p>
+            <h3>مُطةوِّل ملفات CSV للتجارة الإلكترونية</h3>
+            <p>استورد ملف CSV فوضوي من المورد. خرّط الأعمدة وطبّق هامش الربح الخاص بك واحصل على ملف استيراد منتجات جاهز لـ Shopify.</p>
         </div>
         <div class="feature">
             <div class="feature-icon">&#9889;</div>
-            <h3>Rapide & Automatise</h3>
-            <p>Plus besoin de copier-coller manuellement. Notre engine traite vos fichiers en quelques secondes et vous livrez des donnees structurees.</p>
+            <h3>سريع ومؤتمت</h3>
+            <p>لا مزيد من النسخ واللصق اليدوي. محركنا يعالج ملفاتك في ثوانٍ ويقدم بيانات منظمة.</p>
         </div>
     </section>
 
     <section class="pricing-section" id="pricing">
-        <h2>Simple et transparent</h2>
-        <p class="subtitle">Payez uniquement quand vous utilisez l'outil. Sans engagement.</p>
+        <h2>بسيط وشفاف</h2>
+        <p class="subtitle">ادفع فقط عند استخدام الأداة. لا يلزم أي التزام.</p>
         <div class="pricing-cards">
             <div class="pricing-card">
-                <h3>Acces Unique</h3>
-                <div class="price">$5 <span>/ utilisation</span></div>
+                <h3>وصول لمرة واحدة</h3>
+                <div class="price">5$ <span>/ استخدام</span></div>
                 <ul>
-                    <li>1 session de traitement</li>
-                    <li>Resume Parser ou CSV Mapper</li>
-                    <li>Download CSV illimite</li>
-                    <li>Resultats en quelques secondes</li>
+                    <li>جلسة معالجة واحدة</li>
+                    <li>مستخرج السير الذاتية أو مُطةوِّل CSV</li>
+                    <li>تنزيلات CSV غير محدودة</li>
+                    <li>النتائج في ثوانٍ</li>
                 </ul>
-                <a href="https://buy.stripe.com/eVqeV7bT1fLY0UC9i63sI00" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">Acheter &mdash; $5</a>
+                <a href="https://buy.stripe.com/eVqeV7bT1fLY0UC9i63sI00" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">شراء &mdash; 5$</a>
             </div>
             <div class="pricing-card popular">
-                <div class="popular-badge">Populaire</div>
-                <h3>Abonnement Mensuel</h3>
-                <div class="price">$29 <span>/ mois</span></div>
+                <div class="popular-badge">الأكثر شيوعًا</div>
+                <h3>اشتراك شهري</h3>
+                <div class="price">29$ <span>/ شهريًا</span></div>
                 <ul>
-                    <li>Traitements illimites</li>
-                    <li>Resume Parser + CSV Mapper</li>
-                    <li>Support prioritaire</li>
-                    <li>Annulation a tout moment</li>
+                    <li>معالجة غير محدودة</li>
+                    <li>مستخرج السير الذاتية + مُطةوِّل CSV</li>
+                    <li>دعم ذو أولوية</li>
+                    <li>إلغاء في أي وقت</li>
                 </ul>
-                <a href="https://buy.stripe.com/cNi14he196bofPw0LA3sI01" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">S'abonner &mdash; $29/mois</a>
+                <a href="https://buy.stripe.com/cNi14he196bofPw0LA3sI01" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">اشترك &mdash; 29$/شهريًا</a>
             </div>
         </div>
     </section>
 
     <section class="cta">
-        <h2>Pret a transformer vos donnees?</h2>
-        <p>Commencez en 30 secondes. Aucune inscription requise.</p>
+        <h2>هل أنت مستعد لتحويل بياناتك؟</h2>
+        <p>ابدأ في 30 ثانية. لا حاجة للتسجيل.</p>
         <a href="https://zrho9xe4sctrauhpkekblp.streamlit.app/" target="_blank" class="btn btn-primary">
-            Lancer DataMorph &rarr;
+            &larr; إطلاق DataMorph
         </a>
     </section>
 
     <footer class="footer">
-        <p>&copy; 2026 DataMorph. Tous droits reserves.</p>
+        <p>&copy; 2026 DataMorph. جميع الحقوق محفوظة.</p>
     </footer>
 
 </body>
