@@ -4,3 +4,4 @@ __pycache__/
 *.db
 files.zip
 .DS_Store
+ga4-service-account.json

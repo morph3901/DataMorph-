@@ -2,10 +2,11 @@
 DataMorph Admin Dashboard
 =========================
 Dark-themed dashboard for monitoring Stripe payments, subscriptions,
-license keys (Supabase), and app usage.
+license keys (Supabase), and landing page analytics (GA4).
 """
 
 import os
+import json
 from datetime import datetime, timezone, timedelta
 
 import streamlit as st
@@ -124,6 +125,7 @@ def _get(key: str) -> str:
 STRIPE_KEY = _get("STRIPE_API_KEY")
 SUPABASE_URL = _get("SUPABASE_URL")
 SUPABASE_KEY = _get("SUPABASE_KEY")
+GA4_PROPERTY_ID = "546060130"
 
 stripe.api_key = STRIPE_KEY
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY) if SUPABASE_URL and SUPABASE_KEY else None
@@ -147,13 +149,6 @@ def money(cents: int) -> str:
     return f"${cents / 100:,.0f}"
 
 
-def money_short(cents: int) -> str:
-    val = cents / 100
-    if val >= 1000:
-        return f"${val / 1000:.1f}k"
-    return f"${val:,.0f}"
-
-
 def relative_time(ts: int) -> str:
     now = datetime.now(timezone.utc)
     dt = datetime.fromtimestamp(ts, tz=timezone.utc)
@@ -169,19 +164,41 @@ def relative_time(ts: int) -> str:
     return f"{minutes}m ago" if minutes > 0 else "just now"
 
 
+def get_ga4_client():
+    try:
+        from google.analytics.data_v1beta import BetaAnalyticsDataClient
+        sa_json = _get("GA4_SERVICE_ACCOUNT_JSON")
+        if sa_json:
+            info = json.loads(sa_json) if isinstance(sa_json, str) else sa_json
+            return BetaAnalyticsDataClient.from_service_account_info(info)
+        sa_file = os.path.join(os.path.dirname(__file__), "ga4-service-account.json")
+        if os.path.exists(sa_file):
+            return BetaAnalyticsDataClient.from_service_account_file(sa_file)
+    except Exception:
+        pass
+    return None
+
+
+def ga4_query(client, metrics, dimensions=None, days=30, limit=None):
+    from google.analytics.data_v1beta.types import RunReportRequest, DateRange, Metric as G4Metric, Dimension as G4Dimension
+    request = RunReportRequest(
+        property=f"properties/{GA4_PROPERTY_ID}",
+        date_ranges=[DateRange(start_date=f"{days}daysAgo", end_date="today")],
+        metrics=[G4Metric(name=m) for m in metrics],
+        dimensions=[G4Dimension(name=d) for d in (dimensions or [])],
+        limit=limit,
+    )
+    return client.run_report(request)
+
+
 # ── Data Fetching ───────────────────────────────────────────────────────
 @st.cache_data(ttl=120)
 def fetch_stripe():
     data = {}
     try:
-        bal = stripe.Balance.retrieve()
-        data["available"] = bal.available[0].amount if bal.available else 0
-        data["pending"] = bal.pending[0].amount if bal.pending else 0
-
         data["payments"] = stripe.PaymentIntent.list(limit=100).data
         data["subscriptions"] = stripe.Subscription.list(limit=100, status="all").data
         data["customers"] = stripe.Customer.list(limit=100).data
-        data["invoices"] = stripe.Invoice.list(limit=100).data
     except Exception as e:
         data["error"] = str(e)
     return data
@@ -196,6 +213,66 @@ def fetch_supabase():
         return {"keys": resp.data or []}
     except Exception as e:
         return {"error": str(e), "keys": []}
+
+
+@st.cache_data(ttl=300)
+def fetch_ga4_overview():
+    client = get_ga4_client()
+    if not client:
+        return None
+    try:
+        r = ga4_query(client, ["totalUsers", "sessions", "screenPageViews", "bounceRate", "averageSessionDuration"], days=30)
+        row = r.rows[0] if r.rows else None
+        if not row:
+            return None
+        return {
+            "users": int(row.metric_values[0].value),
+            "sessions": int(row.metric_values[1].value),
+            "views": int(row.metric_values[2].value),
+            "bounce_rate": float(row.metric_values[3].value),
+            "avg_duration": float(row.metric_values[4].value),
+        }
+    except Exception:
+        return None
+
+
+@st.cache_data(ttl=300)
+def fetch_ga4_daily():
+    client = get_ga4_client()
+    if not client:
+        return None
+    try:
+        r = ga4_query(client, ["sessions", "totalUsers"], dimensions=["date"], days=30)
+        rows = [{"date": row.dimension_values[0].value, "sessions": int(row.metric_values[0].value), "users": int(row.metric_values[1].value)} for row in r.rows]
+        df = pd.DataFrame(rows)
+        df["date"] = pd.to_datetime(df["date"], format="%Y%m%d")
+        return df.sort_values("date")
+    except Exception:
+        return None
+
+
+@st.cache_data(ttl=300)
+def fetch_ga4_sources():
+    client = get_ga4_client()
+    if not client:
+        return None
+    try:
+        r = ga4_query(client, ["sessions"], dimensions=["sessionSource"], days=30, limit=10)
+        return [{"source": row.dimension_values[0].value or "(direct)", "sessions": int(row.metric_values[0].value)} for row in r.rows]
+    except Exception:
+        return None
+
+
+@st.cache_data(ttl=300)
+def fetch_ga4_pages():
+    client = get_ga4_client()
+    if not client:
+        return None
+    try:
+        r = ga4_query(client, ["screenPageViews"], dimensions=["pagePath"], days=30, limit=10)
+        return [{"path": row.dimension_values[0].value, "views": int(row.metric_values[0].value)} for row in r.rows]
+    except Exception:
+        return None
 
 
 def get_customer_email(customer_id: str, customer_cache: dict) -> str:
@@ -223,6 +300,10 @@ def main():
 
     stripe_data = fetch_stripe()
     supa_data = fetch_supabase()
+    ga4_overview = fetch_ga4_overview()
+    ga4_daily = fetch_ga4_daily()
+    ga4_sources = fetch_ga4_sources()
+    ga4_pages = fetch_ga4_pages()
 
     if "error" in stripe_data:
         st.error(f"Stripe: {stripe_data['error']}")
@@ -231,42 +312,31 @@ def main():
 
     payments = stripe_data.get("payments", [])
     subs = stripe_data.get("subscriptions", [])
-    customers = stripe_data.get("customers", [])
     keys = supa_data.get("keys", [])
     customer_cache = {}
 
     now = datetime.now(timezone.utc)
     month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    last_30 = now - timedelta(days=30)
     last_90 = now - timedelta(days=90)
     prev_month_start = (month_start - timedelta(days=1)).replace(day=1)
 
-    # ── Compute Metrics ─────────────────────────────────────────────
     succeeded = [p for p in payments if p.status == "succeeded"]
-
     total_revenue = sum(p.amount for p in succeeded)
     month_revenue = sum(p.amount for p in succeeded if p.created and datetime.fromtimestamp(p.created, tz=timezone.utc) >= month_start)
     prev_month_revenue = sum(p.amount for p in succeeded if p.created and prev_month_start <= datetime.fromtimestamp(p.created, tz=timezone.utc) < month_start)
 
     active_subs = [s for s in subs if s.status == "active"]
     canceled_recent = [s for s in subs if s.status in ("canceled", "unpaid") and s.canceled_at and datetime.fromtimestamp(s.canceled_at, tz=timezone.utc) >= month_start]
-    mrr = sum(
-        s.get("items", {}).get("data", [{}])[0].get("price", {}).get("unit_amount", 0)
-        for s in active_subs
-    ) if active_subs else 0
 
     month_customers = len(set(
         get_customer_email(p.customer, customer_cache)
         for p in succeeded if p.created and datetime.fromtimestamp(p.created, tz=timezone.utc) >= month_start and p.customer
     ))
     total_customers = len(set(p.customer for p in succeeded if p.customer))
-
     month_keys = len([k for k in keys if k.get("created_at", "") >= month_start.isoformat()])
     one_time_keys = len([k for k in keys if k.get("type") == "one_time"])
     sub_keys = len([k for k in keys if k.get("type") == "subscription"])
-    active_keys = len([k for k in keys if k.get("status") == "active"])
 
-    # Conversion rate: one-time buyers who later subscribed
     one_time_customers = set(k.get("stripe_customer_id") for k in keys if k.get("type") == "one_time")
     sub_customers = set(k.get("stripe_customer_id") for k in keys if k.get("type") == "subscription")
     converted = one_time_customers & sub_customers
@@ -276,47 +346,91 @@ def main():
     st.markdown("## DataMorph Owner Dashboard")
     st.markdown(f'<span style="color:#8b949e;font-size:0.85rem">Admin Overview &nbsp;·&nbsp; {now.strftime("%B %d, %Y")}</span>', unsafe_allow_html=True)
 
-    # ── Top KPI Row ─────────────────────────────────────────────────
+    # ── Landing Page KPI Row ────────────────────────────────────────
+    st.markdown("### 🌐 Landing Page Analytics")
+    lp1, lp2, lp3, lp4, lp5 = st.columns(5)
+    if ga4_overview:
+        with lp1:
+            st.metric("Visitors (30d)", f"{ga4_overview['users']:,}")
+        with lp2:
+            st.metric("Sessions (30d)", f"{ga4_overview['sessions']:,}")
+        with lp3:
+            st.metric("Page Views (30d)", f"{ga4_overview['views']:,}")
+        with lp4:
+            st.metric("Bounce Rate", f"{ga4_overview['bounce_rate']:.1%}")
+        with lp5:
+            mins = ga4_overview['avg_duration'] / 60
+            st.metric("Avg. Session", f"{mins:.1f}m")
+    else:
+        lp1.info("GA4 not connected")
     st.markdown("")
-    k1, k2, k3, k4 = st.columns(4)
 
+    # ── Charts Row: Traffic + Sources ───────────────────────────────
+    col_traffic, col_sources = st.columns([3, 2])
+
+    with col_traffic:
+        st.markdown('<div class="section-card"><div class="section-title">Daily Traffic (30 Days)</div>', unsafe_allow_html=True)
+        if ga4_daily is not None and not ga4_daily.empty:
+            fig = px.bar(ga4_daily, x="date", y="sessions", color_discrete_sequence=["#58a6ff"])
+            if "users" in ga4_daily.columns:
+                fig.add_scatter(x=ga4_daily["date"], y=ga4_daily["users"], mode="lines", name="Users", line=dict(color="#3fb950", width=2))
+            fig.update_layout(**PLOTLY_LAYOUT, height=280, xaxis_title="", yaxis_title="Sessions", showlegend=True)
+            fig.update_traces(marker_line_width=0)
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("No traffic data yet.")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col_sources:
+        st.markdown('<div class="section-card"><div class="section-title">Traffic Sources (30 Days)</div>', unsafe_allow_html=True)
+        if ga4_sources:
+            src_df = pd.DataFrame(ga4_sources)
+            fig = px.bar(src_df, x="sessions", y="source", orientation="h", color_discrete_sequence=["#a371f7"])
+            fig.update_layout(**PLOTLY_LAYOUT, height=280, xaxis_title="Sessions", yaxis_title="", showlegend=False)
+            fig.update_traces(marker_line_width=0)
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("No source data yet.")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # ── Top Pages ───────────────────────────────────────────────────
+    col_pages, col_empty = st.columns([3, 2])
+
+    with col_pages:
+        st.markdown('<div class="section-card"><div class="section-title">Top Pages (30 Days)</div>', unsafe_allow_html=True)
+        if ga4_pages:
+            pages_df = pd.DataFrame(ga4_pages)
+            fig = px.bar(pages_df, x="views", y="path", orientation="h", color_discrete_sequence=["#f0883e"])
+            fig.update_layout(**PLOTLY_LAYOUT, height=280, xaxis_title="Views", yaxis_title="", showlegend=False)
+            fig.update_traces(marker_line_width=0)
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("No page data yet.")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # ── Stripe / Revenue Section ────────────────────────────────────
+    st.markdown("### 💰 Revenue & Payments")
+
+    k1, k2, k3, k4 = st.columns(4)
     rev_delta = month_revenue - prev_month_revenue
-    rev_pct = (rev_delta / prev_month_revenue * 100) if prev_month_revenue else 0
     rev_color = "up" if rev_delta >= 0 else "down"
     rev_arrow = "+" if rev_delta >= 0 else ""
 
     with k1:
-        st.markdown(f"""<div class="kpi-card">
-            <div class="kpi-label">Customers</div>
-            <div class="kpi-value">{total_customers}</div>
-            <div class="kpi-sub"><span class="up">+{month_customers}</span> this month</div>
-        </div>""", unsafe_allow_html=True)
-
+        st.metric("Total Revenue", money(total_revenue))
     with k2:
-        st.markdown(f"""<div class="kpi-card">
-            <div class="kpi-label">Revenue</div>
-            <div class="kpi-value">{money(total_revenue)}</div>
-            <div class="kpi-sub"><span class="{rev_color}">{rev_arrow}{money(rev_delta)}</span> from last month</div>
-        </div>""", unsafe_allow_html=True)
-
+        st.metric("Monthly Revenue", money(month_revenue), delta=f"{rev_arrow}{money(rev_delta)}")
     with k3:
-        st.markdown(f"""<div class="kpi-card">
-            <div class="kpi-label">License Keys</div>
-            <div class="kpi-value">{len(keys)}</div>
-            <div class="kpi-sub"><span class="up">+{month_keys}</span> this month</div>
-        </div>""", unsafe_allow_html=True)
-
+        st.metric("Active Subscribers", len(active_subs))
     with k4:
-        st.markdown(f"""<div class="kpi-card">
-            <div class="kpi-label">One-Time → Sub</div>
-            <div class="kpi-value">{conversion_rate:.1f}%</div>
-            <div class="kpi-sub">last 90 days</div>
-        </div>""", unsafe_allow_html=True)
+        st.metric("Cancellations", len(canceled_recent), delta=f"-{len(canceled_recent)}" if canceled_recent else "0")
 
     st.markdown("")
 
-    # ── Charts Row 1: MRR + Sessions ────────────────────────────────
-    col_mrr, col_sessions = st.columns([3, 2])
+    # ── Charts Row: MRR + Revenue by Day ────────────────────────────
+    col_mrr, col_rev = st.columns([3, 2])
 
     with col_mrr:
         st.markdown('<div class="section-card"><div class="section-title">MRR Evolution</div>', unsafe_allow_html=True)
@@ -328,11 +442,8 @@ def main():
                     amount = price.get("unit_amount", 0) / 100
                     created = datetime.fromtimestamp(s.created, tz=timezone.utc).date() if s.created else now.date()
                     mrr_data.append({"date": created, "amount": amount})
-
             if mrr_data:
-                mrr_df = pd.DataFrame(mrr_data)
-                mrr_df = mrr_df.groupby("date", as_index=False)["amount"].sum()
-                mrr_df = mrr_df.sort_values("date")
+                mrr_df = pd.DataFrame(mrr_data).groupby("date", as_index=False)["amount"].sum().sort_values("date")
                 mrr_df["cumulative"] = mrr_df["amount"].cumsum()
                 fig = px.line(mrr_df, x="date", y="cumulative", markers=True)
                 fig.update_layout(**PLOTLY_LAYOUT, height=280, yaxis_title="$", xaxis_title="")
@@ -344,8 +455,9 @@ def main():
             st.info("No active subscriptions yet.")
         st.markdown("</div>", unsafe_allow_html=True)
 
-    with col_sessions:
+    with col_rev:
         st.markdown('<div class="section-card"><div class="section-title">Revenue by Day (30 Days)</div>', unsafe_allow_html=True)
+        last_30 = now - timedelta(days=30)
         recent_rev = [
             {"date": datetime.fromtimestamp(p.created, tz=timezone.utc).date(), "revenue": p.amount / 100}
             for p in succeeded if p.created and datetime.fromtimestamp(p.created, tz=timezone.utc) >= last_30
@@ -362,20 +474,23 @@ def main():
             st.info("No revenue in last 30 days.")
         st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── KPI Row 2 ───────────────────────────────────────────────────
-    s1, s2, s3, s4 = st.columns(4)
-    with s1:
-        st.metric("Monthly Revenue", money(month_revenue), delta=f"{rev_arrow}{money(rev_delta)}")
-    with s2:
-        st.metric("Active Subscribers", len(active_subs))
-    with s3:
-        st.metric("Keys Generated", len(keys), delta=f"+{month_keys} this month")
-    with s4:
-        st.metric("Cancellations", len(canceled_recent), delta=f"-{len(canceled_recent)}" if canceled_recent else "0")
+    st.markdown("")
+
+    # ── License Keys Section ────────────────────────────────────────
+    st.markdown("### 🔑 License Keys")
+
+    lk1, lk2, lk3, lk4 = st.columns(4)
+    with lk1:
+        st.metric("Total Keys", len(keys))
+    with lk2:
+        st.metric("This Month", month_keys)
+    with lk3:
+        st.metric("One-Time", one_time_keys)
+    with lk4:
+        st.metric("Conversion Rate", f"{conversion_rate:.1f}%")
 
     st.markdown("")
 
-    # ── Charts Row 2: Signups by Plan + Distribution ────────────────
     col_signups, col_dist = st.columns([3, 2])
 
     with col_signups:
@@ -399,8 +514,7 @@ def main():
                 fig = px.bar(signups_grouped, x="month", y="size", color="type",
                              color_discrete_map={"One-Time": "#58a6ff", "Subscription": "#a371f7"},
                              barmode="group")
-                fig.update_layout(**PLOTLY_LAYOUT, height=280, xaxis_title="", yaxis_title="Signups",
-                                  legend_title_text="")
+                fig.update_layout(**PLOTLY_LAYOUT, height=280, xaxis_title="", yaxis_title="Signups", legend_title_text="")
                 fig.update_traces(marker_line_width=0)
                 st.plotly_chart(fig, use_container_width=True)
             else:
@@ -410,7 +524,7 @@ def main():
         st.markdown("</div>", unsafe_allow_html=True)
 
     with col_dist:
-        st.markdown('<div class="section-card"><div class="section-title">Key Distribution by Type</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-card"><div class="section-title">Key Distribution</div>', unsafe_allow_html=True)
         if keys:
             dist_data = {"One-Time": one_time_keys, "Subscription": sub_keys}
             fig = go.Figure(data=[go.Pie(
@@ -433,8 +547,6 @@ def main():
     st.markdown('<div class="section-card"><div class="section-title">Recent Activity</div>', unsafe_allow_html=True)
 
     activities = []
-
-    # Key events from Supabase
     for k in keys:
         created = k.get("created_at", "")
         if not created:
@@ -468,7 +580,6 @@ def main():
                 "ts": ts + 1,
             })
 
-    # Subscription events from Stripe
     for s in subs:
         if s.status == "active" and s.get("canceled_at"):
             ts = s["canceled_at"]
@@ -487,7 +598,6 @@ def main():
 
     if activities:
         icon_map = {"signup": ("+", "badge-signup"), "first": ("▷", "badge-first"), "cancel": ("✕", "badge-cancel"), "upgrade": ("↑", "badge-upgrade")}
-
         for a in activities[:15]:
             icon_char, badge_cls = icon_map.get(a["type"], ("•", "badge-signup"))
             st.markdown(f"""<div class="activity-row">
@@ -505,7 +615,6 @@ def main():
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # ── Footer ──────────────────────────────────────────────────────
     st.markdown("")
     st.markdown(f'<div style="text-align:center;color:#484f58;font-size:0.75rem">● Live &nbsp;·&nbsp; Auto-refreshes every 2 min &nbsp;·&nbsp; {now.strftime("%H:%M:%S")} UTC</div>', unsafe_allow_html=True)
 

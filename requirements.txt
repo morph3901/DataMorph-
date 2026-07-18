@@ -7,6 +7,7 @@ supabase
 # --- Dashboard (dashboard.py) ---
 plotly
 stripe
+google-analytics-data
 
 # --- Webhook server (webhook_server.py) ---
 flask
