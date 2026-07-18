@@ -4,6 +4,10 @@ pandas
 openai
 supabase
 
+# --- Dashboard (dashboard.py) ---
+plotly
+stripe
+
 # --- Webhook server (webhook_server.py) ---
 flask
 stripe

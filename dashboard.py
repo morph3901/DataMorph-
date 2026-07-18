@@ -1,11 +1,8 @@
 """
 DataMorph Admin Dashboard
 =========================
-Streamlit dashboard for monitoring Stripe payments, subscriptions,
-license keys (Supabase), and app traffic.
-
-Deploy as a SEPARATE Streamlit Cloud app pointing to this file.
-Set the same secrets as the main app (STRIPE_API_KEY, SUPABASE_URL, SUPABASE_KEY).
+Dark-themed dashboard for monitoring Stripe payments, subscriptions,
+license keys (Supabase), and app usage.
 """
 
 import os
@@ -13,11 +10,108 @@ from datetime import datetime, timezone, timedelta
 
 import streamlit as st
 import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 import stripe
 from supabase import create_client
 
-# ── Config ──────────────────────────────────────────────────────────────
+# ── Page Config ─────────────────────────────────────────────────────────
 st.set_page_config(page_title="DataMorph Dashboard", page_icon="📊", layout="wide")
+
+# ── Dark Theme CSS ──────────────────────────────────────────────────────
+st.markdown("""
+<style>
+    .stApp { background-color: #0e1117; }
+    [data-testid="stSidebar"] { background-color: #161b22; }
+    .block-container { padding-top: 1rem; }
+
+    .kpi-card {
+        background: linear-gradient(135deg, #161b22 0%, #1c2333 100%);
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 1.2rem 1.5rem;
+        text-align: center;
+    }
+    .kpi-card .kpi-label {
+        font-size: 0.78rem;
+        color: #8b949e;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.3rem;
+    }
+    .kpi-card .kpi-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #f0f6fc;
+        margin-bottom: 0.2rem;
+    }
+    .kpi-card .kpi-sub {
+        font-size: 0.75rem;
+        color: #8b949e;
+    }
+    .kpi-card .kpi-sub .up { color: #3fb950; }
+    .kpi-card .kpi-sub .down { color: #f85149; }
+
+    .section-card {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 1.2rem;
+    }
+    .section-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #f0f6fc;
+        margin-bottom: 0.8rem;
+    }
+
+    .activity-row {
+        display: flex;
+        align-items: center;
+        padding: 0.55rem 0;
+        border-bottom: 1px solid #21262d;
+        font-size: 0.82rem;
+    }
+    .activity-row:last-child { border-bottom: none; }
+    .activity-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.7rem;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+    }
+    .activity-icon.signup { background: rgba(56,139,253,0.15); color: #58a6ff; }
+    .activity-icon.upgrade { background: rgba(63,185,80,0.15); color: #3fb950; }
+    .activity-icon.cancel { background: rgba(248,81,73,0.15); color: #f85149; }
+    .activity-icon.first { background: rgba(163,113,247,0.15); color: #a371f7; }
+    .activity-text { flex: 1; color: #c9d1d9; }
+    .activity-text strong { color: #f0f6fc; }
+    .activity-time { color: #8b949e; font-size: 0.75rem; white-space: nowrap; }
+    .activity-badge {
+        display: inline-block;
+        padding: 0.15rem 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-right: 0.5rem;
+    }
+    .badge-signup { background: rgba(56,139,253,0.15); color: #58a6ff; }
+    .badge-upgrade { background: rgba(63,185,80,0.15); color: #3fb950; }
+    .badge-cancel { background: rgba(248,81,73,0.15); color: #f85149; }
+    .badge-first { background: rgba(163,113,247,0.15); color: #a371f7; }
+
+    div[data-testid="stMetric"] {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # ── Secrets / Env ───────────────────────────────────────────────────────
 def _get(key: str) -> str:
@@ -34,18 +128,40 @@ SUPABASE_KEY = _get("SUPABASE_KEY")
 stripe.api_key = STRIPE_KEY
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY) if SUPABASE_URL and SUPABASE_KEY else None
 
+PLOTLY_LAYOUT = dict(
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(color="#c9d1d9", size=12),
+    xaxis=dict(gridcolor="#21262d", zerolinecolor="#21262d"),
+    yaxis=dict(gridcolor="#21262d", zerolinecolor="#21262d"),
+    margin=dict(l=0, r=0, t=30, b=0),
+    legend=dict(
+        orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1,
+        font=dict(size=11, color="#8b949e"),
+    ),
+)
+
+
 # ── Helpers ─────────────────────────────────────────────────────────────
 def money(cents: int) -> str:
-    return f"${cents / 100:,.2f}"
+    return f"${cents / 100:,.0f}"
 
 
-def relative_time(dt: datetime) -> str:
+def money_short(cents: int) -> str:
+    val = cents / 100
+    if val >= 1000:
+        return f"${val / 1000:.1f}k"
+    return f"${val:,.0f}"
+
+
+def relative_time(ts: int) -> str:
     now = datetime.now(timezone.utc)
+    dt = datetime.fromtimestamp(ts, tz=timezone.utc)
     diff = now - dt
     if diff.days > 30:
         return f"{diff.days // 30}mo ago"
     if diff.days > 0:
-        return f"{diff.days}d ago"
+        return f"{'a ' if diff.days == 1 else ''}{diff.days} day{'s' if diff.days > 1 else ''} ago"
     hours = diff.seconds // 3600
     if hours > 0:
         return f"{hours}h ago"
@@ -53,221 +169,345 @@ def relative_time(dt: datetime) -> str:
     return f"{minutes}m ago" if minutes > 0 else "just now"
 
 
-# ── Stripe Data ─────────────────────────────────────────────────────────
+# ── Data Fetching ───────────────────────────────────────────────────────
 @st.cache_data(ttl=120)
-def fetch_stripe_data():
+def fetch_stripe():
     data = {}
     try:
-        # Balance
         bal = stripe.Balance.retrieve()
         data["available"] = bal.available[0].amount if bal.available else 0
         data["pending"] = bal.pending[0].amount if bal.pending else 0
 
-        # Payment Intents (last 100)
-        pi = stripe.PaymentIntent.list(limit=100)
-        data["payments"] = pi.data
-
-        # Subscriptions
-        subs = stripe.Subscription.list(limit=100, status="all")
-        data["subscriptions"] = subs.data
-
-        # Customers
-        custs = stripe.Customer.list(limit=100)
-        data["customers"] = custs.data
-
-        # Products
-        prods = stripe.Product.list(limit=20)
-        data["products"] = prods.data
-
-        # Prices
-        prices = stripe.Price.list(limit=20)
-        data["prices"] = prices.data
-
+        data["payments"] = stripe.PaymentIntent.list(limit=100).data
+        data["subscriptions"] = stripe.Subscription.list(limit=100, status="all").data
+        data["customers"] = stripe.Customer.list(limit=100).data
+        data["invoices"] = stripe.Invoice.list(limit=100).data
     except Exception as e:
         data["error"] = str(e)
     return data
 
 
-# ── Supabase Data ───────────────────────────────────────────────────────
 @st.cache_data(ttl=120)
-def fetch_supabase_data():
+def fetch_supabase():
     if not supabase:
-        return {"error": "Supabase not configured"}
-    data = {}
+        return {"error": "Supabase not configured", "keys": []}
     try:
         resp = supabase.table("license_keys").select("*").execute()
-        data["keys"] = resp.data or []
+        return {"keys": resp.data or []}
     except Exception as e:
-        data["error"] = str(e)
-    return data
+        return {"error": str(e), "keys": []}
+
+
+def get_customer_email(customer_id: str, customer_cache: dict) -> str:
+    if not customer_id:
+        return ""
+    if customer_id in customer_cache:
+        return customer_cache[customer_id]
+    try:
+        c = stripe.Customer.retrieve(customer_id)
+        email = c.email or ""
+    except Exception:
+        email = ""
+    customer_cache[customer_id] = email
+    return email
 
 
 # ── Main ────────────────────────────────────────────────────────────────
 def main():
-    st.title("📊 DataMorph Dashboard")
-    st.caption("Real-time overview of revenue, subscriptions, and license keys.")
-
     if not STRIPE_KEY:
-        st.error("STRIPE_API_KEY not set. Add it to your Streamlit secrets.")
+        st.error("STRIPE_API_KEY not set.")
         st.stop()
     if not SUPABASE_URL:
-        st.error("SUPABASE_URL not set. Add it to your Streamlit secrets.")
+        st.error("SUPABASE_URL not set.")
         st.stop()
 
-    stripe_data = fetch_stripe_data()
-    supa_data = fetch_supabase_data()
+    stripe_data = fetch_stripe()
+    supa_data = fetch_supabase()
 
     if "error" in stripe_data:
-        st.error(f"Stripe error: {stripe_data['error']}")
+        st.error(f"Stripe: {stripe_data['error']}")
     if "error" in supa_data:
-        st.error(f"Supabase error: {supa_data['error']}")
-
-    # ── KPI Cards ───────────────────────────────────────────────────
-    now = datetime.now(timezone.utc)
-    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-    today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        st.error(f"Supabase: {supa_data['error']}")
 
     payments = stripe_data.get("payments", [])
     subs = stripe_data.get("subscriptions", [])
+    customers = stripe_data.get("customers", [])
     keys = supa_data.get("keys", [])
+    customer_cache = {}
 
-    # Revenue calculations
-    succeeded_payments = [p for p in payments if p.status == "succeeded"]
-    total_revenue = sum(p.amount for p in succeeded_payments)
-    month_revenue = sum(
-        p.amount for p in succeeded_payments
-        if p.created and datetime.fromtimestamp(p.created, tz=timezone.utc) >= month_start
-    )
-    today_revenue = sum(
-        p.amount for p in succeeded_payments
-        if p.created and datetime.fromtimestamp(p.created, tz=timezone.utc) >= today_start
-    )
+    now = datetime.now(timezone.utc)
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    last_30 = now - timedelta(days=30)
+    last_90 = now - timedelta(days=90)
+    prev_month_start = (month_start - timedelta(days=1)).replace(day=1)
 
-    # Subscription calculations
+    # ── Compute Metrics ─────────────────────────────────────────────
+    succeeded = [p for p in payments if p.status == "succeeded"]
+
+    total_revenue = sum(p.amount for p in succeeded)
+    month_revenue = sum(p.amount for p in succeeded if p.created and datetime.fromtimestamp(p.created, tz=timezone.utc) >= month_start)
+    prev_month_revenue = sum(p.amount for p in succeeded if p.created and prev_month_start <= datetime.fromtimestamp(p.created, tz=timezone.utc) < month_start)
+
     active_subs = [s for s in subs if s.status == "active"]
-    canceled_subs = [s for s in subs if s.status in ("canceled", "unpaid")]
+    canceled_recent = [s for s in subs if s.status in ("canceled", "unpaid") and s.canceled_at and datetime.fromtimestamp(s.canceled_at, tz=timezone.utc) >= month_start]
     mrr = sum(
         s.get("items", {}).get("data", [{}])[0].get("price", {}).get("unit_amount", 0)
         for s in active_subs
     ) if active_subs else 0
 
-    # License key calculations
-    total_keys = len(keys)
-    active_keys = len([k for k in keys if k.get("status") == "active"])
-    used_keys = len([k for k in keys if k.get("usage_count", 0) > 0])
+    month_customers = len(set(
+        get_customer_email(p.customer, customer_cache)
+        for p in succeeded if p.created and datetime.fromtimestamp(p.created, tz=timezone.utc) >= month_start and p.customer
+    ))
+    total_customers = len(set(p.customer for p in succeeded if p.customer))
+
+    month_keys = len([k for k in keys if k.get("created_at", "") >= month_start.isoformat()])
     one_time_keys = len([k for k in keys if k.get("type") == "one_time"])
     sub_keys = len([k for k in keys if k.get("type") == "subscription"])
+    active_keys = len([k for k in keys if k.get("status") == "active"])
 
-    # ── Display KPIs ────────────────────────────────────────────────
-    st.divider()
-    c1, c2, c3, c4, c5 = st.columns(5)
-    c1.metric("💰 Total Revenue", money(total_revenue))
-    c2.metric("📅 This Month", money(month_revenue))
-    c3.metric("📆 Today", money(today_revenue))
-    c4.metric("🔄 Active Subs", len(active_subs))
-    c5.metric("📈 MRR", money(mrr))
+    # Conversion rate: one-time buyers who later subscribed
+    one_time_customers = set(k.get("stripe_customer_id") for k in keys if k.get("type") == "one_time")
+    sub_customers = set(k.get("stripe_customer_id") for k in keys if k.get("type") == "subscription")
+    converted = one_time_customers & sub_customers
+    conversion_rate = (len(converted) / len(one_time_customers) * 100) if one_time_customers else 0
 
-    c6, c7, c8, c9, c10 = st.columns(5)
-    c6.metric("🔑 Total Keys", total_keys)
-    c7.metric("✅ Active Keys", active_keys)
-    c8.metric("📥 Used (One-Time)", used_keys)
-    c9.metric("🎫 One-Time Keys", one_time_keys)
-    c10.metric("🔁 Subscription Keys", sub_keys)
+    # ── Header ──────────────────────────────────────────────────────
+    st.markdown("## DataMorph Owner Dashboard")
+    st.markdown(f'<span style="color:#8b949e;font-size:0.85rem">Admin Overview &nbsp;·&nbsp; {now.strftime("%B %d, %Y")}</span>', unsafe_allow_html=True)
 
-    # ── Revenue Chart ───────────────────────────────────────────────
-    st.divider()
-    st.subheader("Revenue Over Time")
+    # ── Top KPI Row ─────────────────────────────────────────────────
+    st.markdown("")
+    k1, k2, k3, k4 = st.columns(4)
 
-    if succeeded_payments:
-        rev_df = pd.DataFrame([
-            {
-                "date": datetime.fromtimestamp(p.created, tz=timezone.utc).date(),
-                "amount": p.amount / 100,
-            }
-            for p in succeeded_payments
-            if p.created
-        ])
-        rev_df = rev_df.groupby("date", as_index=False)["amount"].sum()
-        rev_df = rev_df.sort_values("date")
-        st.bar_chart(rev_df, x="date", y="amount", height=300)
-    else:
-        st.info("No successful payments yet.")
+    rev_delta = month_revenue - prev_month_revenue
+    rev_pct = (rev_delta / prev_month_revenue * 100) if prev_month_revenue else 0
+    rev_color = "up" if rev_delta >= 0 else "down"
+    rev_arrow = "+" if rev_delta >= 0 else ""
 
-    # ── Tabs: Transactions / Subscriptions / Keys ───────────────────
-    st.divider()
-    tab1, tab2, tab3 = st.tabs(["💳 Transactions", "🔄 Subscriptions", "🔑 License Keys"])
+    with k1:
+        st.markdown(f"""<div class="kpi-card">
+            <div class="kpi-label">Customers</div>
+            <div class="kpi-value">{total_customers}</div>
+            <div class="kpi-sub"><span class="up">+{month_customers}</span> this month</div>
+        </div>""", unsafe_allow_html=True)
 
-    with tab1:
-        st.subheader("Recent Transactions")
-        if succeeded_payments:
-            tx_data = []
-            for p in succeeded_payments[:50]:
-                cust_email = ""
-                if p.customer:
-                    try:
-                        cust = stripe.Customer.retrieve(p.customer)
-                        cust_email = cust.email or ""
-                    except Exception:
-                        cust_email = p.customer
-                tx_data.append({
-                    "Date": datetime.fromtimestamp(p.created, tz=timezone.utc).strftime("%Y-%m-%d %H:%M"),
-                    "Amount": money(p.amount),
-                    "Status": p.status,
-                    "Email": cust_email,
-                    "Payment ID": p.id,
-                })
-            st.dataframe(pd.DataFrame(tx_data), use_container_width=True, hide_index=True)
+    with k2:
+        st.markdown(f"""<div class="kpi-card">
+            <div class="kpi-label">Revenue</div>
+            <div class="kpi-value">{money(total_revenue)}</div>
+            <div class="kpi-sub"><span class="{rev_color}">{rev_arrow}{money(rev_delta)}</span> from last month</div>
+        </div>""", unsafe_allow_html=True)
+
+    with k3:
+        st.markdown(f"""<div class="kpi-card">
+            <div class="kpi-label">License Keys</div>
+            <div class="kpi-value">{len(keys)}</div>
+            <div class="kpi-sub"><span class="up">+{month_keys}</span> this month</div>
+        </div>""", unsafe_allow_html=True)
+
+    with k4:
+        st.markdown(f"""<div class="kpi-card">
+            <div class="kpi-label">One-Time → Sub</div>
+            <div class="kpi-value">{conversion_rate:.1f}%</div>
+            <div class="kpi-sub">last 90 days</div>
+        </div>""", unsafe_allow_html=True)
+
+    st.markdown("")
+
+    # ── Charts Row 1: MRR + Sessions ────────────────────────────────
+    col_mrr, col_sessions = st.columns([3, 2])
+
+    with col_mrr:
+        st.markdown('<div class="section-card"><div class="section-title">MRR Evolution</div>', unsafe_allow_html=True)
+        if active_subs:
+            mrr_data = []
+            for s in active_subs:
+                if s.get("items", {}).get("data"):
+                    price = s["items"]["data"][0].get("price", {})
+                    amount = price.get("unit_amount", 0) / 100
+                    created = datetime.fromtimestamp(s.created, tz=timezone.utc).date() if s.created else now.date()
+                    mrr_data.append({"date": created, "amount": amount})
+
+            if mrr_data:
+                mrr_df = pd.DataFrame(mrr_data)
+                mrr_df = mrr_df.groupby("date", as_index=False)["amount"].sum()
+                mrr_df = mrr_df.sort_values("date")
+                mrr_df["cumulative"] = mrr_df["amount"].cumsum()
+                fig = px.line(mrr_df, x="date", y="cumulative", markers=True)
+                fig.update_layout(**PLOTLY_LAYOUT, height=280, yaxis_title="$", xaxis_title="")
+                fig.update_traces(line_color="#a371f7", line_width=2.5, marker_size=6)
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No MRR data yet.")
         else:
-            st.info("No transactions yet.")
+            st.info("No active subscriptions yet.")
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    with tab2:
-        st.subheader("All Subscriptions")
-        if subs:
-            sub_data = []
-            for s in subs:
-                cust_email = ""
-                if s.customer:
-                    try:
-                        cust = stripe.Customer.retrieve(s.customer)
-                        cust_email = cust.email or ""
-                    except Exception:
-                        cust_email = s.customer
-                price = 0
-                try:
-                    price = s.get("items", {}).get("data", [{}])[0].get("price", {}).get("unit_amount", 0)
-                except Exception:
-                    pass
-                sub_data.append({
-                    "Status": s.status,
-                    "Email": cust_email,
-                    "Price": money(price) + "/mo",
-                    "Created": datetime.fromtimestamp(s.created, tz=timezone.utc).strftime("%Y-%m-%d") if s.created else "",
-                    "Subscription ID": s.id,
-                })
-            st.dataframe(pd.DataFrame(sub_data), use_container_width=True, hide_index=True)
+    with col_sessions:
+        st.markdown('<div class="section-card"><div class="section-title">Revenue by Day (30 Days)</div>', unsafe_allow_html=True)
+        recent_rev = [
+            {"date": datetime.fromtimestamp(p.created, tz=timezone.utc).date(), "revenue": p.amount / 100}
+            for p in succeeded if p.created and datetime.fromtimestamp(p.created, tz=timezone.utc) >= last_30
+        ]
+        if recent_rev:
+            rev_day_df = pd.DataFrame(recent_rev).groupby("date", as_index=False)["revenue"].sum()
+            all_dates = pd.date_range(end=now.date(), periods=30, freq="D")
+            rev_day_df = pd.DataFrame({"date": all_dates.date}).merge(rev_day_df, on="date", how="left").fillna(0)
+            fig = px.bar(rev_day_df, x="date", y="revenue")
+            fig.update_layout(**PLOTLY_LAYOUT, height=280, yaxis_title="$", xaxis_title="")
+            fig.update_traces(marker_color="#58a6ff", marker_line_width=0)
+            st.plotly_chart(fig, use_container_width=True)
         else:
-            st.info("No subscriptions yet.")
+            st.info("No revenue in last 30 days.")
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    with tab3:
-        st.subheader("All License Keys")
+    # ── KPI Row 2 ───────────────────────────────────────────────────
+    s1, s2, s3, s4 = st.columns(4)
+    with s1:
+        st.metric("Monthly Revenue", money(month_revenue), delta=f"{rev_arrow}{money(rev_delta)}")
+    with s2:
+        st.metric("Active Subscribers", len(active_subs))
+    with s3:
+        st.metric("Keys Generated", len(keys), delta=f"+{month_keys} this month")
+    with s4:
+        st.metric("Cancellations", len(canceled_recent), delta=f"-{len(canceled_recent)}" if canceled_recent else "0")
+
+    st.markdown("")
+
+    # ── Charts Row 2: Signups by Plan + Distribution ────────────────
+    col_signups, col_dist = st.columns([3, 2])
+
+    with col_signups:
+        st.markdown('<div class="section-card"><div class="section-title">Monthly Signups by Type</div>', unsafe_allow_html=True)
         if keys:
-            key_data = []
+            signup_data = []
             for k in keys:
-                key_data.append({
-                    "Key": k.get("license_key", ""),
-                    "Email": k.get("email", ""),
-                    "Type": k.get("type", ""),
-                    "Status": k.get("status", ""),
-                    "Usage": k.get("usage_count", 0),
-                    "Created": k.get("created_at", "")[:10],
-                })
-            st.dataframe(pd.DataFrame(key_data), use_container_width=True, hide_index=True)
+                created = k.get("created_at", "")
+                if created:
+                    try:
+                        dt = datetime.fromisoformat(created.replace("Z", "+00:00"))
+                        signup_data.append({
+                            "month": dt.strftime("%b %y"),
+                            "type": "One-Time" if k.get("type") == "one_time" else "Subscription",
+                        })
+                    except Exception:
+                        pass
+            if signup_data:
+                signups_df = pd.DataFrame(signup_data)
+                signups_grouped = signups_df.groupby(["month", "type"], as_index=False).size()
+                fig = px.bar(signups_grouped, x="month", y="size", color="type",
+                             color_discrete_map={"One-Time": "#58a6ff", "Subscription": "#a371f7"},
+                             barmode="group")
+                fig.update_layout(**PLOTLY_LAYOUT, height=280, xaxis_title="", yaxis_title="Signups",
+                                  legend_title_text="")
+                fig.update_traces(marker_line_width=0)
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No signup data.")
         else:
-            st.info("No license keys yet.")
+            st.info("No keys generated yet.")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col_dist:
+        st.markdown('<div class="section-card"><div class="section-title">Key Distribution by Type</div>', unsafe_allow_html=True)
+        if keys:
+            dist_data = {"One-Time": one_time_keys, "Subscription": sub_keys}
+            fig = go.Figure(data=[go.Pie(
+                labels=list(dist_data.keys()),
+                values=list(dist_data.values()),
+                hole=0.55,
+                marker=dict(colors=["#58a6ff", "#a371f7"]),
+                textfont=dict(size=13, color="#f0f6fc"),
+                textinfo="label+percent",
+            )])
+            fig.update_layout(**PLOTLY_LAYOUT, height=280, showlegend=True)
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.info("No keys yet.")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("")
+
+    # ── Recent Activity ─────────────────────────────────────────────
+    st.markdown('<div class="section-card"><div class="section-title">Recent Activity</div>', unsafe_allow_html=True)
+
+    activities = []
+
+    # Key events from Supabase
+    for k in keys:
+        created = k.get("created_at", "")
+        if not created:
+            continue
+        try:
+            dt = datetime.fromisoformat(created.replace("Z", "+00:00"))
+        except Exception:
+            continue
+        ts = int(dt.timestamp())
+        email = k.get("email", "")
+        ktype = k.get("type", "subscription")
+
+        activities.append({
+            "type": "signup",
+            "label": "+ Signup",
+            "user": email.split("@")[0].replace(".", " ").title() if email else "Unknown",
+            "email": email,
+            "plan": "One-Time" if ktype == "one_time" else "Subscription",
+            "detail": f"{'Purchased one-time key' if ktype == 'one_time' else 'Subscribed to monthly plan'}",
+            "ts": ts,
+        })
+
+        if k.get("usage_count", 0) > 0:
+            activities.append({
+                "type": "first",
+                "label": "▷ First Use",
+                "user": email.split("@")[0].replace(".", " ").title() if email else "Unknown",
+                "email": email,
+                "plan": "One-Time" if ktype == "one_time" else "Subscription",
+                "detail": "Used license key for download",
+                "ts": ts + 1,
+            })
+
+    # Subscription events from Stripe
+    for s in subs:
+        if s.status == "active" and s.get("canceled_at"):
+            ts = s["canceled_at"]
+            email = get_customer_email(s.customer, customer_cache)
+            activities.append({
+                "type": "cancel",
+                "label": "✕ Cancellation",
+                "user": email.split("@")[0].replace(".", " ").title() if email else "Unknown",
+                "email": email,
+                "plan": "Subscription",
+                "detail": "Cancelled subscription",
+                "ts": ts,
+            })
+
+    activities.sort(key=lambda x: x["ts"], reverse=True)
+
+    if activities:
+        icon_map = {"signup": ("+", "badge-signup"), "first": ("▷", "badge-first"), "cancel": ("✕", "badge-cancel"), "upgrade": ("↑", "badge-upgrade")}
+
+        for a in activities[:15]:
+            icon_char, badge_cls = icon_map.get(a["type"], ("•", "badge-signup"))
+            st.markdown(f"""<div class="activity-row">
+                <div class="activity-icon {a['type']}">{icon_char}</div>
+                <div class="activity-text">
+                    <span class="activity-badge {badge_cls}">{a['label']}</span>
+                    <strong>{a['user']}</strong> &nbsp;
+                    <span style="color:#8b949e">· {a['plan']} · {a['detail']}</span>
+                    <br><span style="color:#8b949e;font-size:0.72rem">{a['email']}</span>
+                </div>
+                <div class="activity-time">{relative_time(a['ts'])}</div>
+            </div>""", unsafe_allow_html=True)
+    else:
+        st.info("No activity yet.")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
     # ── Footer ──────────────────────────────────────────────────────
-    st.divider()
-    st.caption(f"Last refreshed: {now.strftime('%Y-%m-%d %H:%M:%S')} UTC · Auto-refreshes every 2 min")
+    st.markdown("")
+    st.markdown(f'<div style="text-align:center;color:#484f58;font-size:0.75rem">● Live &nbsp;·&nbsp; Auto-refreshes every 2 min &nbsp;·&nbsp; {now.strftime("%H:%M:%S")} UTC</div>', unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
