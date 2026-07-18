@@ -169,19 +169,33 @@ def get_ga4_client():
         from google.analytics.data_v1beta import BetaAnalyticsDataClient
     except ImportError:
         return None
+    # Method 1: Try individual secret fields
+    try:
+        private_key = _get("GA4_PRIVATE_KEY")
+        client_email = _get("GA4_CLIENT_EMAIL")
+        if private_key and client_email:
+            info = {
+                "type": "service_account",
+                "project_id": "datamorph-502810",
+                "private_key_id": _get("GA4_PRIVATE_KEY_ID") or "",
+                "private_key": private_key.replace("\\n", "\n"),
+                "client_email": client_email,
+                "client_id": _get("GA4_CLIENT_ID") or "",
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                "client_x509_cert_url": f"https://www.googleapis.com/robot/v1/metadata/x509/{client_email.replace('@', '%40')}",
+            }
+            return BetaAnalyticsDataClient.from_service_account_info(info)
+    except Exception as e:
+        st.warning(f"GA4 individual secrets error: {e}")
+    # Method 2: Try JSON string secret
     try:
         sa_json = _get("GA4_SERVICE_ACCOUNT_JSON")
         if sa_json:
             info = json.loads(sa_json) if isinstance(sa_json, str) else sa_json
             return BetaAnalyticsDataClient.from_service_account_info(info)
     except Exception as e:
-        st.warning(f"GA4 secret parse error: {e}")
-    try:
-        sa_file = os.path.join(os.path.dirname(__file__), "ga4-service-account.json")
-        if os.path.exists(sa_file):
-            return BetaAnalyticsDataClient.from_service_account_file(sa_file)
-    except Exception as e:
-        st.warning(f"GA4 file error: {e}")
+        st.warning(f"GA4 JSON secret error: {e}")
     return None
 
 
@@ -306,16 +320,6 @@ def main():
 
     stripe_data = fetch_stripe()
     supa_data = fetch_supabase()
-
-    # Debug GA4 connection
-    ga4_client = get_ga4_client()
-    if ga4_client is None:
-        sa_val = _get("GA4_SERVICE_ACCOUNT_JSON")
-        if not sa_val:
-            st.warning("GA4: GA4_SERVICE_ACCOUNT_JSON secret not found in Streamlit.")
-        else:
-            st.warning(f"GA4: Secret found but client failed. Type={type(sa_val).__name__}, len={len(str(sa_val))}")
-
     ga4_overview = fetch_ga4_overview()
     ga4_daily = fetch_ga4_daily()
     ga4_sources = fetch_ga4_sources()
