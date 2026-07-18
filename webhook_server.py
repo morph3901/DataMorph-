@@ -71,7 +71,7 @@ stripe.api_key = os.environ.get("STRIPE_API_KEY")
 STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
-RESEND_FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "onboarding@resend.dev")
+RESEND_FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "contact@datamorph.fr")
 APP_URL = "https://datamorph-app.streamlit.app"
 
 if RESEND_API_KEY:
@@ -91,10 +91,10 @@ def send_key_email(to_email: str, license_key: str, key_type: str = "subscriptio
         return
 
     if key_type == "one_time":
-        subject = "Your Data Funnel Engine Access Key"
+        subject = "Your DataMorph Access Key"
         body = (
             "Hi there,\n\n"
-            "Thanks for purchasing Data Funnel Engine! Your one-time access "
+            "Thanks for purchasing DataMorph! Your one-time access "
             "is now active.\n\n"
             f"Your access key: {license_key}\n\n"
             f"Head to the app and paste this key into the \"Enter your license "
@@ -103,13 +103,13 @@ def send_key_email(to_email: str, license_key: str, key_type: str = "subscriptio
             "subscription for unlimited access.\n\n"
             "If you have any questions, just reply to this email.\n\n"
             "Thanks,\n"
-            "The Data Funnel Engine Team"
+            "The DataMorph Team"
         )
     else:
-        subject = "Your Data Funnel Engine Subscription Key"
+        subject = "Your DataMorph Subscription Key"
         body = (
             "Hi there,\n\n"
-            "Thanks for subscribing to Data Funnel Engine! Your subscription "
+            "Thanks for subscribing to DataMorph! Your subscription "
             "is now active.\n\n"
             f"Your license key: {license_key}\n\n"
             f"Head to the app and paste this key into the \"Enter your license "
@@ -118,7 +118,7 @@ def send_key_email(to_email: str, license_key: str, key_type: str = "subscriptio
             "download a processed file.\n\n"
             "If you have any questions, just reply to this email.\n\n"
             "Thanks again,\n"
-            "The Data Funnel Engine Team"
+            "The DataMorph Team"
         )
 
     try:
