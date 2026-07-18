@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- English (default) -->
+  <url>
+    <loc>https://www.datamorph.fr/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.datamorph.fr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.datamorph.fr/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.datamorph.fr/es/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.datamorph.fr/ar/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://www.datamorph.fr/zh/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.datamorph.fr/de/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.datamorph.fr/pt/"/>
+  </url>
+
+  <!-- French -->
+  <url>
+    <loc>https://www.datamorph.fr/fr/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.datamorph.fr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.datamorph.fr/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.datamorph.fr/es/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.datamorph.fr/ar/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://www.datamorph.fr/zh/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.datamorph.fr/de/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.datamorph.fr/pt/"/>
+  </url>
+
+  <!-- Spanish -->
+  <url>
+    <loc>https://www.datamorph.fr/es/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.datamorph.fr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.datamorph.fr/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.datamorph.fr/es/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.datamorph.fr/ar/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://www.datamorph.fr/zh/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.datamorph.fr/de/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.datamorph.fr/pt/"/>
+  </url>
+
+  <!-- Arabic -->
+  <url>
+    <loc>https://www.datamorph.fr/ar/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.datamorph.fr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.datamorph.fr/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.datamorph.fr/es/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.datamorph.fr/ar/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://www.datamorph.fr/zh/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.datamorph.fr/de/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.datamorph.fr/pt/"/>
+  </url>
+
+  <!-- Chinese -->
+  <url>
+    <loc>https://www.datamorph.fr/zh/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.datamorph.fr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.datamorph.fr/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.datamorph.fr/es/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.datamorph.fr/ar/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://www.datamorph.fr/zh/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.datamorph.fr/de/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.datamorph.fr/pt/"/>
+  </url>
+
+  <!-- German -->
+  <url>
+    <loc>https://www.datamorph.fr/de/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.datamorph.fr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.datamorph.fr/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.datamorph.fr/es/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.datamorph.fr/ar/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://www.datamorph.fr/zh/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.datamorph.fr/de/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.datamorph.fr/pt/"/>
+  </url>
+
+  <!-- Portuguese -->
+  <url>
+    <loc>https://www.datamorph.fr/pt/</loc>
+    <lastmod>2026-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.datamorph.fr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.datamorph.fr/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.datamorph.fr/es/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.datamorph.fr/ar/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://www.datamorph.fr/zh/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.datamorph.fr/de/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.datamorph.fr/pt/"/>
+  </url>
+
+</urlset>
