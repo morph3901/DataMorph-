@@ -22,6 +22,7 @@
     <meta property="og:url" content="https://www.datamorph.fr/de/index.html">
     <link rel="canonical" href="https://www.datamorph.fr/de/index.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -103,8 +104,9 @@
             text-decoration: none; transition: all 0.3s; cursor: pointer; border: none;
             display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Inter', sans-serif;
         }
-        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
+        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #ffffff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
+        .nav .btn-primary:hover { color: #facc15 !important; }
         .btn-secondary { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); }
         .btn-secondary:hover { background: rgba(99,102,241,0.15); border-color: var(--accent); transform: translateY(-2px); }
         .btn-large { padding: 1.2rem 3rem; font-size: 1.1rem; }
@@ -154,7 +156,7 @@
         .fcard:hover { border-color: var(--accent); transform: translateY(-3px); }
         .fcard-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; background: rgba(99,102,241,0.15); color: var(--accent); }
         .fcard-icon i { width: 24px; height: 24px; }
-        .fcard h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+        .fcard h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
         .fcard p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
 
         .pricing-section { padding: 3.5rem 4rem; text-align: center; }
@@ -218,7 +220,7 @@
 </head>
 <body>
 
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
         <div class="logo">Data<span>Morph</span></div>
         <div class="nav-links">
             <a href="#how">So funktioniert's</a>
@@ -226,7 +228,7 @@
             <a href="#pricing">Preise</a>
             <a href="#faq">FAQ</a>
             <div class="lang-dropdown" id="langDropdown">
-                <button><i data-lucide="globe"></i> DE <i data-lucide="chevron-down"></i></button>
+                <button aria-label="Select language"><i data-lucide="globe"></i> DE <i data-lucide="chevron-down"></i></button>
                 <div class="lang-dropdown-menu">
                     <a href="../index.html">EN English</a>
                     <a href="../fr/index.html">FR Français</a>
@@ -237,10 +239,11 @@
                     <a href="../pt/index.html">PT Português</a>
                 </div>
             </div>
-            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem;">App starten</a>
+            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem; color:#ffffff !important;">App starten</a>
         </div>
     </nav>
 
+    <main>
     <section class="hero">
         <div class="badge">Vertraut von 500+ E-Commerce-Besitzern</div>
         <h1>Shopify CSV-Mapper &amp; <span>Produktinhalt-Generator</span></h1>
@@ -326,32 +329,32 @@
         <div class="features-grid">
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="zap"></i></div>
-                <h4>Blitzschnell</h4>
+                <h3>Blitzschnell</h3>
                 <p>Verarbeiten Sie Hunderte von Produkten in Sekunden. Keine stundenlange manuelle Dateneingabe mehr.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="lock"></i></div>
-                <h4>Pro Nutzung bezahlen</h4>
+                <h3>Pro Nutzung bezahlen</h3>
                 <p>$7 pro Sitzung, kein Abonnement erforderlich. Oder abonnieren Sie monatlich für unbegrenzten Zugang.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="brain"></i></div>
-                <h4>KI-gestützt</h4>
+                <h3>KI-gestützt</h3>
                 <p>Nutzt fortschrittliche KI, um Produktdaten zu verstehen, Beschreibungen zu generieren und Titel zu optimieren.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="folder"></i></div>
-                <h4>Keine Installation</h4>
+                <h3>Keine Installation</h3>
                 <p>100% browserbasiert. Dateien hochladen, Ergebnisse erhalten. Funktioniert auf Mac, Windows, Linux, mobil.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="banknote"></i></div>
-                <h4>Transparente Preise</h4>
+                <h3>Transparente Preise</h3>
                 <p>$7 einmalig oder $29/Monat unbegrenzt. Keine versteckten Gebühren. Keine Kreditprüfung. Jederzeit kündbar.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="globe"></i></div>
-                <h4>SEO-optimiert</h4>
+                <h3>SEO-optimiert</h3>
                 <p>Generierte Beschreibungen und Titel sind für Suchmaschinen optimiert, um Ihre Sichtbarkeit zu erhöhen.</p>
             </div>
         </div>
@@ -425,6 +428,7 @@
             DataMorph kostenlos starten &rarr;
         </a>
     </section>
+    </main>
 
     <footer class="footer">
         <p>&copy; 2026 DataMorph. Alle Rechte vorbehalten.</p>

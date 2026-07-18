@@ -22,8 +22,8 @@
     <meta property="og:url" content="https://www.datamorph.fr/es">
     <link rel="canonical" href="https://www.datamorph.fr/es">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --bg: #0f172a;
@@ -104,8 +104,9 @@
             text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
             display: inline-flex; align-items: center; gap: 0.5rem;
         }
-        .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 0 24px var(--accent-glow); }
+        .btn-primary { background: var(--accent); color: #ffffff; box-shadow: 0 0 24px var(--accent-glow); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(99,102,241,0.4); }
+        .nav .btn-primary:hover { color: #facc15 !important; }
         .btn-secondary { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); }
         .btn-secondary:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
         .btn-large { padding: 1.1rem 2.8rem; font-size: 1.05rem; }
@@ -155,7 +156,7 @@
         }
         .fcard:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-2px); }
         .fcard-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(99,102,241,0.1); color: var(--accent); margin-bottom: 0.9rem; }
-        .fcard h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .fcard h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
         .fcard p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
 
         .pricing-section { padding: 3.5rem 4rem; text-align: center; }
@@ -215,7 +216,7 @@
 </head>
 <body>
 
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
         <div class="logo">Data<span>Morph</span></div>
         <div class="nav-links">
             <a href="#how">Cómo Funciona</a>
@@ -223,7 +224,7 @@
             <a href="#pricing">Precios</a>
             <a href="#faq">FAQ</a>
             <div class="lang-dropdown" onclick="this.classList.toggle('open')">
-                <button><i data-lucide="globe" style="width:14px;height:14px"></i> ES <span class="arrow">&#9662;</span></button>
+                <button aria-label="Select language"><i data-lucide="globe" style="width:14px;height:14px"></i> ES <span class="arrow">&#9662;</span></button>
                 <div class="lang-dropdown-menu">
                     <a href="../index.html">EN English</a>
                     <a href="../fr/index.html">FR Fran&ccedil;ais</a>
@@ -234,10 +235,11 @@
                     <a href="../pt/index.html">PT Portugu&ecirc;s</a>
                 </div>
             </div>
-            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.55rem 1.4rem; font-size:0.85rem;">Iniciar App</a>
+            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.55rem 1.4rem; font-size:0.85rem; color:#ffffff !important;">Iniciar App</a>
         </div>
     </nav>
 
+    <main>
     <section class="hero">
         <div class="badge">Con la confianza de 500+ propietarios de tiendas en l&iacute;nea</div>
         <h1>Mapeador CSV Shopify &amp; <span>Generador de Contenido de Producto</span></h1>
@@ -317,32 +319,32 @@
         <div class="features-grid">
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="zap" style="width:20px;height:20px"></i></div>
-                <h4>Ultra R&aacute;pido</h4>
+                <h3>Ultra R&aacute;pido</h3>
                 <p>Procesa cientos de productos en segundos. Adi&oacute;s a las horas de entrada de datos manual.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="lock" style="width:20px;height:20px"></i></div>
-                <h4>Pago por Uso</h4>
+                <h3>Pago por Uso</h3>
                 <p>$7 por sesi&oacute;n, sin suscripci&oacute;n requerida. O suscr&iacute;bete mensualmente para acceso ilimitado.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="bot" style="width:20px;height:20px"></i></div>
-                <h4>Potenciado por IA</h4>
+                <h3>Potenciado por IA</h3>
                 <p>Utiliza tecnolog&iacute;a de IA para generar descripciones &uacute;nicas y optimizar t&iacute;tulos, no solo para rellenar plantillas.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="monitor" style="width:20px;height:20px"></i></div>
-                <h4>Sin Instalaci&oacute;n</h4>
+                <h3>Sin Instalaci&oacute;n</h3>
                 <p>100% basado en el navegador. Sube archivos, obt&eacute;n resultados. Funciona en Mac, Windows, Linux, m&oacute;vil.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="dollar-sign" style="width:20px;height:20px"></i></div>
-                <h4>Precios Transparentes</h4>
+                <h3>Precios Transparentes</h3>
                 <p>$7 &uacute;nico o $29/mes ilimitado. Sin costos ocultos. Sin verificaci&oacute;n de cr&eacute;dito. Cancela cuando quieras.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="search" style="width:20px;height:20px"></i></div>
-                <h4>Optimizado SEO</h4>
+                <h3>Optimizado SEO</h3>
                 <p>Descripciones y t&iacute;tulos generados con las mejores pr&aacute;cticas SEO para maximizar tu visibilidad en Google.</p>
             </div>
         </div>
@@ -421,11 +423,13 @@
             <i data-lucide="rocket" style="width:18px;height:18px"></i> Lanzar DataMorph Gratis &rarr;
         </a>
     </section>
+    </main>
 
     <footer class="footer">
         <p>&copy; 2026 DataMorph. Todos los derechos reservados.</p>
     </footer>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
     lucide.createIcons();
     function toggleFaq(btn) {

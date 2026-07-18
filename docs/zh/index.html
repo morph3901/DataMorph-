@@ -22,8 +22,8 @@
     <meta property="og:url" content="https://www.datamorph.fr">
     <link rel="canonical" href="https://www.datamorph.fr">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --bg: #0f172a;
@@ -102,8 +102,9 @@
             text-decoration: none; transition: all 0.3s; cursor: pointer; border: none;
             display: inline-flex; align-items: center; gap: 0.5rem;
         }
-        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
+        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #ffffff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
+        .nav .btn-primary:hover { color: #facc15 !important; }
         .btn-secondary { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border); }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
         .btn-large { padding: 1.2rem 3rem; font-size: 1.1rem; }
@@ -156,7 +157,7 @@
         .fcard:hover { border-color: rgba(99,102,241,0.4); transform: translateY(-3px); }
         .fcard-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(99,102,241,0.1); color: var(--accent); margin-bottom: 1rem; }
         .fcard-icon i { width: 24px; height: 24px; }
-        .fcard h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .fcard h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
         .fcard p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
 
         .pricing-section { padding: 3.5rem 4rem; text-align: center; }
@@ -219,7 +220,7 @@
 </head>
 <body>
 
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
         <div class="logo">Data<span>Morph</span></div>
         <div class="nav-links">
             <a href="#how">工作原理</a>
@@ -227,7 +228,7 @@
             <a href="#pricing">定价</a>
             <a href="#faq">常见问题</a>
             <div class="lang-dropdown" id="langDropdown">
-                <button><i data-lucide="globe" style="width:14px;height:14px"></i> ZH <span class="arrow">&#9662;</span></button>
+                <button aria-label="Select language"><i data-lucide="globe" style="width:14px;height:14px"></i> ZH <span class="arrow">&#9662;</span></button>
                 <div class="lang-dropdown-menu">
                     <a href="../index.html">EN English</a>
                     <a href="../fr/index.html">FR Français</a>
@@ -238,10 +239,11 @@
                     <a href="../pt/index.html">PT Português</a>
                 </div>
             </div>
-            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem;">启动应用</a>
+            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem; color:#ffffff !important;">启动应用</a>
         </div>
     </nav>
 
+    <main>
     <section class="hero">
         <div class="badge"><i data-lucide="shield-check"></i> 500+电商店主信赖之选</div>
         <h1>Shopify CSV映射器 &amp; <span>产品内容生成器</span></h1>
@@ -328,32 +330,32 @@
         <div class="features-grid">
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="zap"></i></div>
-                <h4>闪电快速</h4>
+                <h3>闪电快速</h3>
                 <p>批量处理数百个产品，几秒内完成。告别数小时的手动数据录入。</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="lock"></i></div>
-                <h4>按次付费</h4>
+                <h3>按次付费</h3>
                 <p>每次仅需$7，无需订阅。或选择月度订阅，享受无限使用。</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="bot"></i></div>
-                <h4>AI驱动</h4>
+                <h3>AI驱动</h3>
                 <p>使用先进AI技术理解产品上下文，生成自然流畅的描述和标题。</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="folder-open"></i></div>
-                <h4>无需安装</h4>
+                <h3>无需安装</h3>
                 <p>100%基于浏览器。上传文件，获取结果。支持Mac、Windows、Linux和移动端。</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="banknote"></i></div>
-                <h4>价格透明</h4>
+                <h3>价格透明</h3>
                 <p>$7一次性付费或$29/月无限使用。无隐藏费用，无信用审核，随时取消。</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="globe"></i></div>
-                <h4>SEO优化</h4>
+                <h3>SEO优化</h3>
                 <p>自动优化产品标题和描述，提升搜索引擎排名和店铺流量。</p>
             </div>
         </div>
@@ -433,11 +435,13 @@
             免费启动DataMorph <i data-lucide="arrow-right" style="width:18px;height:18px"></i>
         </a>
     </section>
+    </main>
 
     <footer class="footer">
         <p>&copy; 2026 DataMorph. 保留所有权利。</p>
     </footer>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
     function toggleFaq(btn) {
         const item = btn.parentElement;

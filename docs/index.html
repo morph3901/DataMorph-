@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataMorph — Shopify CSV Mapper & Product Content Generator | AI-Powered E-Commerce Tool</title>
+    <meta name="description" content="Map messy supplier CSV files to Shopify-ready product imports with AI markup pricing. Generate SEO-optimized product descriptions and titles in bulk.">
+    <meta name="keywords" content="Shopify CSV mapper, supplier CSV mapping, product description generator, AI product descriptions, SEO title optimizer, e-commerce data tool">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="DataMorph — Shopify CSV Mapper & Product Content Generator">
+    <meta property="og:description" content="AI-powered tool for e-commerce store owners. Map product data, generate descriptions and optimized titles in seconds.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.datamorph.fr">
+    <link rel="canonical" href="https://www.datamorph.fr">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-W5YB3Y0MPY"></script>
     <script>
@@ -9,21 +24,6 @@
       gtag('js', new Date());
       gtag('config', 'G-W5YB3Y0MPY');
     </script>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataMorph — Shopify CSV Mapper & Product Content Generator | AI-Powered E-Commerce Tool</title>
-    <meta name="description" content="Map messy supplier CSV files to Shopify-ready product imports with AI markup pricing. Generate SEO-optimized product descriptions and titles in bulk. Used by 500+ e-commerce store owners.">
-    <meta name="keywords" content="Shopify CSV mapper, supplier CSV mapping, product description generator, AI product descriptions, SEO title optimizer, e-commerce data tool, product data mapping, Shopify import, bulk product descriptions, AI copywriting">
-    <meta name="robots" content="index, follow">
-    <meta property="og:title" content="DataMorph — Shopify CSV Mapper & Product Content Generator">
-    <meta property="og:description" content="AI-powered tool for e-commerce store owners. Map product data, generate descriptions and optimized titles in seconds.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.datamorph.fr">
-    <link rel="canonical" href="https://www.datamorph.fr">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --bg: #0f172a;
@@ -39,57 +39,25 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
-
-        .nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(15,23,42,0.88); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border);
-        }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 4rem; position: fixed; top: 0; width: 100%; z-index: 100; background: rgba(15,23,42,0.88); backdrop-filter: blur(24px); border-bottom: 1px solid var(--border); }
         .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px; color: var(--text); }
         .logo span { color: var(--accent); }
         .nav-links { display: flex; align-items: center; gap: 2rem; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
         .nav-links a:hover { color: var(--text); }
         .lang-dropdown { position: relative; }
-        .lang-dropdown button {
-            background: var(--bg-card); border: 1px solid var(--border);
-            color: var(--text-muted); font-size: 0.8rem; font-weight: 600; padding: 0.4rem 0.9rem;
-            border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif;
-            transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem;
-        }
+        .lang-dropdown button { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem; font-weight: 600; padding: 0.4rem 0.9rem; border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem; }
         .lang-dropdown button:hover { background: var(--bg-card-hover); color: var(--text); }
         .lang-dropdown button .arrow { font-size: 0.6rem; transition: transform 0.3s; }
         .lang-dropdown.open button .arrow { transform: rotate(180deg); }
-        .lang-dropdown-menu {
-            display: none; position: absolute; top: calc(100% + 6px); right: 0;
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 10px; padding: 0.4rem; min-width: 150px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.4); z-index: 200;
-        }
+        .lang-dropdown-menu { display: none; position: absolute; top: calc(100% + 6px); right: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.4rem; min-width: 150px; box-shadow: 0 12px 40px rgba(0,0,0,0.4); z-index: 200; }
         .lang-dropdown.open .lang-dropdown-menu { display: block; }
-        .lang-dropdown-menu a {
-            display: block; padding: 0.45rem 0.8rem; border-radius: 6px;
-            font-size: 0.8rem; font-weight: 500; color: var(--text-muted); text-decoration: none;
-            transition: all 0.15s;
-        }
+        .lang-dropdown-menu a { display: block; padding: 0.45rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: all 0.15s; }
         .lang-dropdown-menu a.active { background: var(--accent); color: #fff; }
         .lang-dropdown-menu a:hover:not(.active) { background: rgba(99,102,241,0.1); color: var(--text); }
-
-        .hero {
-            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 7rem 2rem 3rem; position: relative;
-        }
-        .hero::before {
-            content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
-            width: 900px; height: 900px; background: radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 65%);
-            border-radius: 50%; pointer-events: none;
-        }
-        .badge {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25);
-            padding: 0.4rem 1.1rem; border-radius: 9999px; font-size: 0.8rem; color: var(--accent-light);
-            margin-bottom: 1.5rem;
-        }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 7rem 2rem 3rem; position: relative; }
+        .hero::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 900px; height: 900px; background: radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 65%); border-radius: 50%; pointer-events: none; }
+        .badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25); padding: 0.4rem 1.1rem; border-radius: 9999px; font-size: 0.8rem; color: var(--accent-light); margin-bottom: 1.5rem; }
         h1 { font-size: 3.8rem; font-weight: 900; letter-spacing: -2.5px; line-height: 1.08; max-width: 880px; margin-bottom: 1.5rem; }
         h1 span { background: linear-gradient(135deg, var(--accent), #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .subtitle { font-size: 1.15rem; color: var(--text-muted); max-width: 650px; line-height: 1.7; margin-bottom: 1rem; }
@@ -97,107 +65,66 @@
         .hero-stat { text-align: center; }
         .hero-stat .number { font-size: 1.8rem; font-weight: 800; color: var(--text); }
         .hero-stat .label { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.2rem; }
-
         .buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
-        .btn {
-            padding: 0.9rem 2.2rem; border-radius: 12px; font-size: 0.95rem; font-weight: 600;
-            text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
-            display: inline-flex; align-items: center; gap: 0.5rem;
-        }
+        .btn { padding: 0.9rem 2.2rem; border-radius: 12px; font-size: 0.95rem; font-weight: 600; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 0.5rem; }
         .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 0 24px var(--accent-glow); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(99,102,241,0.4); }
+        .nav .btn-primary:hover { color: #facc15 !important; }
         .btn-secondary { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); }
         .btn-secondary:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
         .btn-large { padding: 1.1rem 2.8rem; font-size: 1.05rem; }
-
         section h2 { font-size: 2.3rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.5rem; text-align: center; }
         section .section-sub { font-size: 1.05rem; color: var(--text-muted); text-align: center; max-width: 580px; margin: 0 auto 1.5rem; }
-
         .how-it-works { padding: 3.5rem 4rem; max-width: 1100px; margin: 0 auto; }
         .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
-        .step {
-            text-align: center; padding: 1.8rem 1.2rem; border-radius: 16px;
-            background: var(--bg-card); border: 1px solid var(--border); transition: all 0.2s;
-        }
+        .step { text-align: center; padding: 1.8rem 1.2rem; border-radius: 16px; background: var(--bg-card); border: 1px solid var(--border); transition: all 0.2s; }
         .step:hover { border-color: rgba(99,102,241,0.3); }
-        .step-icon {
-            width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center;
-            justify-content: center; margin: 0 auto 1rem;
-            background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
-            color: var(--accent);
-        }
+        .step-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); color: var(--accent); }
         .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
         .step p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
-
         .tools { padding: 3.5rem 4rem; max-width: 1200px; margin: 0 auto; }
         .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
-        .tool-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 2.5rem; transition: all 0.2s; position: relative; overflow: hidden;
-        }
+        .tool-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; transition: all 0.2s; position: relative; overflow: hidden; }
         .tool-card:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-3px); }
-        .tool-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, var(--accent), #a855f7);
-        }
+        .tool-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), #a855f7); }
         .tool-card .tool-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(99,102,241,0.1); color: var(--accent); margin-bottom: 1.2rem; }
         .tool-card h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; }
         .tool-card > p { color: var(--text-muted); line-height: 1.7; margin-bottom: 1.2rem; font-size: 0.95rem; }
         .tool-card ul { list-style: none; }
         .tool-card li { padding: 0.35rem 0; color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: flex-start; gap: 0.6rem; }
-        .tool-card li i { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; margin-top: 3px; }
-
+        .tool-card li svg { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; margin-top: 3px; }
         .features-section { padding: 3.5rem 4rem; max-width: 1200px; margin: 0 auto; }
         .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
-        .fcard {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 14px; padding: 1.8rem; transition: all 0.2s;
-        }
+        .fcard { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.8rem; transition: all 0.2s; }
         .fcard:hover { border-color: rgba(99,102,241,0.3); transform: translateY(-2px); }
         .fcard-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(99,102,241,0.1); color: var(--accent); margin-bottom: 0.9rem; }
-        .fcard h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .fcard h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
         .fcard p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
-
         .pricing-section { padding: 3.5rem 4rem; text-align: center; }
         .pricing-cards { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
-        .pricing-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 2.2rem; flex: 1; min-width: 300px; text-align: left; transition: all 0.2s;
-        }
-        .pricing-card.popular {
-            border-color: rgba(99,102,241,0.5);
-            background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(168,85,247,0.04));
-        }
+        .pricing-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2.2rem; flex: 1; min-width: 300px; text-align: left; transition: all 0.2s; }
+        .pricing-card.popular { border-color: rgba(99,102,241,0.5); background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(168,85,247,0.04)); }
         .pricing-card h3 { font-size: 1rem; color: var(--text-muted); margin-bottom: 0.4rem; }
         .price { font-size: 2.8rem; font-weight: 900; margin-bottom: 0.2rem; }
         .price span { font-size: 0.95rem; font-weight: 400; color: var(--text-dim); }
         .pricing-card ul { list-style: none; margin: 1.2rem 0; }
         .pricing-card li { padding: 0.45rem 0; color: var(--text-muted); font-size: 0.88rem; display: flex; align-items: center; gap: 0.5rem; }
-        .pricing-card li i { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
-        .popular-badge {
-            display: inline-block; background: var(--accent);
-            padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600;
-            margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;
-        }
-
+        .pricing-card li svg { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
+        .popular-badge { display: inline-block; background: var(--accent); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #fff; }
         .faq-section { padding: 3.5rem 4rem; max-width: 800px; margin: 0 auto; }
         .faq-item { border-bottom: 1px solid var(--border); }
-        .faq-question {
-            width: 100%; background: none; border: none; color: var(--text); font-size: 1rem;
-            font-weight: 600; padding: 1.2rem 0; cursor: pointer; display: flex;
-            justify-content: space-between; align-items: center; text-align: left; font-family: 'Inter', sans-serif;
-        }
+        .faq-question { width: 100%; background: none; border: none; color: var(--text); font-size: 1rem; font-weight: 600; padding: 1.2rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; text-align: left; font-family: 'Inter', sans-serif; }
         .faq-question::after { content: '+'; font-size: 1.4rem; color: var(--accent); transition: transform 0.3s; }
         .faq-item.open .faq-question::after { content: '\2212'; }
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
         .faq-answer p { padding-bottom: 1.2rem; color: var(--text-muted); line-height: 1.7; font-size: 0.92rem; }
-
         .cta-section { padding: 3.5rem 4rem; text-align: center; background: linear-gradient(180deg, transparent, rgba(99,102,241,0.04)); }
         .cta-section h2 { font-size: 2.3rem; font-weight: 800; margin-bottom: 0.8rem; letter-spacing: -1px; }
         .cta-section p { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1.05rem; }
-
         .footer { padding: 2.5rem 4rem; text-align: center; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 0.85rem; }
-
+        .legal-footer { text-align: center; padding: 2rem 1rem; border-top: 1px solid #1e293b; margin-top: 3rem; font-size: 0.8rem; }
+        .legal-footer a { color: #94a3b8; text-decoration: none; margin: 0 0.8rem; }
+        .legal-footer a:hover { color: var(--text); }
         @media (max-width: 768px) {
             .nav { padding: 0.8rem 1.5rem; }
             .nav-links a:not(.btn) { display: none; }
@@ -208,14 +135,12 @@
             .steps { grid-template-columns: 1fr 1fr; }
             .how-it-works, .tools, .features-section, .pricing-section, .faq-section, .cta-section { padding: 2.5rem 1.5rem; }
         }
-        @media (max-width: 480px) {
-            .steps { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 480px) { .steps { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
         <div class="logo">Data<span>Morph</span></div>
         <div class="nav-links">
             <a href="#how">How It Works</a>
@@ -223,214 +148,218 @@
             <a href="#pricing">Pricing</a>
             <a href="#faq">FAQ</a>
             <div class="lang-dropdown" onclick="this.classList.toggle('open')">
-                <button><i data-lucide="globe" style="width:14px;height:14px"></i> EN <span class="arrow">&#9662;</span></button>
+                <button aria-label="Select language">EN <span class="arrow">&#9662;</span></button>
                 <div class="lang-dropdown-menu">
-                    <a href="index.html" class="active">EN English</a>
-                    <a href="fr/index.html">FR Fran&ccedil;ais</a>
-                    <a href="es/index.html">ES Espa&ntilde;ol</a>
-                    <a href="ar/index.html">AR &#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</a>
-                    <a href="zh/index.html">ZH &#20013;&#25991;</a>
-                    <a href="de/index.html">DE Deutsch</a>
-                    <a href="pt/index.html">PT Portugu&ecirc;s</a>
+                    <a href="/" class="active">EN English</a>
+                    <a href="/fr/">FR Fran&ccedil;ais</a>
+                    <a href="/es/">ES Espa&ntilde;ol</a>
+                    <a href="/ar/">AR &#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</a>
+                    <a href="/zh/">ZH &#20013;&#25991;</a>
+                    <a href="/de/">DE Deutsch</a>
+                    <a href="/pt/">PT Portugu&ecirc;s</a>
                 </div>
             </div>
-            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.55rem 1.4rem; font-size:0.85rem;">Launch App</a>
+            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.55rem 1.4rem; font-size:0.85rem; color:#ffffff !important;">Launch App</a>
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="badge">Trusted by 500+ e-commerce store owners</div>
-        <h1>Shopify CSV Mapper &amp; <span>Product Content Generator</span></h1>
-        <p class="subtitle">
-            Map messy supplier CSVs to Shopify-ready product files with AI-powered markup pricing.
-            Generate SEO-optimized descriptions and titles for hundreds of products in seconds.
-        </p>
-        <div class="hero-stats">
-            <div class="hero-stat"><div class="number">100+</div><div class="label">Products per batch</div></div>
-            <div class="hero-stat"><div class="number">5s</div><div class="label">Avg. processing</div></div>
-            <div class="hero-stat"><div class="number">SEO</div><div class="label">Optimized output</div></div>
-        </div>
-        <div class="buttons">
-            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary btn-large"><i data-lucide="upload" style="width:18px;height:18px"></i> Launch DataMorph &rarr;</a>
-            <a href="#pricing" class="btn btn-secondary btn-large"><i data-lucide="credit-card" style="width:18px;height:18px"></i> View Pricing</a>
-        </div>
-    </section>
+    <main>
+        <section class="hero">
+            <div class="badge">Trusted by 500+ e-commerce store owners</div>
+            <h1>Shopify CSV Mapper &amp; <span>Product Content Generator</span></h1>
+            <p class="subtitle">
+                Map messy supplier CSVs to Shopify-ready product files with AI-powered markup pricing.
+                Generate SEO-optimized descriptions and titles for hundreds of products in seconds.
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat"><div class="number">100+</div><div class="label">Products per batch</div></div>
+                <div class="hero-stat"><div class="number">5s</div><div class="label">Avg. processing</div></div>
+                <div class="hero-stat"><div class="number">SEO</div><div class="label">Optimized output</div></div>
+            </div>
+            <div class="buttons">
+                <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary btn-large">Launch DataMorph Free &rarr;</a>
+                <a href="#pricing" class="btn btn-secondary btn-large">View Pricing</a>
+            </div>
+        </section>
 
-    <section class="how-it-works" id="how">
-        <h2>How It Works</h2>
-        <p class="section-sub">No sign-up. No coding. Just upload, pay, and download.</p>
-        <div class="steps">
-            <div class="step">
-                <div class="step-icon"><i data-lucide="upload-cloud" style="width:24px;height:24px"></i></div>
-                <h3>1. Upload</h3>
-                <p>Drag &amp; drop a supplier CSV file or a list of product names + features. Any format accepted.</p>
+        <section class="how-it-works" id="how">
+            <h2>How It Works</h2>
+            <p class="section-sub">No sign-up. No coding. Just upload, pay, and download.</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg></div>
+                    <h3>1. Upload</h3>
+                    <p>Drag &amp; drop a supplier CSV file or a list of product names + features. Any format accepted.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/></svg></div>
+                    <h3>2. AI Processes</h3>
+                    <p>Our engine maps columns to Shopify fields, generates SEO descriptions, and optimizes your titles.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></div>
+                    <h3>3. Pay &amp; Unlock</h3>
+                    <p>Choose $7 one-time or $29/mo unlimited. Pay securely via Stripe in seconds.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+                    <h3>4. Key via Email</h3>
+                    <p>Receive your license key by email instantly. Enter it to unlock your download.</p>
+                </div>
             </div>
-            <div class="step">
-                <div class="step-icon"><i data-lucide="sparkles" style="width:24px;height:24px"></i></div>
-                <h3>2. AI Processes</h3>
-                <p>Our engine maps columns to Shopify fields, generates SEO descriptions, and optimizes your titles.</p>
-            </div>
-            <div class="step">
-                <div class="step-icon"><i data-lucide="credit-card" style="width:24px;height:24px"></i></div>
-                <h3>3. Pay &amp; Unlock</h3>
-                <p>Choose $7 one-time or $29/mo unlimited. Pay securely via Stripe in seconds.</p>
-            </div>
-            <div class="step">
-                <div class="step-icon"><i data-lucide="mail" style="width:24px;height:24px"></i></div>
-                <h3>4. Key via Email</h3>
-                <p>Receive your license key by email instantly. Enter it to unlock your download.</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="tools" id="tools">
-        <h2>Two Powerful Tools, One Platform</h2>
-        <p class="section-sub">Built for e-commerce store owners who value their time.</p>
-        <div class="tools-grid" style="grid-template-columns: 1fr 1fr;">
-            <div class="tool-card">
-                <div class="tool-icon"><i data-lucide="shopping-cart" style="width:22px;height:22px"></i></div>
-                <h3>Shopify CSV Mapper</h3>
-                <p>Transform messy supplier spreadsheets into Shopify-ready product import files with automatic column mapping and markup pricing.</p>
-                <ul>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Auto-map supplier columns to Shopify fields</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Apply profit markup (e.g., 1.4x = 40% margin)</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Set static inventory quantities</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Generates Shopify-compatible CSV</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Handles title, price, images, SKU, vendor</li>
-                </ul>
+        <section class="tools" id="tools">
+            <h2>Two Powerful Tools, One Platform</h2>
+            <p class="section-sub">Built for e-commerce store owners who value their time.</p>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div>
+                    <h3>Shopify CSV Mapper</h3>
+                    <p>Transform messy supplier spreadsheets into Shopify-ready product import files with automatic column mapping and markup pricing.</p>
+                    <ul>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Auto-map supplier columns to Shopify fields</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Apply profit markup (e.g., 1.4x = 40% margin)</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Set static inventory quantities</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Generates Shopify-compatible CSV</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Handles title, price, images, SKU, vendor</li>
+                    </ul>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></div>
+                    <h3>Product Content Generator</h3>
+                    <p>Upload a CSV with product names and features. Our AI generates SEO-optimized descriptions AND keyword-rich title variations for each product in seconds.</p>
+                    <ul>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Generates unique descriptions per product</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 3 optimized title variations per product</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> SEO-optimized with relevant keywords</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Batch mode: 100+ products at once</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Export to CSV for direct Shopify import</li>
+                    </ul>
+                </div>
             </div>
-            <div class="tool-card">
-                <div class="tool-icon"><i data-lucide="file-text" style="width:22px;height:22px"></i></div>
-                <h3>Product Content Generator</h3>
-                <p>Upload a CSV with product names and features. Our AI generates SEO-optimized descriptions AND keyword-rich title variations for each product in seconds.</p>
-                <ul>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Generates unique descriptions per product</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> 3 optimized title variations per product</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> SEO-optimized with relevant keywords</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Batch mode: 100+ products at once</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Export to CSV for direct Shopify import</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="features-section">
-        <h2>Why DataMorph?</h2>
-        <p class="section-sub">Built for speed, accuracy, and simplicity.</p>
-        <div class="features-grid">
-            <div class="fcard">
-                <div class="fcard-icon"><i data-lucide="zap" style="width:20px;height:20px"></i></div>
-                <h4>Lightning Fast</h4>
-                <p>Generate 100+ product descriptions in under 30 seconds. No more hours of manual copywriting.</p>
+        <section class="features-section">
+            <h2>Why DataMorph?</h2>
+            <p class="section-sub">Built for speed, accuracy, and simplicity.</p>
+            <div class="features-grid">
+                <div class="fcard">
+                    <div class="fcard-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div>
+                    <h3>Lightning Fast</h3>
+                    <p>Generate 100+ product descriptions in under 30 seconds. No more hours of manual copywriting.</p>
+                </div>
+                <div class="fcard">
+                    <div class="fcard-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                    <h3>Pay Per Use</h3>
+                    <p>$7 per session, no subscription required. Or subscribe monthly for unlimited access.</p>
+                </div>
+                <div class="fcard">
+                    <div class="fcard-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></div>
+                    <h3>AI-Powered</h3>
+                    <p>Uses LLM technology to write natural, compelling product descriptions that convert visitors into buyers.</p>
+                </div>
+                <div class="fcard">
+                    <div class="fcard-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></div>
+                    <h3>No Installation</h3>
+                    <p>100% browser-based. Upload files, get results. Works on Mac, Windows, Linux, mobile.</p>
+                </div>
+                <div class="fcard">
+                    <div class="fcard-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+                    <h3>Transparent Pricing</h3>
+                    <p>$7 one-time or $29/month unlimited. No hidden fees. No credit check. Cancel anytime.</p>
+                </div>
+                <div class="fcard">
+                    <div class="fcard-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
+                    <h3>SEO Optimized</h3>
+                    <p>Every description and title is optimized for Google, Shopify, and marketplace search algorithms.</p>
+                </div>
             </div>
-            <div class="fcard">
-                <div class="fcard-icon"><i data-lucide="lock" style="width:20px;height:20px"></i></div>
-                <h4>Pay Per Use</h4>
-                <p>$7 per session, no subscription required. Or subscribe monthly for unlimited access.</p>
-            </div>
-            <div class="fcard">
-                <div class="fcard-icon"><i data-lucide="bot" style="width:20px;height:20px"></i></div>
-                <h4>AI-Powered</h4>
-                <p>Uses LLM technology to write natural, compelling product descriptions that convert visitors into buyers.</p>
-            </div>
-            <div class="fcard">
-                <div class="fcard-icon"><i data-lucide="monitor" style="width:20px;height:20px"></i></div>
-                <h4>No Installation</h4>
-                <p>100% browser-based. Upload files, get results. Works on Mac, Windows, Linux, mobile.</p>
-            </div>
-            <div class="fcard">
-                <div class="fcard-icon"><i data-lucide="dollar-sign" style="width:20px;height:20px"></i></div>
-                <h4>Transparent Pricing</h4>
-                <p>$7 one-time or $29/month unlimited. No hidden fees. No credit check. Cancel anytime.</p>
-            </div>
-            <div class="fcard">
-                <div class="fcard-icon"><i data-lucide="search" style="width:20px;height:20px"></i></div>
-                <h4>SEO Optimized</h4>
-                <p>Every description and title is optimized for Google, Shopify, and marketplace search algorithms.</p>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="pricing-section" id="pricing">
-        <h2>Simple, Transparent Pricing</h2>
-        <p class="section-sub">Pay only when you use the tool. No commitment.</p>
-        <div class="pricing-cards">
-            <div class="pricing-card">
-                <h3>One-Time Access</h3>
-                <div class="price">$7 <span>/ use</span></div>
-                <ul>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> 1 complete processing session</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> CSV Mapper + Product Content Generator</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Unlimited CSV downloads per session</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Results delivered in seconds</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> No account required</li>
-                </ul>
-                <a href="https://buy.stripe.com/28E7sF0aj6bocDkama3sI02" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">Buy Now &mdash; $7</a>
+        <section class="pricing-section" id="pricing">
+            <h2>Simple, Transparent Pricing</h2>
+            <p class="section-sub">Pay only when you use the tool. No commitment.</p>
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3>One-Time Access</h3>
+                    <div class="price">$7 <span>/ use</span></div>
+                    <ul>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 1 complete processing session</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> CSV Mapper + Product Content Generator</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Unlimited CSV downloads per session</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Results delivered in seconds</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> No account required</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/28E7sF0aj6bocDkama3sI02" target="_blank" class="btn btn-secondary" style="width:100%;justify-content:center;">Buy Now &mdash; $7</a>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Monthly Subscription</h3>
+                    <div class="price">$29 <span>/ month</span></div>
+                    <ul>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Unlimited processing sessions</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> All 2 tools included</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Priority support</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Cancel anytime</li>
+                        <li><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> First month money-back guarantee</li>
+                    </ul>
+                    <a href="https://buy.stripe.com/cNi00dcX5eHU1YG9i63sI03" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">Subscribe &mdash; $29/mo</a>
+                </div>
             </div>
-            <div class="pricing-card popular">
-                <div class="popular-badge">Most Popular</div>
-                <h3>Monthly Subscription</h3>
-                <div class="price">$29 <span>/ month</span></div>
-                <ul>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Unlimited processing sessions</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> All 2 tools included</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Priority support</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> Cancel anytime</li>
-                    <li><i data-lucide="check" style="width:16px;height:16px"></i> First month money-back guarantee</li>
-                </ul>
-                <a href="https://buy.stripe.com/cNi00dcX5eHU1YG9i63sI03" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;">Subscribe &mdash; $29/mo</a>
+        </section>
+
+        <section class="faq-section" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <p class="section-sub">Everything you need to know about DataMorph.</p>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">What file formats does DataMorph support?</button>
+                <div class="faq-answer"><p>DataMorph works with CSV files for all tools. Upload any CSV with product data — our mapper and content generator will process it. We accept any column structure and let you map fields visually.</p></div>
             </div>
-        </div>
-    </section>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">How many products can I process at once?</button>
+                <div class="faq-answer"><p>Up to 100 products per batch with the one-time plan. With the monthly subscription, you get unlimited processing with no batch size limit.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">Is my data secure?</button>
+                <div class="faq-answer"><p>Yes. Your files are processed in real-time and never stored on our servers. We don't train AI models on your data. All processing happens in-memory and files are discarded immediately after extraction.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">Can I use the CSV output directly with Shopify?</button>
+                <div class="faq-answer"><p>Absolutely. The output CSV is fully compatible with Shopify's product import format. It includes all required fields: title, description, price, images, SKU, vendor, and more. Just upload it to your Shopify admin.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">How does the Product Content Generator work?</button>
+                <div class="faq-answer"><p>Upload a CSV with product names and key features. Our AI generates unique, SEO-optimized descriptions AND 3 optimized title variations for each product. Export to CSV for direct Shopify import.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">What payment methods do you accept?</button>
+                <div class="faq-answer"><p>We accept all major credit cards (Visa, Mastercard, American Express) through Stripe. Payments are processed securely. We also handle international tax compliance automatically.</p></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">Can I get a refund?</button>
+                <div class="faq-answer"><p>Yes. Monthly subscribers can cancel and get a full refund within the first month. For one-time purchases, contact us within 24 hours if you're not satisfied.</p></div>
+            </div>
+        </section>
 
-    <section class="faq-section" id="faq">
-        <h2>Frequently Asked Questions</h2>
-        <p class="section-sub">Everything you need to know about DataMorph.</p>
-
-        <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">What file formats does DataMorph support?</button>
-            <div class="faq-answer"><p>DataMorph works with CSV files for all tools. Upload any CSV with product data — our mapper and content generator will process it. We accept any column structure and let you map fields visually.</p></div>
-        </div>
-        <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">How many products can I process at once?</button>
-            <div class="faq-answer"><p>Up to 100 products per batch with the one-time plan. With the monthly subscription, you get unlimited processing with no batch size limit.</p></div>
-        </div>
-        <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">Is my data secure?</button>
-            <div class="faq-answer"><p>Yes. Your files are processed in real-time and never stored on our servers. We don't train AI models on your data. All processing happens in-memory and files are discarded immediately after extraction.</p></div>
-        </div>
-        <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">Can I use the CSV output directly with Shopify?</button>
-            <div class="faq-answer"><p>Absolutely. The output CSV is fully compatible with Shopify's product import format. It includes all required fields: title, description, price, images, SKU, vendor, and more. Just upload it to your Shopify admin.</p></div>
-        </div>
-        <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">How does the Product Content Generator work?</button>
-            <div class="faq-answer"><p>Upload a CSV with product names and key features. Our AI generates unique, SEO-optimized descriptions AND 3 optimized title variations for each product. Export to CSV for direct Shopify import.</p></div>
-        </div>
-        <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">What payment methods do you accept?</button>
-            <div class="faq-answer"><p>We accept all major credit cards (Visa, Mastercard, American Express) through Stripe. Payments are processed securely. We also handle international tax compliance automatically.</p></div>
-        </div>
-        <div class="faq-item">
-            <button class="faq-question" onclick="toggleFaq(this)">Can I get a refund?</button>
-            <div class="faq-answer"><p>Yes. Monthly subscribers can cancel and get a full refund within the first month. For one-time purchases, contact us within 24 hours if you're not satisfied.</p></div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <h2>Ready to Automate Your Product Listings?</h2>
-        <p>Join 500+ store owners who save hours every week with DataMorph.</p>
-        <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary btn-large">
-            <i data-lucide="rocket" style="width:18px;height:18px"></i> Launch DataMorph Free &rarr;
-        </a>
-    </section>
+        <section class="cta-section">
+            <h2>Ready to Automate Your Product Listings?</h2>
+            <p>Join 500+ store owners who save hours every week with DataMorph.</p>
+            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary btn-large">Launch DataMorph Free &rarr;</a>
+        </section>
+    </main>
 
     <footer class="footer">
         <p>&copy; 2026 DataMorph. All rights reserved.</p>
     </footer>
 
+    <div class="legal-footer">
+        <a href="/mentions-legales/">Legal Notice</a>
+        <a href="/cgv/">Terms of Sale</a>
+        <a href="/politique-de-confidentialite/">Privacy Policy</a>
+    </div>
+
     <script>
-    lucide.createIcons();
     function toggleFaq(btn) {
         const item = btn.parentElement;
         const answer = item.querySelector('.faq-answer');
@@ -450,13 +379,6 @@
         }
     });
     </script>
-
-<footer style="text-align:center; padding:2rem 1rem; border-top:1px solid #1e293b; margin-top:3rem; font-size:0.8rem; color:#64748b;">
-  <a href="/mentions-legales/" style="color:#94a3b8; text-decoration:none; margin:0 0.8rem;">Legal Notice</a>
-  <a href="/cgv/" style="color:#94a3b8; text-decoration:none; margin:0 0.8rem;">Terms of Sale</a>
-  <a href="/politique-de-confidentialite/" style="color:#94a3b8; text-decoration:none; margin:0 0.8rem;">Privacy Policy</a>
-  <div style="margin-top:0.5rem;">&copy; 2026 DataMorph. All rights reserved.</div>
-</footer>
 
 </body>
 </html>

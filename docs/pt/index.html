@@ -22,8 +22,8 @@
     <meta property="og:url" content="https://www.datamorph.fr/pt/index.html">
     <link rel="canonical" href="https://www.datamorph.fr/pt/index.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --bg: #0f172a;
@@ -102,8 +102,9 @@
             text-decoration: none; transition: all 0.3s; cursor: pointer; border: none;
             display: inline-flex; align-items: center; gap: 0.5rem;
         }
-        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
+        .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #ffffff; box-shadow: 0 0 30px rgba(99,102,241,0.3); }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
+        .nav .btn-primary:hover { color: #facc15 !important; }
         .btn-secondary { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); }
         .btn-secondary:hover { background: rgba(99,102,241,0.1); border-color: var(--accent); transform: translateY(-2px); }
         .btn-large { padding: 1.2rem 3rem; font-size: 1.1rem; }
@@ -150,7 +151,7 @@
         }
         .fcard:hover { border-color: var(--accent); transform: translateY(-3px); }
         .fcard-icon { margin-bottom: 1rem; color: var(--accent); }
-        .fcard h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .fcard h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
         .fcard p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
 
         .pricing-section { padding: 3.5rem 4rem; text-align: center; }
@@ -219,7 +220,7 @@
 </head>
 <body>
 
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
         <div class="logo">Data<span>Morph</span></div>
         <div class="nav-links">
             <a href="#how">Como Funciona</a>
@@ -227,7 +228,7 @@
             <a href="#pricing">Preços</a>
             <a href="#faq">FAQ</a>
             <div class="lang-dropdown" id="langDropdown">
-                <button>PT <span class="arrow">&#9662;</span></button>
+                <button aria-label="Select language">PT <span class="arrow">&#9662;</span></button>
                 <div class="lang-dropdown-menu">
                     <a href="../index.html">EN English</a>
                     <a href="../fr/index.html">FR Français</a>
@@ -238,10 +239,11 @@
                     <a href="index.html" class="active">PT Português</a>
                 </div>
             </div>
-            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem;">Abrir App</a>
+            <a href="https://datamorph-app.streamlit.app/" target="_blank" class="btn btn-primary" style="padding:0.6rem 1.5rem; font-size:0.85rem; color:#ffffff !important;">Abrir App</a>
         </div>
     </nav>
 
+    <main>
     <section class="hero">
         <div class="badge">Confiado por 500+ donos de lojas online</div>
         <h1>Mapeador CSV Shopify &amp; <span>Gerador de Conteúdo de Produto</span></h1>
@@ -329,32 +331,32 @@
         <div class="features-grid">
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="zap" style="width:32px;height:32px;"></i></div>
-                <h4>Ultra Rápido</h4>
+                <h3>Ultra Rápido</h3>
                 <p>Processe centenas de produtos em menos de 30 segundos. Chega de horas de digitação manual.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="lock" style="width:32px;height:32px;"></i></div>
-                <h4>Pago por Uso</h4>
+                <h3>Pago por Uso</h3>
                 <p>$7 por sessão, sem necessidade de assinatura. Ou assine mensalmente para acesso ilimitado.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="bot" style="width:32px;height:32px;"></i></div>
-                <h4>Impulsionado por IA</h4>
+                <h3>Impulsionado por IA</h3>
                 <p>Utiliza tecnologia LLM para entender o contexto, não apenas palavras-chave. Funciona com qualquer layout.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="folder-open" style="width:32px;height:32px;"></i></div>
-                <h4>Sem Instalação</h4>
+                <h3>Sem Instalação</h3>
                 <p>100% no navegador. Envie arquivos, receba resultados. Funciona no Mac, Windows, Linux e celular.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="banknote" style="width:32px;height:32px;"></i></div>
-                <h4>Preços Transparentes</h4>
+                <h3>Preços Transparentes</h3>
                 <p>$7 único ou $29/mês ilimitado. Sem taxas escondidas. Sem consulta de crédito. Cancele quando quiser.</p>
             </div>
             <div class="fcard">
                 <div class="fcard-icon"><i data-lucide="globe" style="width:32px;height:32px;"></i></div>
-                <h4>Otimizado para SEO</h4>
+                <h3>Otimizado para SEO</h3>
                 <p>Todas as saídas são otimizadas para mecanismos de busca, maximizando sua visibilidade online.</p>
             </div>
         </div>
@@ -433,11 +435,13 @@
             <i data-lucide="arrow-right" style="width:20px;height:20px;"></i> Abrir o DataMorph Grátis
         </a>
     </section>
+    </main>
 
     <footer class="footer">
         <p>&copy; 2026 DataMorph. Todos os direitos reservados.</p>
     </footer>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
     lucide.createIcons();
 
