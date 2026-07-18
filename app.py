@@ -1,18 +1,16 @@
 """
 DataMorph
 =========
-A Micro-SaaS Streamlit app with 3 e-commerce tools:
-  1. Product Description Generator - generates SEO-optimized descriptions
-     from product data using AI.
-  2. SEO Title Optimizer - transforms basic product titles into
-     keyword-rich optimized titles.
-  3. E-Commerce CSV Mapper - maps a messy supplier CSV to a Shopify-ready
+A Micro-SaaS Streamlit app with 2 e-commerce tools:
+  1. Product Content Generator - generates SEO-optimized descriptions
+     AND keyword-rich title variations from product data using AI.
+  2. E-Commerce CSV Mapper - maps a messy supplier CSV to a Shopify-ready
      product import file, with markup pricing.
 
 ------------------------------------------------------------------------
 INSTALLATION
 ------------------------------------------------------------------------
-    pip install streamlit pandas openai pdfplumber
+    pip install streamlit pandas openai
 
 ------------------------------------------------------------------------
 RUN
@@ -70,11 +68,9 @@ else:
 # (e.g. when the user toggles a checkbox or clicks a different button).
 def init_session_state():
     defaults = {
-        "description_df": None,
-        "seo_df": None,
+        "content_df": None,
         "shopify_df": None,
-        "description_paid_unlock": False,
-        "seo_paid_unlock": False,
+        "content_paid_unlock": False,
         "shopify_paid_unlock": False,
     }
     for key, value in defaults.items():
@@ -140,25 +136,14 @@ def render_paywall_section(df: pd.DataFrame, unlock_key: str, filename: str):
         st.error("Invalid or inactive license key. Please purchase or subscribe to get access.")
 
 
-# ==========================================================================
-# TOOL 1: BULK RESUME PARSER
-# ==========================================================================
-RESUME_SYSTEM_PROMPT = (
-    "You are a data extraction bot. Read the resume text. Extract the "
-    "candidate's Full Name, Email, Phone Number, and Top 3 Skills. "
-    "Respond ONLY with valid JSON in this format: "
-    '{"name": "", "email": "", "phone": "", "skills": ""}'
-)
-
-
-def call_description_generator(product_info: str) -> dict | None:
+def call_content_generator(product_info: str) -> dict | None:
     if client is None:
         return None
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
-                {"role": "system", "content": DESCRIPTION_SYSTEM_PROMPT},
+                {"role": "system", "content": CONTENT_SYSTEM_PROMPT},
                 {"role": "user", "content": product_info[:4000]},
             ],
             temperature=0.7,
@@ -168,51 +153,29 @@ def call_description_generator(product_info: str) -> dict | None:
             raw_content = raw_content.split("\n", 1)[1].rsplit("```", 1)[0].strip()
         return json.loads(raw_content)
     except Exception as e:
-        logger.error(f"Description generation failed: {e}")
-        return None
-
-
-def call_seo_title_optimizer(title: str) -> dict | None:
-    if client is None:
-        return None
-    try:
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "system", "content": SEO_TITLE_SYSTEM_PROMPT},
-                {"role": "user", "content": f"Product title: {title}"},
-            ],
-            temperature=0.7,
-        )
-        raw_content = response.choices[0].message.content.strip()
-        if raw_content.startswith("```"):
-            raw_content = raw_content.split("\n", 1)[1].rsplit("```", 1)[0].strip()
-        return json.loads(raw_content)
-    except Exception as e:
-        logger.error(f"SEO title optimization failed: {e}")
+        logger.error(f"Content generation failed: {e}")
         return None
 
 
 # ==========================================================================
-# TOOL 1: PRODUCT DESCRIPTION GENERATOR
+# TOOL 1: PRODUCT CONTENT GENERATOR (Descriptions + SEO Titles)
 # ==========================================================================
-DESCRIPTION_SYSTEM_PROMPT = (
-    "You are an expert e-commerce copywriter. Read the product information below. "
-    "Generate a unique, SEO-optimized product description (150-300 words) that: "
-    "- Highlights key features and benefits "
-    "- Uses relevant keywords naturally "
-    "- Has a compelling, conversion-focused tone "
-    "- Is structured with short paragraphs for readability "
-    "Respond ONLY with valid JSON: "
-    '{"description": "..."}'
+CONTENT_SYSTEM_PROMPT = (
+    "You are an expert e-commerce copywriter and SEO specialist. "
+    "Read the product information below and generate ALL of the following in ONE response:\n"
+    "1. A unique, SEO-optimized product description (150-300 words) that highlights features/benefits, "
+    "uses relevant keywords, and has a compelling conversion-focused tone.\n"
+    "2. Three optimized product title variations (each under 70 characters) with high-ranking keywords.\n"
+    "Respond ONLY with valid JSON in this exact format:\n"
+    '{"description": "...", "title_1": "...", "title_2": "...", "title_3": "..."}'
 )
 
 
-def render_description_generator_tool():
-    st.header("Product Description Generator")
+def render_content_generator_tool():
+    st.header("Product Content Generator")
     st.caption(
         "Upload a CSV with product names and features. Our AI generates "
-        "unique, SEO-optimized descriptions for each product."
+        "SEO-optimized descriptions AND keyword-rich title variations for each product."
     )
 
     if client is None:
@@ -225,10 +188,10 @@ def render_description_generator_tool():
             product_df = pd.read_csv(uploaded_file)
             st.dataframe(product_df.head(10), use_container_width=True)
             st.info(f"Loaded {len(product_df)} products.")
-            name_col = st.selectbox("Select product name column:", product_df.columns, key="desc_name")
-            feature_col = st.selectbox("Select features column:", product_df.columns, key="desc_features")
+            name_col = st.selectbox("Select product name column:", product_df.columns, key="content_name")
+            feature_col = st.selectbox("Select features column:", product_df.columns, key="content_features")
 
-            process_clicked = st.button("Generate Descriptions", type="primary", disabled=(client is None))
+            process_clicked = st.button("Generate Content", type="primary", disabled=(client is None))
             if process_clicked:
                 results, errors = [], []
                 progress_bar = st.progress(0.0, text="Starting...")
@@ -236,20 +199,27 @@ def render_description_generator_tool():
                 for idx, row in product_df.iterrows():
                     progress_bar.progress((idx + 1) / total, text=f"Processing {idx + 1}/{total}...")
                     product_info = f"Product: {row[name_col]}\nFeatures: {row[feature_col]}"
-                    parsed = call_description_generator(product_info)
+                    parsed = call_content_generator(product_info)
                     if parsed:
-                        results.append({"product_name": row[name_col], "features": row[feature_col], "generated_description": parsed.get("description", "")})
+                        results.append({
+                            "product_name": row[name_col],
+                            "features": row[feature_col],
+                            "optimized_title_1": parsed.get("title_1", ""),
+                            "optimized_title_2": parsed.get("title_2", ""),
+                            "optimized_title_3": parsed.get("title_3", ""),
+                            "generated_description": parsed.get("description", ""),
+                        })
                     else:
                         errors.append(f"Product {idx + 1}: generation failed")
                 progress_bar.empty()
                 if results:
-                    desc_df = pd.DataFrame(results)
-                    st.session_state["description_df"] = desc_df
-                    st.success(f"Generated descriptions for {len(results)} products.")
-                    st.dataframe(desc_df, use_container_width=True)
+                    content_df = pd.DataFrame(results)
+                    st.session_state["content_df"] = content_df
+                    st.success(f"Generated content for {len(results)} products.")
+                    st.dataframe(content_df, use_container_width=True)
                 else:
-                    st.session_state["description_df"] = None
-                    st.error("No descriptions could be generated.")
+                    st.session_state["content_df"] = None
+                    st.error("No content could be generated.")
                 if errors:
                     with st.expander(f"⚠️ {len(errors)} product(s) had issues"):
                         for err in errors:
@@ -257,73 +227,8 @@ def render_description_generator_tool():
         except Exception as e:
             st.error(f"Error reading CSV: {e}")
 
-    if st.session_state.get("description_df") is not None:
-        render_paywall_section(st.session_state["description_df"], unlock_key="description_paid_unlock", filename="product_descriptions.csv")
-
-
-# ==========================================================================
-# TOOL 2: SEO TITLE OPTIMIZER
-# ==========================================================================
-SEO_TITLE_SYSTEM_PROMPT = (
-    "You are an SEO expert for e-commerce. Read the product title below. "
-    "Generate 3 optimized title variations that: "
-    "- Include high-ranking keywords "
-    "- Stay under 70 characters (for Google) "
-    "- Are compelling and click-worthy "
-    "Respond ONLY with valid JSON: "
-    '{"title_1": "...", "title_2": "...", "title_3": "..."}'
-)
-
-
-def render_seo_title_tool():
-    st.header("SEO Title Optimizer")
-    st.caption(
-        "Upload a CSV with product titles. Our AI generates optimized, "
-        "keyword-rich title variations for better search rankings."
-    )
-
-    if client is None:
-        st.error("⚠️ GROQ_API_KEY not set. Please configure it before using this tool.")
-
-    uploaded_file = st.file_uploader("Upload product titles (CSV)", type=["csv"])
-
-    if uploaded_file:
-        try:
-            title_df = pd.read_csv(uploaded_file)
-            st.dataframe(title_df.head(10), use_container_width=True)
-            st.info(f"Loaded {len(title_df)} products.")
-            title_col = st.selectbox("Select title column:", title_df.columns, key="seo_title")
-
-            process_clicked = st.button("Optimize Titles", type="primary", disabled=(client is None))
-            if process_clicked:
-                results, errors = [], []
-                progress_bar = st.progress(0.0, text="Starting...")
-                total = len(title_df)
-                for idx, row in title_df.iterrows():
-                    progress_bar.progress((idx + 1) / total, text=f"Optimizing {idx + 1}/{total}...")
-                    parsed = call_seo_title_optimizer(str(row[title_col]))
-                    if parsed:
-                        results.append({"original_title": row[title_col], "optimized_title_1": parsed.get("title_1", ""), "optimized_title_2": parsed.get("title_2", ""), "optimized_title_3": parsed.get("title_3", "")})
-                    else:
-                        errors.append(f"Title {idx + 1}: optimization failed")
-                progress_bar.empty()
-                if results:
-                    seo_df = pd.DataFrame(results)
-                    st.session_state["seo_df"] = seo_df
-                    st.success(f"Optimized {len(results)} titles.")
-                    st.dataframe(seo_df, use_container_width=True)
-                else:
-                    st.session_state["seo_df"] = None
-                    st.error("No titles could be optimized.")
-                if errors:
-                    with st.expander(f"⚠️ {len(errors)} title(s) had issues"):
-                        for err in errors:
-                            st.write(f"- {err}")
-        except Exception as e:
-            st.error(f"Error reading CSV: {e}")
-
-    if st.session_state.get("seo_df") is not None:
-        render_paywall_section(st.session_state["seo_df"], unlock_key="seo_paid_unlock", filename="optimized_titles.csv")
+    if st.session_state.get("content_df") is not None:
+        render_paywall_section(st.session_state["content_df"], unlock_key="content_paid_unlock", filename="product_content.csv")
 
 
 # ==========================================================================
@@ -450,11 +355,11 @@ def render_ecommerce_mapper_tool():
 # ==========================================================================
 def main():
     st.sidebar.title("🧭 DataMorph")
-    st.sidebar.caption("3 AI tools for e-commerce store owners.")
+    st.sidebar.caption("2 AI tools for e-commerce store owners.")
 
     tool_choice = st.sidebar.radio(
         "Select Tool:",
-        ["Product Description Generator", "SEO Title Optimizer", "E-Commerce CSV Mapper"],
+        ["Product Content Generator", "E-Commerce CSV Mapper"],
     )
 
     st.sidebar.divider()
@@ -465,10 +370,8 @@ def main():
 
     st.title("DataMorph")
 
-    if tool_choice == "Product Description Generator":
-        render_description_generator_tool()
-    elif tool_choice == "SEO Title Optimizer":
-        render_seo_title_tool()
+    if tool_choice == "Product Content Generator":
+        render_content_generator_tool()
     else:
         render_ecommerce_mapper_tool()
 
