@@ -72,7 +72,7 @@ STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET")
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 RESEND_FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "onboarding@resend.dev")
-APP_URL = "https://zrho9xe4sctrauhpkekblp.streamlit.app"
+APP_URL = "https://datamorph-app.streamlit.app"
 
 if RESEND_API_KEY:
     resend.api_key = RESEND_API_KEY
