@@ -477,6 +477,27 @@
   <a href="/politique-de-confidentialite/" style="color:#94a3b8; text-decoration:none; margin:0 0.8rem;">Privacy Policy</a>
   <div style="margin-top:0.5rem;">&copy; 2026 DataMorph. 版权所有。</div>
 </footer>
-
+<script>
+if (!sessionStorage.getItem('indexnow_pinged')) {
+    fetch('https://api.indexnow.org/IndexNow', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body: JSON.stringify({
+            host: 'www.datamorph.fr',
+            key: '15d6fa689b2446dea9f95bd2ec20d5e7',
+            keyLocation: 'https://www.datamorph.fr/15d6fa689b2446dea9f95bd2ec20d5e7.txt',
+            urlList: [
+                'https://www.datamorph.fr/',
+                'https://www.datamorph.fr/fr/',
+                'https://www.datamorph.fr/es/',
+                'https://www.datamorph.fr/ar/',
+                'https://www.datamorph.fr/zh/',
+                'https://www.datamorph.fr/de/',
+                'https://www.datamorph.fr/pt/'
+            ]
+        })
+    }).then(() => sessionStorage.setItem('indexnow_pinged', '1'));
+}
+</script>
 </body>
 </html>
